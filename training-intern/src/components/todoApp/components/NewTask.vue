@@ -76,6 +76,12 @@ export default {
       return this.getTodo.filter((todo) => todo.title.match(this.newTitle));
     },
   },
+  watch: {
+    addTodo() {
+      this.time = updateTime();
+      this.date = updateDate();
+    },
+  },
   methods: {
     ...mapActions("todo", [
       "pendingTodo",
