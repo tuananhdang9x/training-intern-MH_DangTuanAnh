@@ -3,15 +3,12 @@ n<template>
     <h3>Basic Exercise</h3>
     <ul class="list-link">
       <li
-        v-for="(nameList, index) in nameLists"
-        :key="index"
-        :class="{ active: currentRouteName === nameList }"
+        v-for="link in linkLists"
+        :key="link.id"
+        :class="{ active: currentRouteName === link.name }"
+        @click="postClick(link)"
       >
-        <router-link
-          style="text-decoration: none; color: inherit"
-          :to="linkLists[index]"
-          >{{ nameList }}
-        </router-link>
+        {{ link.lable }}
       </li>
     </ul>
   </div>
@@ -21,13 +18,42 @@ n<template>
 export default {
   data() {
     return {
-      nameLists: ["Trang chủ", "Todo Apps", "Bài 2", "Bài 3"],
-      linkLists: ["/", "/todo", "/bai2", "/bai3"],
+      linkLists: [
+        {
+          id: 1,
+          lable: "Home page",
+          path: "/",
+          name: "HomePage",
+        },
+        {
+          id: 2,
+          lable: "Todo Apps",
+          path: "/todo",
+          name: "TodoApp",
+        },
+        {
+          id: 3,
+          lable: "Exam 2",
+          path: "/exam2",
+          name: "Exam2",
+        },
+        {
+          id: 4,
+          lable: "Exam 3",
+          path: "/exam3",
+          name: "Exam3",
+        },
+      ],
     };
   },
   computed: {
     currentRouteName() {
       return this.$route.name;
+    },
+  },
+  methods: {
+    postClick(link) {
+      this.$router.push(link.path);
     },
   },
 };
@@ -42,6 +68,7 @@ export default {
   list-style: none;
 }
 .list-link li {
+  cursor: pointer;
   padding: 12px;
 }
 .side-bar h3 {

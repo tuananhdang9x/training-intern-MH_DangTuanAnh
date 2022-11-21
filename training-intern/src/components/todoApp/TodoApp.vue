@@ -3,16 +3,12 @@
     <NavBar @showTitle="getData($event)" />
     <div class="todo-container">
       <NewTask :newTitle="title" />
-      <CompletedTask :newTitle="title" />
-      <RejectTask :newTitle="title" />
     </div>
   </div>
 </template>
 
 <script>
 import NewTask from "./components/NewTask.vue";
-import CompletedTask from "./components/CompletedTask.vue";
-import RejectTask from "./components/RejectTask.vue";
 import NavBar from "./components/NavBar.vue";
 export default {
   data() {
@@ -22,8 +18,6 @@ export default {
   },
   components: {
     NewTask,
-    CompletedTask,
-    RejectTask,
     NavBar,
   },
   methods: {

@@ -1,6 +1,6 @@
 <template>
   <div class="home-page">
-    <h3>Trang chủ</h3>
+    <h3>Home page</h3>
   </div>
 </template>
 

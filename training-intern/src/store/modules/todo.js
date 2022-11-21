@@ -6,62 +6,41 @@ export default {
         addTodo: {
             isAdd: false
         },
-        completedTodos: [
 
-        ],
-        rejectedTodos: [
-
-        ]
     },
     getters: {
         getTodo: state => state.todos,
         addTodo: state => state.addTodo.isAdd,
-        completedTodos: state => state.completedTodos,
-        rejectedTodos: state => state.rejectedTodos,
+
     },
 
     actions: {
-        pendingTodo({ commit }) {
-            commit('PENDING_TODO')
+        toggleInput({ commit }) {
+            commit('TOGGLE_INPUT')
         },
         saveTodo({ commit }, newTodo) {
             commit('SAVE_TODO', newTodo)
         },
-        completeTodo({ commit }, newTodo) {
-            console.log(newTodo);
-            commit('COMPLETE_TODO', newTodo)
+
+        getCompleted({ commit }, status) {
+            commit('GET_COMPLETED', status)
         },
-        rejectTodo({ commit }, newTodo) {
-            commit('REJECT_TODO', newTodo)
-        },
-        updateTodo({ commit }, id) {
-            commit('UPDATE_TODO', id)
-        },
-        searchTodo({ commit }, title) {
-            commit('SEARCH_TODO', title)
+        getRejected({ commit }, status) {
+            commit('GET_REJECTED', status)
         }
     },
     mutations: {
-        PENDING_TODO(state) {
+        TOGGLE_INPUT(state) {
             state.addTodo.isAdd = !state.addTodo.isAdd
         },
         SAVE_TODO(state, newTodo) {
             state.todos.unshift(newTodo)
         },
-        COMPLETE_TODO(state, newTodo) {
-            state.completedTodos.unshift(newTodo)
-            console.log(state.completedTodos)
+        GET_COMPLETED(state, status) {
+            return state.todos.filter(todo => todo.status == status)
         },
-        REJECT_TODO(state, newTodo) {
-            state.rejectedTodos.unshift(newTodo)
+        GET_REJECTED(state, status) {
+            return state.todos.filter(todo => todo.status == status)
         },
-        UPDATE_TODO(state, idTodo) {
-            state.todos = state.todos.filter(todo => todo.id != idTodo)
-        },
-        SEARCH_TODO(state, title) {
-            state.todos = state.todos.filter(todo => todo.title == title)
-            state.completedTodos = state.completedTodos.filter(todo => todo.title == title)
-            state.rejectedTodos = state.rejectedTodos.filter(todo => todo.title == title)
-        }
     }
 }
