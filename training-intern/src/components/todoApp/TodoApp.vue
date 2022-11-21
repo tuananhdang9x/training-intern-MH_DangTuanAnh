@@ -2,7 +2,9 @@
   <div class="todo-app">
     <NavBar @showTitle="getData($event)" />
     <div class="todo-container">
-      <NewTask :newTitle="title" />
+      <NewTask :newTitle="title" :status="'new'" />
+      <NewTask :newTitle="title" :status="'completed'" />
+      <NewTask :newTitle="title" :status="'rejected'" />
     </div>
   </div>
 </template>

@@ -1,11 +1,10 @@
 <template>
   <div class="todo-list">
-    <!-- New todo -->
     <div class="new-todo">
-      <h3>Mới</h3>
+      <h3>{{ getHeading }}</h3>
       <div class="list">
         <div class="list-container">
-          <div class="list-item" v-if="addTodo">
+          <div class="list-item" v-if="status == 'new' && addTodo">
             <form @submit="onSubmit">
               <input
                 type="text"
@@ -25,49 +24,34 @@
           <div class="list-item" v-for="todo in getNewTodo" :key="todo.id">
             <h5>{{ todo.title }}</h5>
             <p>{{ todo.time }} {{ todo.date }}</p>
-            <button @click.prevent="handleFinish(todo)" class="save-btn">
-              Hoàn thành
-            </button>
-            <button @click.prevent="handleReject(todo)" class="cancel-btn">
-              Từ bỏ
-            </button>
+            <div v-if="status == 'new'">
+              <button @click.prevent="handleFinish(todo)" class="save-btn">
+                Hoàn thành
+              </button>
+              <button @click.prevent="handleReject(todo)" class="cancel-btn">
+                Từ bỏ
+              </button>
+            </div>
+            <div
+              v-else
+              :class="{
+                completed: status == 'completed',
+                rejected: status == 'rejected',
+              }"
+            >
+              <p>{{ getStateTitle }}</p>
+              <p>{{ todo.endTime }} {{ todo.endDate }}</p>
+            </div>
           </div>
         </div>
-        <button :disabled="addTodo" @click="toggleInput" class="footer-btn">
+        <button
+          v-if="status == 'new'"
+          :disabled="addTodo"
+          @click="toggleInput"
+          class="footer-btn"
+        >
           Thêm mới
         </button>
-      </div>
-    </div>
-    <!-- Completed todo -->
-    <div class="completed-todo">
-      <h3>Đã hoàn thành</h3>
-      <div class="list">
-        <div class="list-container">
-          <div class="list-item" v-for="todo in getCompleted" :key="todo.id">
-            <h5>{{ todo.title }}</h5>
-            <p>{{ todo.time }} {{ todo.date }}</p>
-            <div class="completed">
-              <p>Hoàn thành lúc:</p>
-              <p>{{ todo.time }} {{ todo.date }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- Rejected todo -->
-    <div class="rejected-todo">
-      <h3>Đã từ bỏ</h3>
-      <div class="list">
-        <div class="list-container">
-          <div class="list-item" v-for="todo in getRejected" :key="todo.id">
-            <h5>{{ todo.title }}</h5>
-            <p>{{ todo.time }} {{ todo.date }}</p>
-            <div class="rejected">
-              <p>Đã hủy lúc:</p>
-              <p>{{ todo.time }} {{ todo.date }}</p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
@@ -80,38 +64,43 @@ function updateDate(today) {
   let yyyy = today.getFullYear();
   let mm = today.getMonth() + 1;
   let dd = today.getDate();
-
   if (dd < 10) dd = "0" + dd;
   if (mm < 10) mm = "0" + mm;
-
   return dd + "/" + mm + "/" + yyyy;
 }
 function updateTime(today) {
-  return today.getHours() + ":" + today.getMinutes();
+  let hour = today.getHours();
+  let minute = today.getMinutes();
+  if (hour < 10) hour = "0" + hour;
+  if (minute < 10) minute = "0" + minute;
+  return hour + ":" + minute;
 }
 
 export default {
   data() {
     return {
       title: "",
+      stateTitle: "",
     };
   },
-  props: ["newTitle"],
+  props: ["newTitle", "status"],
   computed: {
     ...mapGetters("todo", ["addTodo", "getTodo"]),
+    getHeading() {
+      if (this.status == "new") {
+        return "Mới";
+      } else if (this.status == "completed") {
+        return "Đã hoàn thành";
+      } else {
+        return "Đã từ bỏ";
+      }
+    },
+    getStateTitle() {
+      return this.status == "completed" ? "Hoàn thành lúc" : "Đã hủy lúc";
+    },
     getNewTodo() {
       return this.getTodo
-        .filter((todo) => todo.status == "new")
-        .filter((todo) => todo.title.match(this.newTitle));
-    },
-    getCompleted() {
-      return this.getTodo
-        .filter((todo) => todo.status == "completed")
-        .filter((todo) => todo.title.match(this.newTitle));
-    },
-    getRejected() {
-      return this.getTodo
-        .filter((todo) => todo.status == "rejected")
+        .filter((todo) => todo.status == this.status)
         .filter((todo) => todo.title.match(this.newTitle));
     },
     currentTime() {
@@ -135,15 +124,21 @@ export default {
         time: this.currentTime,
         date: this.currentDate,
         status: "new",
+        endTime: "",
+        endDate: "",
       });
       this.toggleInput();
       this.title = "";
     },
     handleFinish(todo) {
       todo.status = "completed";
+      todo.endTime = this.currentTime;
+      todo.endDate = this.currentDate;
     },
     handleReject(todo) {
       todo.status = "rejected";
+      todo.endTime = this.currentTime;
+      todo.endDate = this.currentDate;
     },
   },
 };
@@ -151,24 +146,12 @@ export default {
 
 <style scoped>
 .todo-list {
-  display: flex;
   margin-right: 12px;
 }
 .todo-list h3 {
   margin-bottom: 8px;
 }
-.new-todo {
-  margin-right: 12px;
-}
-.completed-todo {
-  margin-right: 12px;
-}
-.rejected-todo h3 {
-  margin-bottom: 8px;
-}
-.completed-todo h3 {
-  margin-bottom: 8px;
-}
+
 .completed {
   color: #008037;
   font-weight: 600;
