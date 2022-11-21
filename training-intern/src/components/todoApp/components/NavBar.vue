@@ -4,7 +4,7 @@
       type="text"
       placeholder="Nhập từ khóa tìm kiếm nhiệm vụ"
       v-model="title"
-      @change="showData"
+      @keyup="showData"
     />
     <button class="search-btn">Tìm kiếm</button>
   </div>

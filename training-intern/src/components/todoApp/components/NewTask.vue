@@ -10,6 +10,7 @@
                 type="text"
                 placeholder="Nhập tên nhiệm vụ"
                 v-model="title"
+                class="input-form"
               />
               <p>{{ currentTime }} {{ currentDate }}</p>
               <input type="submit" value="Lưu" class="save-input" />
