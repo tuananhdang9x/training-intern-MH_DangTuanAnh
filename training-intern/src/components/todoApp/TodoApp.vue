@@ -1,30 +1,52 @@
 <template>
   <div class="todo-app">
-    <NavBar @showTitle="getData($event)" />
+    <div class="nav-bar">
+      <input
+        type="text"
+        placeholder="Nhập từ khóa tìm kiếm nhiệm vụ"
+        v-model="keyword"
+      />
+      <button class="search-btn">Tìm kiếm</button>
+    </div>
     <div class="todo-container">
-      <NewTask :newTitle="title" :status="'new'" />
-      <NewTask :newTitle="title" :status="'completed'" />
-      <NewTask :newTitle="title" :status="'rejected'" />
+      <TodoColumn
+        v-for="colItem in listCol"
+        :key="colItem.id"
+        :colTitle="colItem.lable"
+        :colItem="colItem"
+        :todos="filteredTodo(colItem.status)"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import NewTask from "./components/NewTask.vue";
-import NavBar from "./components/NavBar.vue";
+import TodoColumn from "./components/TodoColumn.vue";
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
-      title: "",
+      keyword: "",
+      listCol: [
+        { id: 1, status: "new", lable: "Mới" },
+        { id: 2, status: "completed", lable: "Đã hoàn thành" },
+        { id: 3, status: "rejected", lable: "Đã từ bỏ" },
+      ],
     };
   },
   components: {
-    NewTask,
-    NavBar,
+    TodoColumn,
   },
-  methods: {
-    getData(data) {
-      this.title = data;
+  methods: {},
+  computed: {
+    ...mapGetters("todo", ["getTodo"]),
+    filteredTodo() {
+      return (status) => {
+        return this.getTodo.filter(
+          (todo) => todo.status == status && todo.title.match(this.keyword)
+        );
+      };
     },
   },
 };
@@ -37,6 +59,31 @@ export default {
 }
 .todo-container {
   display: flex;
-  justify-content: space-between;
+}
+.nav-bar input {
+  width: 250px;
+  border: 1px solid #f0f0f0;
+  padding: 4px;
+  font-size: 12px;
+  border-radius: 2px;
+  margin-bottom: 16px;
+}
+.search-btn {
+  appearance: none;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  font-size: 12px;
+  padding: 4px 16px;
+  border-radius: 4px;
+  background-color: #008037;
+  margin-left: 8px;
+  border: 1px solid #008037;
+}
+
+.search-btn:hover {
+  cursor: pointer;
+  color: #008037;
+  background-color: #fff;
 }
 </style>
