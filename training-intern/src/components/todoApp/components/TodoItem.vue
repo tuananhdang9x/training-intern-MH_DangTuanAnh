@@ -1,7 +1,7 @@
 <template>
   <div class="list-container">
     <div class="list-item" v-if="addMode">
-      <form @submit="onSubmit">
+      <form @submit.prevent="onSubmit(title)">
         <input
           type="text"
           placeholder="Nhập tên nhiệm vụ"
@@ -11,7 +11,7 @@
         <p>{{ currentDateTime }}</p>
         <input type="submit" value="Lưu" class="save-input" />
         <input
-          @click="handleCancel"
+          @click="onCancel"
           type="submit"
           value="Hủy"
           class="cancel-input"
@@ -23,10 +23,12 @@
       <h5>{{ todo.title }}</h5>
       <p>{{ todo.initDateTime }}</p>
       <div v-if="todo.status == 'new'">
-        <button @click.prevent="handleFinish" class="save-btn">
+        <button @click.prevent="onFinish(todo.id)" class="save-btn">
           Hoàn thành
         </button>
-        <button @click.prevent="handleReject" class="cancel-btn">Từ bỏ</button>
+        <button @click.prevent="onReject(todo.id)" class="cancel-btn">
+          Từ bỏ
+        </button>
       </div>
       <div
         v-if="todo.status == 'completed' || todo.status == 'rejected'"
@@ -43,10 +45,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
 import { updateDateTime } from "../../../utils/index.js";
-import { v4 as uuidv4 } from "uuid";
-
 export default {
   data() {
     return {
@@ -67,47 +66,29 @@ export default {
     getStateTitle() {
       return this.todo.status == "completed" ? "Hoàn thành lúc" : "Đã hủy lúc";
     },
-
     currentDateTime() {
       let today = new Date();
       return updateDateTime(today);
     },
   },
   methods: {
-    ...mapActions("todo", ["saveTodo", "updateTodo"]),
-    onSubmit(e) {
-      e.preventDefault();
-      this.saveTodo({
-        id: uuidv4(),
-        title: this.title,
-        initDateTime: this.currentDateTime,
-        status: "new",
-        endDateTime: "",
-      });
-      this.$emit("onCancel");
+    onSubmit(title) {
+      this.$emit("onSubmit", { title, submitTime: this.currentDateTime });
     },
-    handleFinish() {
-      this.updateTodo({
-        id: this.todo.id,
-        status: "completed",
-        endDateTime: this.currentDateTime,
-      });
+    onFinish(id) {
+      this.$emit("onFinish", { id, finishTime: this.currentDateTime });
     },
-    handleReject() {
-      this.updateTodo({
-        id: this.todo.id,
-        status: "rejected",
-        endDateTime: this.currentDateTime,
-      });
+    onReject(id) {
+      this.$emit("onReject", { id, rejectTime: this.currentDateTime });
     },
-    handleCancel() {
+    onCancel() {
       this.$emit("onCancel");
     },
   },
 };
 </script>
 
-<style scoped>
+<style lang="scss"  scoped>
 .completed {
   color: #008037;
   font-weight: 600;
@@ -123,19 +104,19 @@ export default {
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 12px;
+  input {
+    appearance: none;
+    border: 1px solid #f0f0f0;
+    border-radius: 2px;
+    font-size: 12px;
+    padding: 6px;
+  }
+  p {
+    font-size: 12px;
+    margin: 8px 0;
+  }
 }
 
-.list-item input {
-  appearance: none;
-  border: 1px solid #f0f0f0;
-  border-radius: 2px;
-  font-size: 12px;
-  padding: 6px;
-}
-.list-item p {
-  font-size: 12px;
-  margin: 8px 0;
-}
 .save-btn,
 .cancel-btn {
   appearance: none;
@@ -168,10 +149,12 @@ export default {
   border-radius: 4px !important;
   padding: 0 !important;
 }
+
 .save-input {
   margin-right: 12px;
   background-color: #008037;
 }
+
 .cancel-input {
   background-color: #ff1616;
 }
