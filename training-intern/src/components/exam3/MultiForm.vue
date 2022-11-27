@@ -1,15 +1,15 @@
 <template>
-  <div class="exam-2">
-    <h3>Exam 2</h3>
+  <div class="exam-1">
+    <h3>Exam 3</h3>
   </div>
 </template>
-
-<script>
+  
+  <script>
 export default {};
 </script>
-
-<style>
-.exam-2 {
+  
+  <style>
+.exam-1 {
   padding: 24px;
 }
 </style>

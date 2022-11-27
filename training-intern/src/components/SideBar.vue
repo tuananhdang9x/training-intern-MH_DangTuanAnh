@@ -33,15 +33,33 @@ export default {
         },
         {
           id: 3,
-          lable: "Exam 2",
-          path: "/exam2",
-          name: "Exam2",
+          lable: "Exam 1",
+          path: "/exam1",
+          name: "AutoComplete",
         },
         {
           id: 4,
+          lable: "Exam 2",
+          path: "/exam2",
+          name: "Dropzone",
+        },
+        {
+          id: 5,
           lable: "Exam 3",
           path: "/exam3",
-          name: "Exam3",
+          name: "MultiForm",
+        },
+        {
+          id: 6,
+          lable: "Exam 4",
+          path: "/exam4",
+          name: "Recursive",
+        },
+        {
+          id: 7,
+          lable: "Exam 5",
+          path: "/exam5",
+          name: "DragDrop",
         },
       ],
     };
