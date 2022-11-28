@@ -1,9 +1,9 @@
 <template>
   <div class="container">
-    <div class="input-container" @mouseleave="isShow = false">
+    <div class="input-container" @clickaway="isShow = false">
       <div class="input-item">
         <div class="search-icon">
-          <img src="../../assets/search.png" alt="search icon" />
+          <IconSvg :search="'search'"></IconSvg>
         </div>
         <div class="selected-item">
           <SelectedPlace v-for="result in filteredList" :key="result.id">
@@ -13,23 +13,24 @@
                 class="result-icon"
                 @click="handleDelete(result.id, result.name)"
               >
-                <img src="../../assets/X.png" alt="cancel" />
+                <IconSvg :cancel="'cancel'"></IconSvg>
               </div>
             </div>
           </SelectedPlace>
+          <input
+            type="text"
+            :placeholder="inputTitle"
+            v-model="keyword"
+            @keyup="handleDropdown"
+            v-on-clickaway="away"
+          />
         </div>
-        <input
-          type="text"
-          :placeholder="inputTitle"
-          v-model="keyword"
-          @click="isShow = true"
-        />
       </div>
       <ul class="dropdown-list" v-if="isShow">
         <li
+          v-for="(place, i) in filteredPlace"
           class="dropdown-item"
-          v-for="place in filteredPlace"
-          :key="place.id"
+          :key="'A' + i"
           @click="handleAdd(place.id, place.name)"
         >
           {{ place.name }}
@@ -41,15 +42,18 @@
 
 <script>
 import SelectedPlace from "./components/SelectedPlace.vue";
+import IconSvg from "./components/IconSvg.vue";
 import { mapGetters, mapActions } from "vuex";
-
+const clickaway = window.VueClickaway.mixin;
 export default {
   components: {
     SelectedPlace,
+    IconSvg,
   },
+  mixins: [clickaway],
   data() {
     return {
-      keyword: "",
+      keyword: null,
       isShow: false,
       inputTitle: "Nhập tên thành phố để tìm kiếm...",
     };
@@ -69,16 +73,30 @@ export default {
       this.detelePlace(name);
       this.addFilteredList({ id, name });
       this.keyword = "";
+      this.isShow = false;
     },
     handleDelete(id, name) {
       this.deleteFilteredList(id);
       this.addPlace({ id, name });
+      this.handleDropdown();
+    },
+    handleDropdown() {
+      if (this.keyword === "") {
+        this.isShow = false;
+      } else {
+        this.isShow = true;
+      }
+    },
+    away() {
+      this.isShow = false;
     },
   },
   computed: {
     ...mapGetters("place", ["placeList", "filteredList"]),
     filteredPlace() {
-      return this.placeList.filter((place) => place.name.match(this.keyword));
+      return this.placeList.filter((place) =>
+        place.name.toLowerCase().match(this.keyword.toLowerCase())
+      );
     },
   },
 };
@@ -94,7 +112,7 @@ export default {
     .input-item {
       display: flex;
       width: 600px;
-      height: 49px;
+      min-height: 58px;
       margin-right: 28px;
       padding: 8px 10px;
       display: flex;
@@ -104,13 +122,12 @@ export default {
       overflow: hidden;
       .selected-item {
         display: flex;
-        max-width: 300px;
         flex-wrap: wrap;
         align-items: center;
       }
       input {
         height: 20px;
-        width: 352px;
+        width: 200px;
         appearance: none;
         border: none;
         outline: none;
@@ -135,8 +152,8 @@ export default {
         padding: 4px 8px;
         border: 1px solid #dcdcdc;
         border-radius: 4px;
-        margin-right: 8px;
-        margin-bottom: 4px;
+        margin: 4px 8px 4px 0px;
+
         .result-item {
           font-size: 14px;
           line-height: 20px;
@@ -161,6 +178,18 @@ export default {
       border-radius: 4px;
       overflow-y: scroll;
       max-height: 400px;
+      &::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background-color: transparent;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 6px;
+        background-color: #a8a8a8;
+      }
       .dropdown-item {
         color: #486581;
         width: 600px;
@@ -175,9 +204,5 @@ export default {
       }
     }
   }
-}
-.selected-item::-webkit-scrollbar,
-.dropdown-list::-webkit-scrollbar {
-  display: none;
 }
 </style>
