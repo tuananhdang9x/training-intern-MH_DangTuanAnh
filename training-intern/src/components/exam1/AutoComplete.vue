@@ -1,27 +1,27 @@
 <template>
   <div class="container">
-    <div class="input-container" @clickaway="isShow = false">
+    <div class="input-container">
       <div class="input-item">
         <div class="search-icon">
-          <IconSvg :search="'search'"></IconSvg>
+          <IconSearch />
         </div>
         <div class="selected-item">
-          <SelectedPlace v-for="result in filteredList" :key="result.id">
+          <div v-for="result in filteredList" :key="result.id">
             <div class="search-result">
               <span class="result-item">{{ result.name }}</span>
               <div
                 class="result-icon"
                 @click="handleDelete(result.id, result.name)"
               >
-                <IconSvg :cancel="'cancel'"></IconSvg>
+                <IconCancel />
               </div>
             </div>
-          </SelectedPlace>
+          </div>
           <input
             type="text"
-            :placeholder="inputTitle"
+            :placeholder="placeholder"
             v-model="keyword"
-            @keyup="handleDropdown"
+            @keyup="handleDropdown(keyword)"
             v-on-clickaway="away"
           />
         </div>
@@ -41,58 +41,54 @@
 </template>
 
 <script>
-import SelectedPlace from "./components/SelectedPlace.vue";
-import IconSvg from "./components/IconSvg.vue";
-import { mapGetters, mapActions } from "vuex";
+import IconSearch from "../../assets/icon/IconSearch.vue";
+import IconCancel from "../../assets/icon/IconCancel.vue";
 const clickaway = window.VueClickaway.mixin;
 export default {
-  components: {
-    SelectedPlace,
-    IconSvg,
-  },
   mixins: [clickaway],
   data() {
     return {
-      keyword: null,
-      isShow: false,
-      inputTitle: "Nhập tên thành phố để tìm kiếm...",
+      keyword: "",
     };
   },
-  created() {
-    this.getPlace();
+  components: {
+    IconSearch,
+    IconCancel,
+  },
+  props: {
+    placeholder: {
+      type: String,
+      default: () => "",
+    },
+    filteredList: {
+      type: Array,
+      default: () => [],
+    },
+    placeList: {
+      type: Array,
+      default: () => [],
+    },
+    isShow: {
+      type: Boolean,
+      default: () => false,
+    },
   },
   methods: {
-    ...mapActions("place", [
-      "getPlace",
-      "addPlace",
-      "detelePlace",
-      "addFilteredList",
-      "deleteFilteredList",
-    ]),
     handleAdd(id, name) {
-      this.detelePlace(name);
-      this.addFilteredList({ id, name });
+      this.$emit("handleAdd", { id, name, keyword: this.keyword });
       this.keyword = "";
-      this.isShow = false;
     },
     handleDelete(id, name) {
-      this.deleteFilteredList(id);
-      this.addPlace({ id, name });
-      this.handleDropdown();
+      this.$emit("handleDelete", { id, name, keyword: this.keyword });
     },
-    handleDropdown() {
-      if (this.keyword === "") {
-        this.isShow = false;
-      } else {
-        this.isShow = true;
-      }
+    handleDropdown(keyword) {
+      this.$emit("handleDropdown", keyword);
     },
     away() {
-      this.isShow = false;
+      this.$emit("away");
     },
   },
   computed: {
-    ...mapGetters("place", ["placeList", "filteredList"]),
     filteredPlace() {
       return this.placeList.filter((place) =>
         place.name.toLowerCase().match(this.keyword.toLowerCase())

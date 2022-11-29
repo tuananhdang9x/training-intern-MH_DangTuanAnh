@@ -5,11 +5,13 @@ export default {
     state: {
         places: [
         ],
-        filteredList: []
+        filteredList: [],
+        isShow: false,
     },
     getters: {
         placeList: state => state.places,
-        filteredList: state => state.filteredList
+        filteredList: state => state.filteredList,
+        isShow: state => state.isShow,
     },
 
     actions: {
@@ -27,7 +29,11 @@ export default {
         },
         deleteFilteredList({ commit }, id) {
             commit('DELETE_FILTERED_LIST', id)
+        },
+        dropShow({ commit }, boolean) {
+            commit('DROP_SHOW', boolean)
         }
+
     },
     mutations: {
         GET_PLACE(state) {
@@ -52,6 +58,10 @@ export default {
                 id: payload.id,
                 name: payload.name
             })
-        }
+        },
+        DROP_SHOW(state, boolean) {
+            state.isShow = boolean
+        },
+
     }
 }
