@@ -108,9 +108,9 @@ export default {
     .input-item {
       display: flex;
       width: 600px;
-      min-height: 58px;
+      min-height: 48px;
       margin-right: 28px;
-      padding: 8px 10px;
+      padding: 0 10px;
       display: flex;
       align-items: center;
       border: 1px solid #dbdbdb;
