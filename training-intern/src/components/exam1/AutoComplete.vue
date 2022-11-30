@@ -21,7 +21,7 @@
             type="text"
             :placeholder="placeholder"
             v-model="keyword"
-            @keyup="handleDropdown(keyword)"
+            @keyup="handleDropdown"
             v-on-clickaway="away"
           />
         </div>
@@ -41,14 +41,15 @@
 </template>
 
 <script>
-import IconSearch from "../../assets/icon/IconSearch.vue";
-import IconCancel from "../../assets/icon/IconCancel.vue";
+import IconSearch from "@/assets/icon/IconSearch.vue";
+import IconCancel from "@/assets/icon/IconCancel.vue";
 const clickaway = window.VueClickaway.mixin;
 export default {
   mixins: [clickaway],
   data() {
     return {
       keyword: "",
+      isShow: false,
     };
   },
   components: {
@@ -68,10 +69,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    isShow: {
-      type: Boolean,
-      default: () => false,
-    },
   },
   methods: {
     handleAdd(id, name) {
@@ -79,13 +76,18 @@ export default {
       this.keyword = "";
     },
     handleDelete(id, name) {
-      this.$emit("handleDelete", { id, name, keyword: this.keyword });
+      this.$emit("handleDelete", { id, name });
+      this.handleDropdown(this.keyword);
     },
-    handleDropdown(keyword) {
-      this.$emit("handleDropdown", keyword);
+    handleDropdown() {
+      if (this.keyword === "") {
+        this.isShow = false;
+      } else {
+        this.isShow = true;
+      }
     },
     away() {
-      this.$emit("away");
+      this.isShow = false;
     },
   },
   computed: {
@@ -122,8 +124,9 @@ export default {
         align-items: center;
       }
       input {
-        height: 20px;
+        height: 32px;
         width: 200px;
+        margin: 4px;
         appearance: none;
         border: none;
         outline: none;

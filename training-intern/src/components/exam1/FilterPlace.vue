@@ -5,9 +5,6 @@
     :placeList="placeList"
     @handleAdd="handleAdd"
     @handleDelete="handleDelete"
-    @handleDropdown="handleDropdown"
-    @away="away"
-    :isShow="isShow"
   />
 </template>
   
@@ -38,21 +35,10 @@ export default {
     handleDelete(payload) {
       this.deleteFilteredList(payload.id);
       this.addPlace(payload);
-      this.handleDropdown(payload.keyword);
-    },
-    handleDropdown(keyword) {
-      if (keyword === "") {
-        this.dropShow(false);
-      } else {
-        this.dropShow(true);
-      }
-    },
-    away() {
-      this.dropShow(false);
     },
   },
   computed: {
-    ...mapGetters("place", ["isShow", "placeList", "filteredList"]),
+    ...mapGetters("place", ["placeList", "filteredList"]),
   },
 };
 </script>
