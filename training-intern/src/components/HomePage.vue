@@ -8,7 +8,7 @@
 export default {};
 </script>
 
-<style>
+<style scoped>
 .home-page {
   padding: 24px;
 }

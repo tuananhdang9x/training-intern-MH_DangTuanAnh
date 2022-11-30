@@ -1,5 +1,5 @@
 <template>
-  <div class="exam-1">
+  <div>
     <h3>Exam 5</h3>
   </div>
 </template>
@@ -8,8 +8,5 @@
 export default {};
 </script>
   
-  <style>
-.exam-1 {
-  padding: 24px;
-}
+<style scoped>
 </style>

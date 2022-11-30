@@ -1,4 +1,4 @@
-export const updateDateTime = function (today) {
+export function updateDateTime(today) {
     let yyyy = today.getFullYear();
     let mm = today.getMonth() + 1;
     let dd = today.getDate();
@@ -13,7 +13,7 @@ export const updateDateTime = function (today) {
     return hour + ":" + minute + " " + dd + "/" + mm + "/" + yyyy;
 }
 
-export const formatAddress = function (place) {
+export function formatAddress(place) {
     if (place.includes("Thành phố")) {
         const newPlace = place.replace("Thành phố", "");
         return newPlace;
