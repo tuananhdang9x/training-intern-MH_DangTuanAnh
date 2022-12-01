@@ -23,10 +23,10 @@
           <div class="file-container" v-for="file in files" :key="file.id">
             <div class="file-item">
               <div class="file-icon">
-                <IconExcel v-if="file.name.includes('xlsx')" />
-                <IconPdf v-else-if="file.name.includes('pdf')" />
-                <IconWord v-else-if="file.name.includes('docx')" />
-                <IconBlank v-else />
+                <IconExcel v-if="file.typeId === 1" />
+                <IconPdf v-if="file.typeId === 2" />
+                <IconWord v-if="file.typeId === 3" />
+                <IconBlank v-if="file.typeId === 0" />
               </div>
               <div class="file-info">
                 <p>{{ file.name }}</p>
@@ -38,11 +38,18 @@
             </div>
           </div>
         </div>
-        <div class="file-direction">
-          <IconArrow />
-        </div>
+        <button
+          v-if="files.length > 0"
+          @click="handleSubmit"
+          class="upload-btn"
+        >
+          Upload
+        </button>
       </div>
-      <div :class="[status ? 'success-message' : 'fail-message']">
+      <div
+        v-if="status !== null"
+        :class="[status ? 'success-message' : 'fail-message']"
+      >
         {{ message }}
       </div>
     </div>
@@ -55,7 +62,6 @@ import IconExcel from "@/assets/icon/IconExcel.vue";
 import IconPdf from "@/assets/icon/IconPdf.vue";
 import IconWord from "@/assets/icon/IconWord.vue";
 import IconCancelCircel from "@/assets/icon/IconCancelCircle.vue";
-import IconArrow from "@/assets/icon/IconArrow.vue";
 import IconUpload from "@/assets/icon/IconUpload.vue";
 
 export default {
@@ -79,12 +85,11 @@ export default {
     },
   },
   components: {
+    IconCancelCircel,
+    IconUpload,
     IconExcel,
     IconPdf,
     IconWord,
-    IconCancelCircel,
-    IconArrow,
-    IconUpload,
     IconBlank,
   },
   methods: {
@@ -99,6 +104,9 @@ export default {
     },
     handleDelete(id, name) {
       this.$emit("handleDelete", { id, name });
+    },
+    handleSubmit() {
+      this.$emit("handleSubmit");
     },
   },
 };
@@ -180,8 +188,8 @@ export default {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            min-width: 244px;
-            min-height: 48px;
+            width: 244px;
+            height: 48px;
             border: 1px solid #dcdcdc;
             border-radius: 3px;
             margin-right: 17px;
@@ -192,6 +200,10 @@ export default {
                 font-weight: 700;
                 font-size: 12px;
                 line-height: 16px;
+                width: 150px;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
               }
               .file-size {
                 font-weight: 400;
@@ -217,16 +229,21 @@ export default {
           }
         }
       }
-      .file-direction {
-        width: 32px;
+      .upload-btn {
+        width: 58px;
         height: 32px;
-        border-radius: 30px;
-        background-color: #627d98;
-        opacity: 0.4;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        border-radius: 4px;
+        background-color: rgb(48, 211, 48);
         margin-bottom: 10px;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        &:hover {
+          border: 2px solid rgb(48, 211, 48);
+          color: rgb(48, 211, 48);
+          background-color: #fff;
+        }
       }
     }
     .success-message,
