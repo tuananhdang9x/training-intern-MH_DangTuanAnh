@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container">
     <h3 class="header">Đơn ứng tuyển</h3>
     <div class="nav-bar">
       <div class="nav-item">
@@ -21,12 +21,27 @@
         <p class="item-info">Xác nhận thông tin</p>
       </div>
     </div>
+    <FormFirst />
+    <FormSecond />
+    <FormThird />
+    <div class="footer-nav">
+      <div class="footer-item">Tiếp</div>
+    </div>
   </div>
 </template>
   
   <script>
-export default {};
+import FormFirst from "./components/FormFirst.vue";
+import FormSecond from "./components/FormSecond.vue";
+import FormThird from "./components/FormThird.vue";
+export default {
+  components: {
+    FormFirst,
+    FormSecond,
+    FormThird,
+  },
+};
 </script>
   
-  <style scoped>
+<style lang="scss" scoped>
 </style>
