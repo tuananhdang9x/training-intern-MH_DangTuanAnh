@@ -13,20 +13,19 @@ export default {
     },
 
     actions: {
-        async ['getPlace']({ commit }) {
-            await fetch("https://Provinces.open-api.vn/api/?depth=1")
-                .then(res => {
-                    if (res.status >= 200 && res.status <= 299) {
-                        return res.json();
-                    } else {
-                        throw Error(res.statusText)
-                    }
-                })
-                .then(data => {
-                    commit('GET_PLACE', data)
-                }).catch(error => {
-                    console.log(error)
-                });
+        async getPlace() {
+            try {
+                const res = await fetch("https://Provinces.open-api.vn/api/?depth=1")
+                console.log(res)
+                if (res.status >= 200 && res.status <= 299) {
+                    commit('GET_PLACE', res.json())
+                }
+            } catch (error) {
+                throw Error(error)
+
+            }
+
+
         },
         addPlace({ commit }, payload) {
             commit('ADD_PLACE', payload)
