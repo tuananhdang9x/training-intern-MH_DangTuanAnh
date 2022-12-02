@@ -13,7 +13,6 @@ export default {
             commit('ADD_FILE', payload)
         },
         deleteFile({ commit }, id) {
-            console.log('active')
             commit('DELETE_FILE', id)
         },
         formatFile({ commit }) {

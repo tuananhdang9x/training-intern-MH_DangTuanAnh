@@ -11,6 +11,13 @@
 </template>
 
 <script>
+import {
+  EXCEL_TYPE,
+  PDF_TYPE,
+  WORD_TYPE,
+  BLANK_TYPE,
+  MAX_SIZE,
+} from "@/const/DropzoneConst.js";
 import DropItem from "./DropItem.vue";
 import { storage } from "@/main.js";
 import { ref, uploadBytes } from "firebase/storage";
@@ -20,16 +27,17 @@ import { formatBytes } from "@/utils/index.js";
 
 function handleTypeId(fileName) {
   if (fileName.endsWith("xlsx")) {
-    return 1;
+    return EXCEL_TYPE;
   }
   if (fileName.endsWith("pdf")) {
-    return 2;
+    return PDF_TYPE;
   }
   if (fileName.endsWith("docx")) {
-    return 3;
+    return WORD_TYPE;
   }
-  return 0;
+  return BLANK_TYPE;
 }
+
 export default {
   components: {
     DropItem,
@@ -40,14 +48,18 @@ export default {
       status: false,
       checkName: [],
       fileRaws: [],
+      EXCEL_TYPE,
+      PDF_TYPE,
+      WORD_TYPE,
+      BLANK_TYPE,
+      MAX_SIZE,
     };
   },
   methods: {
     ...mapActions("file", ["addFile", "deleteFile", "formatFile"]),
-    handleUpload(e) {
-      let file = e.target.files[0];
+    validateFile(file) {
       if (!this.checkName.includes(file.name)) {
-        if (file.size <= 10000000) {
+        if (file.size <= MAX_SIZE) {
           this.addFile({
             id: uuidv4(),
             name: file.name,
@@ -66,6 +78,10 @@ export default {
         this.message = "The file already exists";
         this.status = false;
       }
+    },
+    handleUpload(e) {
+      let file = e.target.files[0];
+      this.validateFile(file);
     },
     handleDelete(payload) {
       this.deleteFile(payload.id);
@@ -78,26 +94,7 @@ export default {
     },
     handleDrop(e) {
       let file = e.dataTransfer.files[0];
-      if (!this.checkName.includes(file.name)) {
-        if (file.size <= 10000000) {
-          this.addFile({
-            id: uuidv4(),
-            name: file.name,
-            size: formatBytes(file.size),
-            typeId: handleTypeId(file.name),
-          });
-          this.checkName.push(file.name);
-          this.fileRaws.push(file);
-          this.message = "";
-          this.status = null;
-        } else {
-          this.message = "The maximum file size is 10 MB";
-          this.status = false;
-        }
-      } else {
-        this.message = "The file already exists";
-        this.status = false;
-      }
+      this.validateFile(file);
     },
     handleSubmit() {
       this.fileRaws.forEach((item) => {
