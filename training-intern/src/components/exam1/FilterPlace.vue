@@ -30,7 +30,6 @@ export default {
     handleAdd(payload) {
       this.detelePlace(payload.name);
       this.addFilteredList(payload);
-      this.dropShow(false);
     },
     handleDelete(payload) {
       this.deleteFilteredList(payload.id);

@@ -74,6 +74,7 @@ export default {
     handleAdd(id, name) {
       this.$emit("handleAdd", { id, name, keyword: this.keyword });
       this.keyword = "";
+      this.isShow = false;
     },
     handleDelete(id, name) {
       this.$emit("handleDelete", { id, name });
