@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="false">
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
@@ -28,27 +28,43 @@
         <div class="input-desc">
           Có thể chọn được nhiều vị trí mà bạn muốn làm việc
         </div>
-        <input
-          type="text"
-          name="name"
-          placeholder="Chọn các vị trí mà bạn muốn"
-        />
+        <div class="search-item">
+          <div class="search-icon">
+            <IconSearch />
+          </div>
+          <div class="search-input">
+            <input
+              type="text"
+              name="name"
+              placeholder="Chọn các vị trí mà bạn muốn"
+            />
+          </div>
+        </div>
       </div>
       <div class="input-item">
         <div class="input-name">Mô tả về bản thân</div>
-        <input type="text" name="name" />
+        <div class="input-large">
+          <input type="text" name="name" />
+        </div>
         <div class="input-limit">0/1000</div>
       </div>
       <div class="input-item">
         <div class="input-name">Ảnh cá nhân</div>
-        <div>hãy khéo thả ảnh vào đây</div>
+        <div class="drop-zone">
+          <input type="text" placeholder="hãy khéo thả ảnh vào đây" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import IconSearch from "@/assets/icon/IconSearch.vue";
+export default {
+  components: {
+    IconSearch,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -62,10 +78,71 @@ export default {};
   background: #ffffff;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
+  margin: 20px 0 24px 20px;
   .input-list {
     width: 528px;
     .input-item {
       margin-bottom: 10px;
+      .drop-zone {
+        input {
+          background: #f8f8f8;
+          border: 1px solid #dcdcdc;
+          border-radius: 7px;
+          width: 844px;
+          height: 192px;
+          text-align: center;
+        }
+      }
+      .input-limit {
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: #666666;
+      }
+      .input-large {
+        margin-bottom: 10px;
+        input {
+          width: 528px;
+          height: 152px;
+          background: #ffffff;
+          border: 1px solid #dcdcdc;
+          border-radius: 4px;
+        }
+      }
+      .search-item {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        height: 40px;
+        padding: 8px 10px;
+        .search-icon {
+          width: 14px;
+          height: 14px;
+          margin-right: 8px;
+          display: flex;
+          align-items: center;
+        }
+        .search-input {
+          input {
+            border: none;
+            width: 476px;
+            height: 20px;
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            color: #999999;
+          }
+        }
+      }
+      .input-name {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+        color: #333;
+      }
       input {
         width: 100%;
         background: #ffffff;
@@ -73,6 +150,12 @@ export default {};
         border-radius: 4px;
         height: 40px;
         padding: 8px 10px;
+      }
+      .input-desc {
+        font-weight: 400;
+        font-size: 12px;
+        line-height: 20px;
+        color: #666666;
       }
       .input-title {
         display: flex;

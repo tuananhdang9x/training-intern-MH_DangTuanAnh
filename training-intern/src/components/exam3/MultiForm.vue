@@ -45,15 +45,31 @@ export default {
   
 <style lang="scss" scoped>
 .container {
-  margin: 20px;
   display: flex;
   flex-direction: column;
+  .footer-nav {
+    margin-left: 20px;
+    .footer-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 102px;
+      height: 40px;
+      background: #dcdcdc;
+      border-radius: 3px;
+      font-weight: 700;
+      font-size: 16px;
+      line-height: 24px;
+      color: #fff;
+    }
+  }
 
   .header {
     font-weight: 400;
     font-size: 24px;
     line-height: 36px;
     margin-bottom: 18px;
+    margin-left: 20px;
   }
   .nav-bar {
     display: flex;
