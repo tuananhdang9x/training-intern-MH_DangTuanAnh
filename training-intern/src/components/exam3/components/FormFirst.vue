@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="false">
+  <div class="container" v-if="true">
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
@@ -17,7 +17,16 @@
           </div>
           <div class="input-name">Ngày sinh</div>
         </div>
-        <input type="text" name="name" />
+        <div class="input-date">
+          <date-picker
+            class="date-picker"
+            v-model="date"
+            :config="options"
+          ></date-picker>
+          <div class="date-icon">
+            <IconCalender />
+          </div>
+        </div>
       </div>
       <div class="input-item">
         <div class="input-name">Thành phố</div>
@@ -60,9 +69,22 @@
 
 <script>
 import IconSearch from "@/assets/icon/IconSearch.vue";
+import IconCalender from "@/assets/icon/IconCalender.vue";
+import datePicker from "vue-bootstrap-datetimepicker";
 export default {
   components: {
     IconSearch,
+    datePicker,
+    IconCalender,
+  },
+  data() {
+    return {
+      date: new Date(),
+      options: {
+        format: "YYYY/MM/DD",
+        useCurrent: false,
+      },
+    };
   },
 };
 </script>
@@ -83,6 +105,23 @@ export default {
     width: 528px;
     .input-item {
       margin-bottom: 10px;
+      .input-date {
+        width: 118px;
+        height: 40px;
+        background: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-radius: 2px;
+        display: flex;
+        date-picker {
+          background-color: red;
+        }
+        .date-icon {
+          width: 24px;
+          height: 24px;
+          margin: 8px 8px 8px 4px;
+        }
+      }
+
       .drop-zone {
         input {
           background: #f8f8f8;

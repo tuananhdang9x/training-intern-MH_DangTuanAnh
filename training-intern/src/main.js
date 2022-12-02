@@ -7,9 +7,11 @@ import { BootstrapVue, } from 'bootstrap-vue'
 import { firebaseConfig } from './firebase-config.js'
 import { getStorage, ref } from 'firebase/storage'
 import { initializeApp } from 'firebase/app'
+import datePicker from 'vue-bootstrap-datetimepicker'
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
+Vue.use(datePicker)
 
 const router = new VueRouter({
   mode: 'history',
