@@ -18,14 +18,10 @@
           <div class="input-name">Ngày sinh</div>
         </div>
         <div class="input-date">
-          <date-picker
-            class="date-picker"
-            v-model="date"
-            :config="options"
-          ></date-picker>
-          <div class="date-icon">
+          <datepicker id="date" format="yyyy/MM/dd" width="50px"></datepicker>
+          <label for="date" class="date-icon">
             <IconCalender />
-          </div>
+          </label>
         </div>
       </div>
       <div class="input-item">
@@ -70,21 +66,12 @@
 <script>
 import IconSearch from "@/assets/icon/IconSearch.vue";
 import IconCalender from "@/assets/icon/IconCalender.vue";
-import datePicker from "vue-bootstrap-datetimepicker";
+import Datepicker from "vuejs-datepicker";
 export default {
   components: {
     IconSearch,
-    datePicker,
     IconCalender,
-  },
-  data() {
-    return {
-      date: new Date(),
-      options: {
-        format: "YYYY/MM/DD",
-        useCurrent: false,
-      },
-    };
+    Datepicker,
   },
 };
 </script>
@@ -112,9 +99,7 @@ export default {
         border: 1px solid #dcdcdc;
         border-radius: 2px;
         display: flex;
-        date-picker {
-          background-color: red;
-        }
+
         .date-icon {
           width: 24px;
           height: 24px;
