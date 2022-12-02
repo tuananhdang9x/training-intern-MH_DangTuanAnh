@@ -1,10 +1,12 @@
 <template>
   <AutoComplete
     :placeholder="'Nhập tên thành phố để tìm kiếm...'"
-    :filteredList="filteredList"
+    :chosePlace="chosePlace"
     :placeList="placeList"
+    :filteredPlaces="filteredPlaces"
     @handleAdd="handleAdd"
     @handleDelete="handleDelete"
+    @onTyping="onTyping"
   />
 </template>
   
@@ -12,6 +14,11 @@
 import AutoComplete from "./AutoComplete.vue";
 import { mapGetters, mapActions } from "vuex";
 export default {
+  data() {
+    return {
+      filteredPlaces: [],
+    };
+  },
   components: {
     AutoComplete,
   },
@@ -20,24 +27,28 @@ export default {
   },
   methods: {
     ...mapActions("place", [
-      "dropShow",
       "getPlace",
       "addPlace",
       "detelePlace",
-      "addFilteredList",
-      "deleteFilteredList",
+      "addChosePlace",
+      "deleteChosePlace",
     ]),
     handleAdd(payload) {
       this.detelePlace(payload.name);
-      this.addFilteredList(payload);
+      this.addChosePlace(payload);
     },
     handleDelete(payload) {
-      this.deleteFilteredList(payload.id);
+      this.deleteChosePlace(payload.id);
       this.addPlace(payload);
+    },
+    onTyping(keyword) {
+      this.filteredPlaces = this.placeList.filter((place) =>
+        place.name.toLowerCase().match(keyword.toLowerCase())
+      );
     },
   },
   computed: {
-    ...mapGetters("place", ["placeList", "filteredList"]),
+    ...mapGetters("place", ["placeList", "chosePlace"]),
   },
 };
 </script>

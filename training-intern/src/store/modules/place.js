@@ -5,11 +5,11 @@ export default {
     state: {
         places: [
         ],
-        filteredList: [],
+        chosePlace: [],
     },
     getters: {
         placeList: state => state.places,
-        filteredList: state => state.filteredList,
+        chosePlace: state => state.chosePlace,
     },
 
     actions: {
@@ -34,10 +34,10 @@ export default {
         detelePlace({ commit }, name) {
             commit('DELETE_PLACE', name)
         },
-        addFilteredList({ commit }, payload) {
+        addChosePlace({ commit }, payload) {
             commit('ADD_FILTERED_LIST', payload)
         },
-        deleteFilteredList({ commit }, id) {
+        deleteChosePlace({ commit }, id) {
             commit('DELETE_FILTERED_LIST', id)
         },
     },
@@ -46,13 +46,13 @@ export default {
             data.map(place => state.places.push({ id: place.code, name: formatAddress(place.name) }));
         },
         ADD_FILTERED_LIST(state, payload) {
-            state.filteredList.push({
+            state.chosePlace.push({
                 id: payload.id,
                 name: formatAddress(payload.name)
             })
         },
         DELETE_FILTERED_LIST(state, id) {
-            state.filteredList = state.filteredList.filter(place => place.id !== id)
+            state.chosePlace = state.chosePlace.filter(place => place.id !== id)
         },
         DELETE_PLACE(state, name) {
             state.places = state.places.filter(place => place.name !== name)
