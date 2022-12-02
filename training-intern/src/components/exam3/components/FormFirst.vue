@@ -18,10 +18,10 @@
           <div class="input-name">Ngày sinh</div>
         </div>
         <div class="input-date">
-          <datepicker id="date" format="yyyy/MM/dd" width="50px"></datepicker>
-          <label for="date" class="date-icon">
+          <input type="date" id="date" />
+          <!-- <label for="date" class="date-icon">
             <IconCalender />
-          </label>
+          </label> -->
         </div>
       </div>
       <div class="input-item">
@@ -65,13 +65,11 @@
 
 <script>
 import IconSearch from "@/assets/icon/IconSearch.vue";
-import IconCalender from "@/assets/icon/IconCalender.vue";
-import Datepicker from "vuejs-datepicker";
+// import IconCalender from "@/assets/icon/IconCalender.vue";
 export default {
   components: {
     IconSearch,
-    IconCalender,
-    Datepicker,
+    // IconCalender,
   },
 };
 </script>
@@ -99,12 +97,30 @@ export default {
         border: 1px solid #dcdcdc;
         border-radius: 2px;
         display: flex;
-
-        .date-icon {
-          width: 24px;
-          height: 24px;
-          margin: 8px 8px 8px 4px;
+        align-items: center;
+        input {
+          font-weight: 400;
+          font-size: 14px;
+          line-height: 20px;
+          // width: 74px;
+          height: 20px;
+          color: #000000;
+          border: none;
+          &::-webkit-calendar-picker-indicator {
+            width: 24px;
+            height: 24px;
+            color: #999999;
+            cursor: pointer;
+          }
+          &:focus {
+            outline: none;
+          }
         }
+        // .date-icon {
+        //   width: 24px;
+        //   height: 24px;
+        //   margin: 8px 8px 8px 4px;
+        // }
       }
 
       .drop-zone {
