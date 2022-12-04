@@ -4,10 +4,10 @@
       <div class="file-container" v-for="file in files" :key="file.id">
         <div class="file-item">
           <div class="file-icon">
-            <IconExcel v-if="file.typeId === EXCEL_TYPE" />
-            <IconPdf v-if="file.typeId === PDF_TYPE" />
-            <IconWord v-if="file.typeId === WORD_TYPE" />
-            <IconBlank v-if="file.typeId === BLANK_TYPE" />
+            <IconExcel v-if="file.extType === FILE_TYPE.EXCEL" />
+            <IconPdf v-if="file.extType === FILE_TYPE.PDF" />
+            <IconWord v-if="file.extType === FILE_TYPE.WORD" />
+            <IconBlank v-if="file.extType === FILE_TYPE.OTHER" />
           </div>
           <div class="file-info">
             <p>{{ file.name }}</p>
@@ -26,12 +26,7 @@
 </template>
 
 <script>
-import {
-  EXCEL_TYPE,
-  PDF_TYPE,
-  WORD_TYPE,
-  BLANK_TYPE,
-} from "@/const/DropzoneConst.js";
+import { FILE_TYPE } from "@/const/index.js";
 import IconBlank from "@/assets/icon/IconBlank.vue";
 import IconExcel from "@/assets/icon/IconExcel.vue";
 import IconPdf from "@/assets/icon/IconPdf.vue";
@@ -47,10 +42,7 @@ export default {
   },
   data() {
     return {
-      EXCEL_TYPE,
-      PDF_TYPE,
-      WORD_TYPE,
-      BLANK_TYPE,
+      FILE_TYPE,
     };
   },
   props: {

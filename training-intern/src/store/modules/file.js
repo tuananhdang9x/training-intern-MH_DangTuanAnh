@@ -26,7 +26,7 @@ export default {
                 id: payload.id,
                 name: payload.name,
                 size: payload.size,
-                typeId: payload.typeId
+                extType: payload.extType
             })
         },
         DELETE_FILE(state, id) {

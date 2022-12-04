@@ -1,7 +1,0 @@
-const BLANK_TYPE = 0
-const EXCEL_TYPE = 1
-const PDF_TYPE = 2
-const WORD_TYPE = 3
-const MAX_SIZE = 10000000
-
-export { BLANK_TYPE, EXCEL_TYPE, PDF_TYPE, WORD_TYPE, MAX_SIZE }

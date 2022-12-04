@@ -12,8 +12,8 @@
         <IconUpload />
       </div>
       <div class="drop-description">
-        <h3>Drag and drop files</h3>
-        <label for="drop-select" class="text-lable">Browse files</label>
+        <h3>{{ placeholder }}</h3>
+        <label for="drop-select" class="text-lable">{{ triggerText }}</label>
         <input id="drop-select" type="file" @change="handleUpload" multiple />
       </div>
     </div>
@@ -24,13 +24,10 @@
         @handleSubmit="handleSubmit(fileRaws)"
       />
       <div
-        v-if="uploadStatus !== null"
-        :class="[uploadStatus ? 'success-message' : 'fail-message']"
+        v-if="msg.error || msg.success"
+        :class="{ success: msg.success, error: msg.error }"
       >
-        {{ uploadMessage }}
-      </div>
-      <div v-else :class="[status ? 'success-message' : 'fail-message']">
-        {{ message }}
+        {{ msg.error }}{{ msg.success }}
       </div>
     </div>
   </div>
@@ -39,40 +36,37 @@
 <script>
 import IconUpload from "@/assets/icon/IconUpload.vue";
 import SelectedFile from "./SelectedFile.vue";
-import { formatBytes } from "@/utils/index.js";
+import {
+  validateDuplicate,
+  validateFileSize,
+  validateExtension,
+  formatBytes,
+} from "@/utils/validate.js";
 import { v4 as uuidv4 } from "uuid";
 import { mapActions } from "vuex";
-import {
-  EXCEL_TYPE,
-  PDF_TYPE,
-  WORD_TYPE,
-  BLANK_TYPE,
-  MAX_SIZE,
-} from "@/const/DropzoneConst.js";
 
-function handleTypeId(fileName) {
-  if (fileName.endsWith("xlsx")) {
-    return EXCEL_TYPE;
-  }
-  if (fileName.endsWith("pdf")) {
-    return PDF_TYPE;
-  }
-  if (fileName.endsWith("docx")) {
-    return WORD_TYPE;
-  }
-  return BLANK_TYPE;
-}
 export default {
   data() {
     return {
-      message: "",
-      status: false,
+      msg: {
+        error: "",
+        success: "",
+      },
       isActive: false,
       listFileNames: [],
       fileRaws: [],
+      MAX_SIZE: "10 MB",
     };
   },
   props: {
+    placeholder: {
+      type: String,
+      default: () => "Drag and drop files",
+    },
+    triggerText: {
+      type: String,
+      default: () => "Browse files",
+    },
     files: {
       type: Array,
       default: () => [],
@@ -93,39 +87,35 @@ export default {
   methods: {
     ...mapActions("file", ["addFile", "deleteFile"]),
     validateFile(files) {
-      for (let i = 0; i < files.length; i++) {
-        let file = files[i];
-        if (!this.listFileNames.includes(file.name)) {
-          if (file.size <= MAX_SIZE) {
+      Array.from(files).forEach((file) => {
+        if (validateDuplicate(file, this.listFileNames)) {
+          if (validateFileSize(file)) {
             this.addFile({
               id: uuidv4(),
               name: file.name,
               size: formatBytes(file.size),
-              typeId: handleTypeId(file.name),
+              extType: validateExtension(file.name),
             });
             this.listFileNames.push(file.name);
             this.fileRaws.push(file);
-            this.message = "";
-            this.status = null;
+            this.msg.error = "";
           } else {
-            this.message = "The maximum file size is 10 MB";
-            this.status = false;
+            this.msg.error = "The maximum file size is" + " " + this.MAX_SIZE;
           }
         } else {
-          this.message = "The file already exists";
-          this.status = false;
+          this.msg.error = "The file already exists";
         }
-      }
+      });
     },
     handleUpload(e) {
       let files = e.target.files;
       this.validateFile(files);
-      this.$emit("uploadAction");
+      this.msg.success = "";
     },
     handleDrop(e) {
       let files = e.dataTransfer.files;
       this.validateFile(files);
-      this.$emit("uploadAction");
+      this.msg.success = "";
     },
     toggleAction() {
       this.isActive = !this.isActive;
@@ -138,11 +128,12 @@ export default {
       this.fileRaws = this.fileRaws.filter(
         (item) => item.name !== payload.name
       );
-      this.message = "";
-      this.status = null;
+      this.msg.error = "";
+      this.msg.success = "";
     },
     handleSubmit(fileRaws) {
       this.$emit("handleSubmit", fileRaws);
+      this.msg.success = "Upload successfully";
       this.listFileNames = [];
     },
   },
@@ -194,17 +185,17 @@ export default {
   .file-zone {
     position: relative;
 
-    .success-message,
-    .fail-message {
+    .success,
+    .error {
       font-weight: 400;
       font-size: 14px;
       line-height: 20px;
       margin-left: 20px;
     }
-    .success-message {
+    .success {
       color: rgb(48, 211, 48);
     }
-    .fail-message {
+    .error {
       color: #ed5d5d;
     }
   }

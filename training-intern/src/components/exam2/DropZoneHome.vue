@@ -1,11 +1,5 @@
 <template>
-  <DropZoneItem
-    @handleSubmit="handleSubmit"
-    @uploadAction="uploadAction"
-    :files="getFiles"
-    :uploadMessage="uploadMessage"
-    :uploadStatus="uploadStatus"
-  />
+  <DropZoneItem @handleSubmit="handleSubmit" :files="getFiles" />
 </template>
 
 <script>
@@ -18,27 +12,18 @@ export default {
   components: {
     DropZoneItem,
   },
-  data: function () {
-    return {
-      uploadMessage: "",
-      uploadStatus: false,
-    };
-  },
   methods: {
     ...mapActions("file", ["formatFile"]),
-    handleSubmit(fileRaws) {
-      fileRaws.forEach((item) => {
-        const fileRef = ref(storage, `files/${item.name}`);
-        uploadBytes(fileRef, item).then(() => {
-          this.uploadMessage = "Upload successfully";
-          this.uploadStatus = true;
-        });
-      });
-      this.formatFile();
-    },
-    uploadAction() {
-      this.uploadMessage = "";
-      this.uploadStatus = null;
+    async handleSubmit(fileRaws) {
+      try {
+        for (let i = 0; i < fileRaws.length; i++) {
+          const fileRef = ref(storage, `files/${fileRaws[i].name}`);
+          await uploadBytes(fileRef, fileRaws[i]);
+        }
+        this.formatFile();
+      } catch (error) {
+        throw Error(error);
+      }
     },
   },
   computed: {
