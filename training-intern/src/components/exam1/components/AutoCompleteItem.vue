@@ -6,8 +6,8 @@
           <IconSearch />
         </div>
         <div class="selected-item">
-          <SelectedPlaces
-            v-for="result in chosePlace"
+          <SelectedItem
+            v-for="result in choseOptions"
             :key="result.id"
             :result="result"
             @handleDelete="handleDelete"
@@ -23,7 +23,7 @@
       </div>
       <DropDownList
         :isShow="isShow"
-        :filteredPlaces="filteredPlaces"
+        :filteredOptions="filteredOptions"
         @handleAdd="handleAdd"
       />
     </div>
@@ -32,8 +32,9 @@
 
 <script>
 import IconSearch from "@/assets/icon/IconSearch.vue";
-import SelectedPlaces from "./SelectedPlaces.vue";
+import SelectedItem from "./SelectedItem.vue";
 import DropDownList from "./DropDownList.vue";
+import { mapGetters, mapActions } from "vuex";
 const clickaway = window.VueClickaway.mixin;
 export default {
   mixins: [clickaway],
@@ -41,11 +42,12 @@ export default {
     return {
       keyword: "",
       isShow: false,
+      filteredOptions: [],
     };
   },
   components: {
     IconSearch,
-    SelectedPlaces,
+    SelectedItem,
     DropDownList,
   },
   props: {
@@ -53,28 +55,28 @@ export default {
       type: String,
       default: () => "",
     },
-    chosePlace: {
-      type: Array,
-      default: () => [],
-    },
-    placeList: {
-      type: Array,
-      default: () => [],
-    },
-    filteredPlaces: {
+    listOptions: {
       type: Array,
       default: () => [],
     },
   },
   methods: {
+    ...mapActions("place", [
+      "addItem",
+      "deleteItem",
+      "addChoseList",
+      "deleteChoseItem",
+    ]),
     handleAdd(payload) {
-      this.$emit("handleAdd", payload);
+      this.deleteItem(payload.id);
+      this.addChoseList(payload);
       this.keyword = "";
       this.isShow = false;
     },
     handleDelete(payload) {
-      this.$emit("handleDelete", payload);
-      this.handleDropdown(this.keyword);
+      this.deleteChoseItem(payload.id);
+      this.addItem(payload);
+      this.handleDropdown();
     },
     handleDropdown() {
       if (this.keyword === "") {
@@ -82,11 +84,16 @@ export default {
       } else {
         this.isShow = true;
       }
-      this.$emit("onTyping", this.keyword);
+      this.filteredOptions = this.listOptions.filter((item) =>
+        item.name.toLowerCase().match(this.keyword.toLowerCase())
+      );
     },
     away() {
       this.isShow = false;
     },
+  },
+  computed: {
+    ...mapGetters("place", ["choseOptions"]),
   },
 };
 </script>

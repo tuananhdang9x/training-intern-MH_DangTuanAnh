@@ -1,9 +1,9 @@
 <template>
   <ul class="dropdown-list" v-if="isShow">
     <li
-      v-for="(place, i) in filteredPlaces"
+      v-for="place in filteredOptions"
       class="dropdown-item"
-      :key="'A' + i"
+      :key="place.id"
       @click="handleAdd(place.id, place.name)"
     >
       {{ place.name }}
@@ -18,7 +18,7 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    filteredPlaces: {
+    filteredOptions: {
       type: Array,
       default: () => [],
     },

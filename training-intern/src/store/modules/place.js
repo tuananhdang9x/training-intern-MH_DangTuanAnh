@@ -1,62 +1,56 @@
-import { formatAddress } from "../../utils/index.js";
+import { formatAddress } from "@/utils/index.js";
+import Vue from 'vue'
 
 export default {
     namespaced: true,
     state: {
-        places: [
-        ],
+        places: [],
         chosePlace: [],
     },
     getters: {
-        placeList: state => state.places,
-        chosePlace: state => state.chosePlace,
+        listOptions: state => state.places,
+        choseOptions: state => state.chosePlace,
     },
-
     actions: {
-        async getPlace() {
+        async getOptions({ commit }) {
             try {
-                const res = await fetch("https://Provinces.open-api.vn/api/?depth=1")
-                console.log(res)
-                if (res.status >= 200 && res.status <= 299) {
-                    commit('GET_PLACE', res.json())
-                }
+                const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1').then(res => res.data)
+                commit('GET_OPTIONS', res)
             } catch (error) {
                 throw Error(error)
-
             }
-
-
         },
-        addPlace({ commit }, payload) {
-            commit('ADD_PLACE', payload)
+        addItem({ commit }, payload) {
+            commit('ADD_ITEM', payload)
         },
-        detelePlace({ commit }, name) {
-            commit('DELETE_PLACE', name)
+        deleteItem({ commit }, id) {
+            commit('DELETE_ITEM', id)
         },
-        addChosePlace({ commit }, payload) {
-            commit('ADD_FILTERED_LIST', payload)
+        addChoseList({ commit }, payload) {
+            commit('ADD_CHOSE_LIST', payload)
         },
-        deleteChosePlace({ commit }, id) {
-            commit('DELETE_FILTERED_LIST', id)
+        deleteChoseItem({ commit }, id) {
+            commit('DELETE_CHOSE_ITEM', id)
         },
     },
     mutations: {
-        GET_PLACE(state, data) {
-            data.map(place => state.places.push({ id: place.code, name: formatAddress(place.name) }));
+        GET_OPTIONS(state, data) {
+            data.map(item => state.places.push({ id: item.code, name: formatAddress(item.name) }));
         },
-        ADD_FILTERED_LIST(state, payload) {
+        ADD_CHOSE_LIST(state, payload) {
             state.chosePlace.push({
                 id: payload.id,
                 name: formatAddress(payload.name)
             })
         },
-        DELETE_FILTERED_LIST(state, id) {
+        DELETE_CHOSE_ITEM(state, id) {
             state.chosePlace = state.chosePlace.filter(place => place.id !== id)
         },
-        DELETE_PLACE(state, name) {
-            state.places = state.places.filter(place => place.name !== name)
+        DELETE_ITEM(state, id) {
+            console.log(id)
+            state.places = state.places.filter(place => place.id !== id)
         },
-        ADD_PLACE(state, payload) {
+        ADD_ITEM(state, payload) {
             state.places.unshift({
                 id: payload.id,
                 name: payload.name
