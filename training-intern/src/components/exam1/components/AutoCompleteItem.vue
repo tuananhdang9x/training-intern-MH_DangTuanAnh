@@ -16,7 +16,7 @@
             type="text"
             :placeholder="placeholder"
             v-model="keyword"
-            @keyup="handleDropdown"
+            @keyup="onChange"
             v-on-clickaway="away"
           />
         </div>
@@ -26,6 +26,9 @@
         :filteredOptions="filteredOptions"
         @handleAdd="handleAdd"
       />
+      <div class="error" v-if="msg.length">
+        {{ msg }}
+      </div>
     </div>
   </div>
 </template>
@@ -41,6 +44,7 @@ export default {
   data() {
     return {
       keyword: "",
+      msg: "",
       isShow: false,
       filteredOptions: [],
     };
@@ -76,17 +80,21 @@ export default {
     handleDelete(payload) {
       this.deleteChoseItem(payload.id);
       this.addItem(payload);
-      this.handleDropdown();
+      this.onChange();
     },
-    handleDropdown() {
+    onChange() {
       if (this.keyword === "") {
         this.isShow = false;
+        this.msg = "";
       } else {
         this.isShow = true;
       }
       this.filteredOptions = this.listOptions.filter((item) =>
         item.name.toLowerCase().match(this.keyword.toLowerCase())
       );
+      if (!this.filteredOptions.length) {
+        this.msg = "Item not found";
+      }
     },
     away() {
       this.isShow = false;
@@ -105,6 +113,11 @@ export default {
   font-family: "Noto Sans JP", sans-serif;
   .input-container {
     position: relative;
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: 12px;
+    }
     .input-item {
       display: flex;
       width: 600px;
