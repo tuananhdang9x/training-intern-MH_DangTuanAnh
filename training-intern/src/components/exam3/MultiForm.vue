@@ -1,15 +1,12 @@
 <template>
-  <div class="exam-3">
+  <div>
     <h3>Exam 3</h3>
   </div>
 </template>
-
-<script>
+  
+  <script>
 export default {};
 </script>
-
-<style>
-.exam-3 {
-  padding: 24px;
-}
+  
+  <style scoped>
 </style>

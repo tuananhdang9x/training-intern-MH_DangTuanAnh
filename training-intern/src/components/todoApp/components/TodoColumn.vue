@@ -112,19 +112,21 @@ export default {
     position: absolute;
     bottom: 12px;
     margin-left: 24px;
+    &:hover {
+      cursor: pointer;
+      color: #fff;
+      background-color: #008037;
+    }
   }
-  .footer-btn:hover {
-    cursor: pointer;
-    color: #fff;
-    background-color: #008037;
-  }
-  button:disabled {
-    cursor: default !important;
-    opacity: 0.2;
-  }
-  button:disabled:hover {
-    color: #008037;
-    background-color: transparent;
+  button {
+    &:disabled {
+      cursor: default !important;
+      opacity: 0.2;
+      &:hover {
+        color: #008037;
+        background-color: transparent;
+      }
+    }
   }
 }
 </style>
