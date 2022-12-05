@@ -64,6 +64,7 @@ export default {
 .container {
   display: flex;
   flex-direction: column;
+  margin: 20px 0 24px 20px;
 
   .input-list {
     width: 1026px;

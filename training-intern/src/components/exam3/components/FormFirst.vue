@@ -23,7 +23,17 @@
       </div>
       <div class="input-item">
         <div class="input-name">Thành phố</div>
-        <input type="text" name="name" />
+        <div class="input-city">
+          <input type="text" name="name" />
+          <div class="input-city-icon">
+            <IconDown />
+          </div>
+        </div>
+        <ul class="list-city" v-if="false">
+          <li>Hà Nội</li>
+          <li>Đà Nẵng</li>
+          <li>TP. Hồ Chí Minh</li>
+        </ul>
       </div>
       <div class="input-item">
         <div class="input-name">Vị trí làm việc</div>
@@ -62,9 +72,11 @@
 
 <script>
 import IconSearch from "@/assets/icon/IconSearch.vue";
+import IconDown from "@/assets/icon/IconDown.vue";
 export default {
   components: {
     IconSearch,
+    IconDown,
   },
   data() {
     return {
@@ -91,6 +103,22 @@ export default {
     width: 528px;
     .input-item {
       margin-bottom: 10px;
+      .input-city {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        background: #ffffff;
+        border: 1px solid #dcdcdc;
+        border-radius: 4px;
+        input {
+          border: none;
+        }
+        .input-city-icon {
+          display: flex;
+          align-items: center;
+          margin-right: 13px;
+        }
+      }
       .input-date {
         // width: 118px;
         // height: 40px;
