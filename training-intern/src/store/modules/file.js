@@ -13,8 +13,10 @@ export default {
             commit('ADD_FILE', payload)
         },
         deleteFile({ commit }, id) {
-            console.log('active')
             commit('DELETE_FILE', id)
+        },
+        formatFile({ commit }) {
+            commit('FORMAT_FILE')
         }
 
     },
@@ -23,11 +25,15 @@ export default {
             state.files.unshift({
                 id: payload.id,
                 name: payload.name,
-                size: payload.size
+                size: payload.size,
+                extType: payload.extType
             })
         },
         DELETE_FILE(state, id) {
             state.files = state.files.filter(file => file.id !== id)
+        },
+        FORMAT_FILE(state) {
+            state.files = [];
         }
 
     }

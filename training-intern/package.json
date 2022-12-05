@@ -9,11 +9,13 @@
   },
   "dependencies": {
     "bootstrap": "^4.6.2",
+    "axios": "^1.2.0",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.8.3",
     "firebase": "^9.14.0",
     "uuid": "^9.0.0",
     "vue": "^2.7.14",
+    "vue-axios": "^3.5.2",
     "vue-router": "^3.6.5",
     "vue2-datepicker": "^3.11.1",
     "vue2-dropzone": "^3.6.0",

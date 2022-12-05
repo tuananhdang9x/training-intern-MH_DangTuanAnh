@@ -4,12 +4,19 @@ import VueRouter from 'vue-router'
 import { routes } from './router'
 import store from './store/store.js'
 import { BootstrapVue, } from 'bootstrap-vue'
+<<<<<<< HEAD
 import { firebaseConfig } from './firebase-config.js'
 import { getStorage, ref } from 'firebase/storage'
 import { initializeApp } from 'firebase/app'
+=======
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+>>>>>>> main
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
+Vue.use(VueAxios, axios)
+
 
 const router = new VueRouter({
   mode: 'history',
