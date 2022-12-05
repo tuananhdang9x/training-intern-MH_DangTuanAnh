@@ -2,28 +2,28 @@
   <div class="container">
     <div class="header">Đơn ứng tuyển</div>
     <div class="nav-bar">
-      <div class="nav-item">
+      <div class="nav-item" @click="component = 'form-first'">
         <div class="active">
           <p>1</p>
         </div>
         <p class="item-info">Thông tin cá nhân</p>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" @click="component = 'form-second'">
         <div class="item-number">
           <p>2</p>
         </div>
         <p class="item-info">Kinh nhiệm làm việc</p>
       </div>
-      <div class="nav-item">
+      <div class="nav-item" @click="component = 'form-third'">
         <div class="item-number">
           <p>3</p>
         </div>
         <p class="item-info">Xác nhận thông tin</p>
       </div>
     </div>
-    <FormFirst />
-    <FormSecond />
-    <FormThird />
+    <keep-alive>
+      <component :is="component"></component>
+    </keep-alive>
     <div class="footer-nav">
       <div class="footer-item">Tiếp</div>
     </div>
@@ -36,9 +36,14 @@ import FormSecond from "./components/FormSecond.vue";
 import FormThird from "./components/FormThird.vue";
 export default {
   components: {
-    FormFirst,
-    FormSecond,
-    FormThird,
+    "form-first": FormFirst,
+    "form-second": FormSecond,
+    "form-third": FormThird,
+  },
+  data() {
+    return {
+      component: "form-first",
+    };
   },
 };
 </script>
@@ -91,6 +96,7 @@ export default {
       justify-content: center;
       align-items: center;
       margin-right: 150px;
+      cursor: pointer;
       .active {
         width: 40px;
         height: 40px;

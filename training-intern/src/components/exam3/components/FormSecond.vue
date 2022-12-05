@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="false">
+  <div class="container">
     <div class="input-list">
       <div class="input-item">
         <div class="input-company">

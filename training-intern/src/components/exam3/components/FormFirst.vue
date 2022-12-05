@@ -1,5 +1,5 @@
 <template>
-  <div class="container" v-if="true">
+  <div class="container">
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
@@ -18,10 +18,7 @@
           <div class="input-name">Ngày sinh</div>
         </div>
         <div class="input-date">
-          <input type="date" id="date" />
-          <!-- <label for="date" class="date-icon">
-            <IconCalender />
-          </label> -->
+          <input type="date" placeholder="0000/00/00" />
         </div>
       </div>
       <div class="input-item">
@@ -65,11 +62,15 @@
 
 <script>
 import IconSearch from "@/assets/icon/IconSearch.vue";
-// import IconCalender from "@/assets/icon/IconCalender.vue";
 export default {
   components: {
     IconSearch,
-    // IconCalender,
+  },
+  data() {
+    return {
+      value1: "",
+      value2: null,
+    };
   },
 };
 </script>
@@ -91,18 +92,14 @@ export default {
     .input-item {
       margin-bottom: 10px;
       .input-date {
-        width: 118px;
-        height: 40px;
-        background: #ffffff;
-        border: 1px solid #dcdcdc;
-        border-radius: 2px;
-        display: flex;
-        align-items: center;
+        // width: 118px;
+        // height: 40px;
+        // display: flex;
         input {
           font-weight: 400;
           font-size: 14px;
           line-height: 20px;
-          // width: 74px;
+          width: 140px;
           height: 20px;
           color: #000000;
           border: none;
