@@ -1,10 +1,27 @@
 <template>
-  <div></div>
+  <AutoCompleteItem
+    :placeholder="'Nhập tên thành phố để tìm kiếm...'"
+    :listOptions="listOptions"
+  />
 </template>
-
-<script>
-export default {};
+  
+  <script>
+import AutoCompleteItem from "./components/AutoCompleteItem.vue";
+import { mapActions, mapGetters } from "vuex";
+export default {
+  components: {
+    AutoCompleteItem,
+  },
+  created() {
+    this.getOptions();
+  },
+  computed: {
+    ...mapGetters("place", ["listOptions"]),
+  },
+  methods: {
+    ...mapActions("place", ["getOptions"]),
+  },
+};
 </script>
-
-<style>
+  <style lang="scss" scoped>
 </style>
