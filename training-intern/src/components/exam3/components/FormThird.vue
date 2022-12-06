@@ -3,9 +3,7 @@
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
-          <div class="input-require">
-            <p>Must</p>
-          </div>
+          <InputRequire />
           <div class="input-name">Lý do muốn ứng tuyển vào công ty</div>
         </div>
         <input type="text" name="name" />
@@ -13,9 +11,7 @@
       </div>
       <div class="input-item">
         <div class="input-title">
-          <div class="input-require">
-            <p>Must</p>
-          </div>
+          <InputRequire />
           <div class="input-name">Mức lương mong muốn</div>
         </div>
         <div class="input-salary">
@@ -27,7 +23,12 @@
 </template>
 
 <script>
-export default {};
+import InputRequire from "@/share/InputRequire.vue";
+export default {
+  components: {
+    InputRequire,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -181,24 +182,6 @@ export default {};
           font-size: 14px;
           line-height: 20px;
           color: #333;
-        }
-        .input-require {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 0px 8px;
-          gap: 10px;
-          width: 45px;
-          height: 20px;
-          background: #627d98;
-          border-radius: 3px;
-          margin-right: 8px;
-          p {
-            font-weight: 700;
-            font-size: 12px;
-            line-height: 20px;
-            color: #fff;
-          }
         }
       }
     }

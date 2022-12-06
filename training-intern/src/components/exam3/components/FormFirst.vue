@@ -3,18 +3,14 @@
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
-          <div class="input-require">
-            <p>Must</p>
-          </div>
+          <InputRequire />
           <div class="input-name">Họ và tên</div>
         </div>
         <input type="text" name="name" />
       </div>
       <div class="input-item">
         <div class="input-title">
-          <div class="input-require">
-            <p>Must</p>
-          </div>
+          <InputRequire />
           <div class="input-name">Ngày sinh</div>
         </div>
         <div class="input-date">
@@ -23,22 +19,20 @@
       </div>
       <div class="input-item">
         <div class="input-name">Thành phố</div>
-        <AutoComplete :place="'place'" />
+        <select id="place-list">
+          <option v-for="place in listPlaces" :key="place.code" value="1">
+            {{ place.name }}
+          </option>
+        </select>
       </div>
       <div class="input-item">
         <div class="input-name">Vị trí làm việc</div>
         <div class="input-desc">
           Có thể chọn được nhiều vị trí mà bạn muốn làm việc
         </div>
-        <AutoComplete :job="'job'" />
+        <AutoComplete />
       </div>
-      <div class="input-item">
-        <div class="input-name">Mô tả về bản thân</div>
-        <div class="input-large">
-          <input type="text" name="name" />
-        </div>
-        <div class="input-limit">0/1000</div>
-      </div>
+      <LargeInput />
       <DropZone />
       <!-- <div class="input-item">
         <div class="input-name">Ảnh cá nhân</div>
@@ -51,20 +45,26 @@
 </template>
 
 <script>
-// import IconDown from "@/assets/icon/IconDown.vue";
 import DropZone from "@/share/DropZone.vue";
 import AutoComplete from "@/share/AutoComplete.vue";
+import { mapActions, mapGetters } from "vuex";
+import InputRequire from "@/share/InputRequire.vue";
+import LargeInput from "@/share/LargeInput.vue";
 export default {
   components: {
-    // IconDown,
     DropZone,
     AutoComplete,
+    InputRequire,
+    LargeInput,
   },
-  data() {
-    return {
-      value1: "",
-      value2: null,
-    };
+  created() {
+    this.getPlaces();
+  },
+  computed: {
+    ...mapGetters("place", ["listPlaces"]),
+  },
+  methods: {
+    ...mapActions("place", ["getPlaces"]),
   },
 };
 </script>
@@ -122,11 +122,6 @@ export default {
             outline: none;
           }
         }
-        // .date-icon {
-        //   width: 24px;
-        //   height: 24px;
-        //   margin: 8px 8px 8px 4px;
-        // }
       }
 
       .drop-zone {
@@ -139,22 +134,7 @@ export default {
           text-align: center;
         }
       }
-      .input-limit {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #666666;
-      }
-      .input-large {
-        margin-bottom: 10px;
-        input {
-          width: 528px;
-          height: 152px;
-          background: #ffffff;
-          border: 1px solid #dcdcdc;
-          border-radius: 4px;
-        }
-      }
+
       .search-item {
         display: flex;
         align-items: center;
@@ -212,24 +192,6 @@ export default {
           font-size: 14px;
           line-height: 20px;
           color: #333;
-        }
-        .input-require {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 0px 8px;
-          gap: 10px;
-          width: 45px;
-          height: 20px;
-          background: #627d98;
-          border-radius: 3px;
-          margin-right: 8px;
-          p {
-            font-weight: 700;
-            font-size: 12px;
-            line-height: 20px;
-            color: #fff;
-          }
         }
       }
     }

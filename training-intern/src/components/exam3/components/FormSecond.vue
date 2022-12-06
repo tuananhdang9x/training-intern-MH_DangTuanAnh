@@ -16,9 +16,7 @@
       </div>
       <div class="input-item">
         <div class="input-title">
-          <div class="input-require">
-            <p>Must</p>
-          </div>
+          <InputRequire />
           <div class="input-name">Vị trí từng làm</div>
         </div>
         <input type="text" name="name" />
@@ -52,10 +50,12 @@
 <script>
 import IconTrash from "@/assets/icon/IconTrash.vue";
 import IconDown from "@/assets/icon/IconDown.vue";
+import InputRequire from "@/share/InputRequire.vue";
 export default {
   components: {
     IconTrash,
     IconDown,
+    InputRequire,
   },
 };
 </script>
@@ -202,24 +202,6 @@ export default {
           font-size: 14px;
           line-height: 20px;
           color: #333;
-        }
-        .input-require {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 0px 8px;
-          gap: 10px;
-          width: 45px;
-          height: 20px;
-          background: #627d98;
-          border-radius: 3px;
-          margin-right: 8px;
-          p {
-            font-weight: 700;
-            font-size: 12px;
-            line-height: 20px;
-            color: #fff;
-          }
         }
       }
     }

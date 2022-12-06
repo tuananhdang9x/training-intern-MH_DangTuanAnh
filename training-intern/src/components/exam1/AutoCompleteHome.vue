@@ -13,7 +13,7 @@ export default {
     AutoCompleteItem,
   },
   created() {
-    this.getOptions(this.type);
+    this.getOptions();
   },
   computed: {
     ...mapGetters("list", ["listOptions"]),
