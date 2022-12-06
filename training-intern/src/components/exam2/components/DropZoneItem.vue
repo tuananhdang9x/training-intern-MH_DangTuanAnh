@@ -133,6 +133,7 @@ export default {
     },
     handleSubmit(fileRaws) {
       this.$emit("handleSubmit", fileRaws);
+      this.msg.error = "";
       this.msg.success = "Upload successfully";
       this.listFileNames = [];
     },
