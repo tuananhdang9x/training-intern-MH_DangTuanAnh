@@ -1,12 +1,12 @@
 <template>
   <ul class="dropdown-list" v-if="isShow">
     <li
-      v-for="place in filteredOptions"
+      v-for="item in filteredOptions"
       class="dropdown-item"
-      :key="place.id"
-      @click="handleAdd(place.id, place.name)"
+      :key="item.id"
+      @click="handleAdd(item.id, item.name)"
     >
-      {{ place.name }}
+      {{ item.name }}
     </li>
   </ul>
 </template>
@@ -40,7 +40,9 @@ export default {
   background-color: #f1f5f8;
   border-radius: 4px;
   overflow-y: scroll;
+  overflow-x: hidden;
   max-height: 400px;
+  width: 100%;
   &::-webkit-scrollbar {
     width: 6px;
   }

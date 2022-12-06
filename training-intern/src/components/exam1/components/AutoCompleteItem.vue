@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-autocomplete">
     <div class="input-container">
       <div class="input-item">
         <div class="search-icon">
@@ -7,7 +7,7 @@
         </div>
         <div class="selected-item">
           <SelectedItem
-            v-for="result in choseOptions"
+            v-for="result in listChoseOptions"
             :key="result.id"
             :result="result"
             @handleDelete="handleDelete"
@@ -65,7 +65,7 @@ export default {
     },
   },
   methods: {
-    ...mapActions("place", [
+    ...mapActions("list", [
       "addItem",
       "deleteItem",
       "addChoseList",
@@ -88,6 +88,7 @@ export default {
         this.msg = "";
       } else {
         this.isShow = true;
+        this.msg = "";
       }
       this.filteredOptions = this.listOptions.filter((item) =>
         item.name.toLowerCase().match(this.keyword.toLowerCase())
@@ -101,15 +102,15 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("place", ["choseOptions"]),
+    ...mapGetters("list", ["listChoseOptions"]),
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .container {
-  margin-left: 179px;
-  margin-top: 168px;
+  // margin-left: 179px;
+  // margin-top: 168px;
   font-family: "Noto Sans JP", sans-serif;
   .input-container {
     position: relative;
@@ -120,8 +121,8 @@ export default {
     }
     .input-item {
       display: flex;
-      width: 600px;
-      min-height: 48px;
+      width: 100%;
+      height: 100%;
       margin-right: 28px;
       padding: 0 10px;
       display: flex;
@@ -146,6 +147,7 @@ export default {
         width: 24px;
         height: 24px;
         margin-right: 16px;
+
         img {
           width: auto;
           height: auto;

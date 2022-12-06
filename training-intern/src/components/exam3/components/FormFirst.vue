@@ -23,35 +23,14 @@
       </div>
       <div class="input-item">
         <div class="input-name">Thành phố</div>
-        <div class="input-city">
-          <input type="text" name="name" />
-          <div class="input-city-icon">
-            <IconDown />
-          </div>
-        </div>
-        <ul class="list-city" v-if="false">
-          <li>Hà Nội</li>
-          <li>Đà Nẵng</li>
-          <li>TP. Hồ Chí Minh</li>
-        </ul>
+        <AutoComplete :isCity="true" />
       </div>
       <div class="input-item">
         <div class="input-name">Vị trí làm việc</div>
         <div class="input-desc">
           Có thể chọn được nhiều vị trí mà bạn muốn làm việc
         </div>
-        <div class="search-item">
-          <div class="search-icon">
-            <IconSearch />
-          </div>
-          <div class="search-input">
-            <input
-              type="text"
-              name="name"
-              placeholder="Chọn các vị trí mà bạn muốn"
-            />
-          </div>
-        </div>
+        <AutoComplete :isJob="true" />
       </div>
       <div class="input-item">
         <div class="input-name">Mô tả về bản thân</div>
@@ -60,23 +39,26 @@
         </div>
         <div class="input-limit">0/1000</div>
       </div>
-      <div class="input-item">
+      <DropZone />
+      <!-- <div class="input-item">
         <div class="input-name">Ảnh cá nhân</div>
         <div class="drop-zone">
           <input type="text" placeholder="hãy khéo thả ảnh vào đây" />
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script>
-import IconSearch from "@/assets/icon/IconSearch.vue";
-import IconDown from "@/assets/icon/IconDown.vue";
+// import IconDown from "@/assets/icon/IconDown.vue";
+import DropZone from "@/share/DropZone.vue";
+import AutoComplete from "@/share/AutoComplete.vue";
 export default {
   components: {
-    IconSearch,
-    IconDown,
+    // IconDown,
+    DropZone,
+    AutoComplete,
   },
   data() {
     return {
@@ -128,7 +110,6 @@ export default {
           font-size: 14px;
           line-height: 20px;
           width: 140px;
-          height: 20px;
           color: #000000;
           border: none;
           &::-webkit-calendar-picker-indicator {
@@ -183,6 +164,7 @@ export default {
         border-radius: 4px;
         height: 40px;
         padding: 8px 10px;
+
         .search-icon {
           width: 14px;
           height: 14px;

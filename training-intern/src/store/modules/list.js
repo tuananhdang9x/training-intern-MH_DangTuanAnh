@@ -4,18 +4,24 @@ import Vue from 'vue'
 export default {
     namespaced: true,
     state: {
-        places: [],
-        chosePlace: [],
+        options: [],
+        choseOptions: [],
     },
     getters: {
-        listOptions: state => state.places,
-        choseOptions: state => state.chosePlace,
+        listOptions: state => state.options,
+        listChoseOptions: state => state.choseOptions,
     },
     actions: {
-        async getOptions({ commit }) {
+        async getOptions({ commit }, type) {
             try {
-                const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1').then(res => res.data)
-                commit('GET_OPTIONS', res)
+                if (type === 'job') {
+                    const res = await Vue.axios.get('https://mocki.io/v1/d8f1303e-0810-4457-b8dc-66ddf6e0bf0e').then(res => res.data)
+                    commit('GET_OPTIONS', res)
+                }
+                if (type === 'place') {
+                    const res = await Vue.axios.get('https://mocki.io/v1/d8f1303e-0810-4457-b8dc-66ddf6e0bf0e').then(res => res.data)
+                    commit('GET_OPTIONS', res)
+                }
             } catch (error) {
                 throw Error(error)
             }
@@ -35,23 +41,22 @@ export default {
     },
     mutations: {
         GET_OPTIONS(state, data) {
-            data.map(item => state.places.push({ id: item.code, name: formatAddress(item.name) }));
+            data.map(item => state.options.push({ id: item.id, name: item.name }));
         },
         ADD_CHOSE_LIST(state, payload) {
-            state.chosePlace.push({
+            state.choseOptions.push({
                 id: payload.id,
                 name: formatAddress(payload.name)
             })
         },
         DELETE_CHOSE_ITEM(state, id) {
-            state.chosePlace = state.chosePlace.filter(place => place.id !== id)
+            state.choseOptions = state.choseOptions.filter(item => item.id !== id)
         },
         DELETE_ITEM(state, id) {
-            console.log(id)
-            state.places = state.places.filter(place => place.id !== id)
+            state.options = state.options.filter(item => item.id !== id)
         },
         ADD_ITEM(state, payload) {
-            state.places.unshift({
+            state.options.unshift({
                 id: payload.id,
                 name: payload.name
             })

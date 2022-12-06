@@ -1,6 +1,6 @@
 <template>
   <AutoCompleteItem
-    :placeholder="'Nhập tên thành phố để tìm kiếm...'"
+    :placeholder="'Chọn các vị trí mà bạn muốn...'"
     :listOptions="listOptions"
   />
 </template>
@@ -14,12 +14,13 @@ export default {
   },
   created() {
     this.getOptions();
+    console.log(this.listOptions);
   },
   computed: {
-    ...mapGetters("place", ["listOptions"]),
+    ...mapGetters("list", ["listOptions"]),
   },
   methods: {
-    ...mapActions("place", ["getOptions"]),
+    ...mapActions("list", ["getOptions"]),
   },
 };
 </script>

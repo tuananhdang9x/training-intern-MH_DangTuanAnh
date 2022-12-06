@@ -49,6 +49,8 @@ export default {
     width: 14px;
     height: 24px;
     margin-left: 8px;
+    display: flex;
+    align-items: center;
   }
 }
 </style>
