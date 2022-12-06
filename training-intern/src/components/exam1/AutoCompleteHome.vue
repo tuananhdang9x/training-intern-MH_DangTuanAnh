@@ -13,14 +13,19 @@ export default {
     AutoCompleteItem,
   },
   created() {
-    this.getOptions();
-    console.log(this.listOptions);
+    this.getOptions(this.type);
   },
   computed: {
     ...mapGetters("list", ["listOptions"]),
   },
   methods: {
     ...mapActions("list", ["getOptions"]),
+  },
+  props: {
+    type: {
+      type: String,
+      default: () => "",
+    },
   },
 };
 </script>

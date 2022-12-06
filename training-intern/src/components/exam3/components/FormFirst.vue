@@ -23,14 +23,14 @@
       </div>
       <div class="input-item">
         <div class="input-name">Thành phố</div>
-        <AutoComplete :isCity="true" />
+        <AutoComplete :place="'place'" />
       </div>
       <div class="input-item">
         <div class="input-name">Vị trí làm việc</div>
         <div class="input-desc">
           Có thể chọn được nhiều vị trí mà bạn muốn làm việc
         </div>
-        <AutoComplete :isJob="true" />
+        <AutoComplete :job="'job'" />
       </div>
       <div class="input-item">
         <div class="input-name">Mô tả về bản thân</div>

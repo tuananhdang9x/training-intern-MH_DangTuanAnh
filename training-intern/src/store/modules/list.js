@@ -16,11 +16,11 @@ export default {
             try {
                 if (type === 'job') {
                     const res = await Vue.axios.get('https://mocki.io/v1/d8f1303e-0810-4457-b8dc-66ddf6e0bf0e').then(res => res.data)
-                    commit('GET_OPTIONS', res)
+                    commit('GET_OPTIONS', { type, res })
                 }
                 if (type === 'place') {
-                    const res = await Vue.axios.get('https://mocki.io/v1/d8f1303e-0810-4457-b8dc-66ddf6e0bf0e').then(res => res.data)
-                    commit('GET_OPTIONS', res)
+                    const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1').then(res => res.data)
+                    commit('GET_OPTIONS', { type, res })
                 }
             } catch (error) {
                 throw Error(error)
@@ -40,8 +40,15 @@ export default {
         },
     },
     mutations: {
-        GET_OPTIONS(state, data) {
-            data.map(item => state.options.push({ id: item.id, name: item.name }));
+        GET_OPTIONS(state, payload) {
+            if (payload.type === 'job') {
+                state.options = [];
+                payload.res.map(item => state.options.push({ id: item.id, name: item.name }));
+            }
+            if (payload.type === 'place') {
+                state.options = [];
+                payload.res.map(item => state.options.push({ id: item.code, name: formatAddress(item.name) }));
+            }
         },
         ADD_CHOSE_LIST(state, payload) {
             state.choseOptions.push({

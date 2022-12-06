@@ -1,7 +1,7 @@
 <template>
   <div>
-    <AutoCompleteHomeVue v-if="isCity" />
-    <AutoCompleteHomeVue v-if="isJob" />
+    <AutoCompleteHomeVue v-if="types[0].name === place" :type="types[0].name" />
+    <AutoCompleteHomeVue v-if="types[1].name === job" :type="types[1].name" />
   </div>
 </template>
 
@@ -9,19 +9,30 @@
 import AutoCompleteHomeVue from "@/components/exam1/AutoCompleteHome.vue";
 export default {
   data() {
-    return {};
+    return {
+      types: [
+        {
+          id: 1,
+          name: "place",
+        },
+        {
+          id: 2,
+          name: "job",
+        },
+      ],
+    };
   },
   components: {
     AutoCompleteHomeVue,
   },
   props: {
-    isCity: {
-      type: Boolean,
-      default: () => false,
+    place: {
+      type: String,
+      default: () => "",
     },
-    isJob: {
-      type: Boolean,
-      default: () => false,
+    job: {
+      type: String,
+      default: () => "",
     },
   },
 };

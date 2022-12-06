@@ -7,7 +7,6 @@ export default {
     getters: {
         getFiles: state => state.files
     },
-
     actions: {
         addFile({ commit }, payload) {
             commit('ADD_FILE', payload)
@@ -35,6 +34,5 @@ export default {
         FORMAT_FILE(state) {
             state.files = [];
         }
-
     }
 }
