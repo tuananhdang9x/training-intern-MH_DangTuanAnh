@@ -88,6 +88,7 @@ export default {
         this.msg = "";
       } else {
         this.isShow = true;
+        this.msg = "";
       }
       this.filteredOptions = this.listOptions.filter((item) =>
         item.name.toLowerCase().match(this.keyword.toLowerCase())

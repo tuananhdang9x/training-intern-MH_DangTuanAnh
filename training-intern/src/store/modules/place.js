@@ -47,7 +47,6 @@ export default {
             state.chosePlace = state.chosePlace.filter(place => place.id !== id)
         },
         DELETE_ITEM(state, id) {
-            console.log(id)
             state.places = state.places.filter(place => place.id !== id)
         },
         ADD_ITEM(state, payload) {
