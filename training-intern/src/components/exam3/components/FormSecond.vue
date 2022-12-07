@@ -4,7 +4,15 @@
       <div class="input-item">
         <div class="input-company">
           <div class="company-item">
-            <input type="text" />
+            <select id="place-list">
+              <option
+                v-for="(company, index) in listCompany"
+                :key="index"
+                value="1"
+              >
+                {{ company }}
+              </option>
+            </select>
             <div class="down-icon">
               <IconDown />
             </div>
@@ -26,22 +34,19 @@
         <div class="input-name">Thời gian làm việc</div>
         <div class="search-input">
           <input
-            type="text"
+            type="date"
             name="name"
             placeholder="Chọn các vị trí mà bạn muốn"
           />
           <input
-            type="text"
+            type="date"
             name="name"
             placeholder="Chọn các vị trí mà bạn muốn"
           />
         </div>
       </div>
       <div class="input-item">
-        <div class="input-name">Mô tả về công việc</div>
-        <div class="input-large">
-          <input type="text" name="name" />
-        </div>
+        <LargeInput :title="title" :requireItem="false" />
       </div>
     </div>
   </div>
@@ -51,11 +56,19 @@
 import IconTrash from "@/assets/icon/IconTrash.vue";
 import IconDown from "@/assets/icon/IconDown.vue";
 import InputRequire from "@/share/InputRequire.vue";
+import LargeInput from "@/share/LargeInput.vue";
 export default {
+  data() {
+    return {
+      title: "Mô tả về công việc",
+      listCompany: ["MorSoftware", "FPT", "MeinHart", "Boydens"],
+    };
+  },
   components: {
     IconTrash,
     IconDown,
     InputRequire,
+    LargeInput,
   },
 };
 </script>

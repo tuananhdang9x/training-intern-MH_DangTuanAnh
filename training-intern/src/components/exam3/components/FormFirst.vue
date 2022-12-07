@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-form-first">
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
@@ -32,14 +32,8 @@
         </div>
         <AutoComplete />
       </div>
-      <LargeInput />
-      <DropZone />
-      <!-- <div class="input-item">
-        <div class="input-name">Ảnh cá nhân</div>
-        <div class="drop-zone">
-          <input type="text" placeholder="hãy khéo thả ảnh vào đây" />
-        </div>
-      </div> -->
+      <LargeInput :title="title" :requireItem="false" />
+      <DropZone :placeholder="placeholder" :triggerText="triggerText" />
     </div>
   </div>
 </template>
@@ -51,6 +45,13 @@ import { mapActions, mapGetters } from "vuex";
 import InputRequire from "@/share/InputRequire.vue";
 import LargeInput from "@/share/LargeInput.vue";
 export default {
+  data() {
+    return {
+      title: "Mô tả về bản thân",
+      placeholder: "Hãy kéo và thả ảnh vào đây hoặc",
+      triggerText: "nhấn vào đây",
+    };
+  },
   components: {
     DropZone,
     AutoComplete,
@@ -70,7 +71,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.container-form-first {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -81,6 +82,36 @@ export default {
   border: 1px solid #dcdcdc;
   border-radius: 4px;
   margin: 20px 0 24px 20px;
+  ::v-deep .container-dropzone {
+    width: 844px;
+    .drop-zone {
+      height: 192px;
+      margin: 0 0 20px 0;
+      padding: 0;
+    }
+    .drop-description {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      width: 364px;
+      height: 48px;
+
+      input {
+        display: none;
+      }
+      .text-lable {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+  ::v-deep .file-container {
+    .list-file {
+      margin-left: 0;
+    }
+  }
   .input-list {
     width: 528px;
     .input-item {

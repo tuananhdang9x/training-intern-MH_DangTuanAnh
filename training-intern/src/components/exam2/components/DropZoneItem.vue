@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @drop.prevent="handleDrop">
+  <div class="container-dropzone" @drop.prevent="handleDrop">
     <div
       class="drop-zone"
       @dragenter.prevent="toggleAction"
@@ -142,7 +142,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.container-dropzone {
   font-family: "Noto Sans JP", sans-serif;
   overflow: hidden;
   display: flex;
@@ -185,7 +185,6 @@ export default {
   }
   .file-zone {
     position: relative;
-
     .success,
     .error {
       font-weight: 400;

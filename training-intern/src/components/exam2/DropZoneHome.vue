@@ -1,5 +1,10 @@
 <template>
-  <DropZoneItem @handleSubmit="handleSubmit" :files="getFiles" />
+  <DropZoneItem
+    @handleSubmit="handleSubmit"
+    :files="getFiles"
+    :placeholder="placeholder"
+    :triggerText="triggerText"
+  />
 </template>
 
 <script>
@@ -11,6 +16,16 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   components: {
     DropZoneItem,
+  },
+  props: {
+    placeholder: {
+      type: String,
+      default: () => "",
+    },
+    triggerText: {
+      type: String,
+      default: () => "",
+    },
   },
   methods: {
     ...mapActions("file", ["formatFile"]),

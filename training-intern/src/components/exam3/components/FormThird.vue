@@ -3,11 +3,8 @@
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
-          <InputRequire />
-          <div class="input-name">Lý do muốn ứng tuyển vào công ty</div>
+          <LargeInput :title="title" :requireItem="true" />
         </div>
-        <input type="text" name="name" />
-        <div class="input-limit">0/1000</div>
       </div>
       <div class="input-item">
         <div class="input-title">
@@ -24,9 +21,16 @@
 
 <script>
 import InputRequire from "@/share/InputRequire.vue";
+import LargeInput from "@/share/LargeInput.vue";
 export default {
+  data() {
+    return {
+      title: "Lý do muốn ứng tuyển vào công ty",
+    };
+  },
   components: {
     InputRequire,
+    LargeInput,
   },
 };
 </script>

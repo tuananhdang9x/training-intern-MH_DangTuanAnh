@@ -1,6 +1,9 @@
 <template>
   <div class="input-description">
-    <div class="input-name">Mô tả về bản thân</div>
+    <div class="input-title">
+      <InputRequire v-if="requireItem" />
+      <div class="input-name">{{ title }}</div>
+    </div>
     <div class="input-large">
       <input type="text" name="name" />
     </div>
@@ -9,12 +12,31 @@
 </template>
 
 <script>
-export default {};
+import InputRequire from "./InputRequire.vue";
+export default {
+  props: {
+    title: {
+      type: String,
+      default: () => "",
+    },
+    requireItem: {
+      type: Boolean,
+      default: () => false,
+    },
+  },
+  components: {
+    InputRequire,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .input-description {
   margin-bottom: 10px;
+  .input-title {
+    display: flex;
+    align-items: center;
+  }
   .input-name {
     font-weight: 400;
     font-size: 14px;
