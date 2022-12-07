@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @drop.prevent="handleDrop">
+  <div class="container" @drop.prevent="handleUpload($event, 'drag')">
     <div
       class="drop-zone"
       @dragenter.prevent="toggleAction"
@@ -14,7 +14,12 @@
       <div class="drop-description">
         <h3>{{ placeholder }}</h3>
         <label for="drop-select" class="text-lable">{{ triggerText }}</label>
-        <input id="drop-select" type="file" @change="handleUpload" multiple />
+        <input
+          id="drop-select"
+          type="file"
+          @change="handleUpload($event, 'input')"
+          multiple
+        />
       </div>
     </div>
     <div class="file-zone">
@@ -78,17 +83,17 @@ export default {
       type: Boolean,
       default: () => false,
     },
-    MAX_SIZE: {
+    maxSize: {
       type: Number,
       default: () => 0,
     },
-    QUANTITY_FILE_UPLOAD: {
+    quantityFileUpload: {
       type: Number,
-      default: () => 0,
+      require: false,
     },
-    LIST_EXTENTIONS: {
+    listExtentions: {
       type: Array,
-      default: () => [],
+      require: false,
     },
   },
   components: {
@@ -103,16 +108,21 @@ export default {
       "deleteFileRaw",
     ]),
     validateFile(files) {
-      if (files.length > this.QUANTITY_FILE_UPLOAD) {
+      if (!!this.quantityFileUpload && files.length > this.quantityFileUpload) {
         this.msg.error =
-          "Upload less than" + " " + this.QUANTITY_FILE_UPLOAD + " " + "file";
+          "Upload less than" + " " + this.quantityFileUpload + " " + "file";
       } else {
         Array.from(files).forEach((file) => {
-          if (validateLimitExtention(file.name, this.LIST_EXTENTIONS)) {
+          if (
+            !!this.listExtentions &&
+            validateLimitExtention(file.name, this.listExtentions)
+          ) {
+            this.msg.error = "Invalid extention";
+          } else {
             if (validateDuplicate(file, this.listFileNames)) {
-              if (validateFileSize(file, this.MAX_SIZE)) {
+              if (validateFileSize(file, this.maxSize)) {
                 this.listFileNames.push(file.name);
-                if (this.listFileNames.length <= this.QUANTITY_FILE_UPLOAD) {
+                if (this.listFileNames.length <= this.quantityFileUpload) {
                   this.addFile({
                     id: uuidv4(),
                     name: file.name,
@@ -125,7 +135,7 @@ export default {
                   this.msg.error =
                     "Upload less than" +
                     " " +
-                    this.QUANTITY_FILE_UPLOAD +
+                    this.quantityFileUpload +
                     " " +
                     "file";
                 }
@@ -135,22 +145,28 @@ export default {
             } else {
               this.msg.error = "The file already exists";
             }
-          } else {
-            this.msg.error = "Invalid extention";
           }
         });
       }
     },
-    handleUpload(e) {
-      let files = e.target.files;
-      this.validateFile(files);
+    handleUpload(e, type) {
+      let files;
+      switch (type) {
+        case "input":
+          files = e.target.files;
+          this.validateFile(files);
+          break;
+        case "drag":
+          files = e.dataTransfer.files;
+          this.validateFile(files);
+          break;
+        default:
+          console.log("Invalid action");
+          break;
+      }
       this.msg.success = "";
     },
-    handleDrop(e) {
-      let files = e.dataTransfer.files;
-      this.validateFile(files);
-      this.msg.success = "";
-    },
+
     toggleAction() {
       this.isActive = !this.isActive;
     },

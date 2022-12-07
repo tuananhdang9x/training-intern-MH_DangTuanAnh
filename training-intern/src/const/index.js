@@ -6,6 +6,6 @@ export const FILE_TYPE = {
     WORD: 3,
     OTHER: 4
 }
-export const MAX_SIZE = convertMBtoBytes(10);
+export const maxSize = convertMBtoBytes(10);
 
-export const LIST_EXTENTIONS = ['.docx', '.xlsx', '.pdf']
+export const listExtentions = ['.docx', '.xlsx', '.pdf']

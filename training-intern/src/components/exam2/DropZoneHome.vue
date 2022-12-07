@@ -2,9 +2,9 @@
   <DropZoneItem
     @handleSubmit="handleSubmit"
     :files="getFiles"
-    :MAX_SIZE="MAX_SIZE"
-    :QUANTITY_FILE_UPLOAD="QUANTITY_FILE_UPLOAD"
-    :LIST_EXTENTIONS="LIST_EXTENTIONS"
+    :maxSize="maxSize"
+    :quantityFileUpload="quantityFileUpload"
+    :listExtentions="listExtentions"
   />
 </template>
 
@@ -13,14 +13,14 @@ import DropZoneItem from "./components/DropZoneItem.vue";
 import { storage } from "@/main.js";
 import { ref, uploadBytes } from "firebase/storage";
 import { mapGetters, mapActions } from "vuex";
-import { MAX_SIZE, LIST_EXTENTIONS } from "@/const/index.js";
+import { maxSize, listExtentions } from "@/const/index.js";
 
 export default {
   data() {
     return {
-      MAX_SIZE,
-      QUANTITY_FILE_UPLOAD: 4,
-      LIST_EXTENTIONS,
+      maxSize,
+      quantityFileUpload: 4,
+      listExtentions,
     };
   },
   components: {

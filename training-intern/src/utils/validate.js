@@ -9,8 +9,8 @@ export function validateDuplicate(file, listFile) {
     return isCheck;
 }
 
-export function validateFileSize(file, MAX_SIZE) {
-    return file.size <= MAX_SIZE
+export function validateFileSize(file, maxSize) {
+    return file.size <= maxSize
 }
 
 export function formatBytes(bytes, decimals = 2) {
@@ -41,18 +41,17 @@ export function validateExtension(name) {
     }
 }
 
-export function validateLimitExtention(name, LIST_EXTENTIONS) {
-    console.log(LIST_EXTENTIONS)
-    let isCheck = false;
-    if (LIST_EXTENTIONS.length !== 0) {
-        LIST_EXTENTIONS.forEach(item => {
+export function validateLimitExtention(name, listExtentions) {
+    let isCheck = true;
+    if (listExtentions.length !== 0) {
+        listExtentions.forEach(item => {
             if (name.endsWith(item)) {
-                isCheck = true
+                isCheck = false
             }
         })
     }
     return isCheck
-} ``
+}
 
 export function convertMBtoBytes(Mb) {
     return Mb * 1048576
