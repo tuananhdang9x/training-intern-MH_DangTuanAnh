@@ -1,5 +1,5 @@
 <template>
-  <div class="container-dropzone" @drop.prevent="handleDrop">
+  <div class="container" @drop.prevent="handleUpload($event, 'drag')">
     <div
       class="drop-zone"
       @dragenter.prevent="toggleAction"
@@ -14,14 +14,19 @@
       <div class="drop-description">
         <h3>{{ placeholder }}</h3>
         <label for="drop-select" class="text-lable">{{ triggerText }}</label>
-        <input id="drop-select" type="file" @change="handleUpload" multiple />
+        <input
+          id="drop-select"
+          type="file"
+          @change="handleUpload($event, 'input')"
+          multiple
+        />
       </div>
     </div>
     <div class="file-zone">
       <SelectedFile
         :files="files"
         @handleDelete="handleDelete"
-        @handleSubmit="handleSubmit(fileRaws)"
+        @handleSubmit="handleSubmit"
       />
       <div
         v-if="msg.error || msg.success"
@@ -40,6 +45,7 @@ import {
   validateDuplicate,
   validateFileSize,
   validateExtension,
+  validateLimitExtention,
   formatBytes,
 } from "@/utils/validate.js";
 import { v4 as uuidv4 } from "uuid";
@@ -54,8 +60,6 @@ export default {
       },
       isActive: false,
       listFileNames: [],
-      fileRaws: [],
-      MAX_SIZE: "10 MB",
     };
   },
   props: {
@@ -79,60 +83,104 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    maxSize: {
+      type: Number,
+      default: () => 0,
+    },
+    quantityFileUpload: {
+      type: Number,
+      require: false,
+    },
+    listExtentions: {
+      type: Array,
+      require: false,
+    },
   },
   components: {
     IconUpload,
     SelectedFile,
   },
   methods: {
-    ...mapActions("file", ["addFile", "deleteFile"]),
+    ...mapActions("file", [
+      "addFile",
+      "deleteFile",
+      "addFileRaw",
+      "deleteFileRaw",
+    ]),
     validateFile(files) {
-      Array.from(files).forEach((file) => {
-        if (validateDuplicate(file, this.listFileNames)) {
-          if (validateFileSize(file)) {
-            this.addFile({
-              id: uuidv4(),
-              name: file.name,
-              size: formatBytes(file.size),
-              extType: validateExtension(file.name),
-            });
-            this.listFileNames.push(file.name);
-            this.fileRaws.push(file);
-            this.msg.error = "";
+      if (!!this.quantityFileUpload && files.length > this.quantityFileUpload) {
+        this.msg.error =
+          "Upload less than" + " " + this.quantityFileUpload + " " + "file";
+      } else {
+        Array.from(files).forEach((file) => {
+          if (
+            !!this.listExtentions &&
+            validateLimitExtention(file.name, this.listExtentions)
+          ) {
+            this.msg.error = "Invalid extention";
           } else {
-            this.msg.error = "The maximum file size is" + " " + this.MAX_SIZE;
+            if (validateDuplicate(file, this.listFileNames)) {
+              if (validateFileSize(file, this.maxSize)) {
+                this.listFileNames.push(file.name);
+                if (this.listFileNames.length <= this.quantityFileUpload) {
+                  this.addFile({
+                    id: uuidv4(),
+                    name: file.name,
+                    size: formatBytes(file.size),
+                    extType: validateExtension(file.name),
+                  });
+                  this.addFileRaw(file);
+                  this.msg.error = "";
+                } else {
+                  this.msg.error =
+                    "Upload less than" +
+                    " " +
+                    this.quantityFileUpload +
+                    " " +
+                    "file";
+                }
+              } else {
+                this.msg.error = "The maximum file size is 10MB";
+              }
+            } else {
+              this.msg.error = "The file already exists";
+            }
           }
-        } else {
-          this.msg.error = "The file already exists";
-        }
-      });
+        });
+      }
     },
-    handleUpload(e) {
-      let files = e.target.files;
-      this.validateFile(files);
+    handleUpload(e, type) {
+      let files;
+      switch (type) {
+        case "input":
+          files = e.target.files;
+          this.validateFile(files);
+          break;
+        case "drag":
+          files = e.dataTransfer.files;
+          this.validateFile(files);
+          break;
+        default:
+          console.log("Invalid action");
+          break;
+      }
       this.msg.success = "";
     },
-    handleDrop(e) {
-      let files = e.dataTransfer.files;
-      this.validateFile(files);
-      this.msg.success = "";
-    },
+
     toggleAction() {
       this.isActive = !this.isActive;
     },
     handleDelete(payload) {
       this.deleteFile(payload.id);
+      this.deleteFileRaw(payload.id);
       this.listFileNames = this.listFileNames.filter(
         (name) => name !== payload.name
-      );
-      this.fileRaws = this.fileRaws.filter(
-        (item) => item.name !== payload.name
       );
       this.msg.error = "";
       this.msg.success = "";
     },
-    handleSubmit(fileRaws) {
-      this.$emit("handleSubmit", fileRaws);
+    handleSubmit() {
+      this.$emit("handleSubmit");
       this.msg.error = "";
       this.msg.success = "Upload successfully";
       this.listFileNames = [];
