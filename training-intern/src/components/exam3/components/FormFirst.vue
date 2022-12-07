@@ -14,7 +14,7 @@
           <div class="input-name">Ngày sinh</div>
         </div>
         <div class="input-date">
-          <input type="date" placeholder="0000/00/00" />
+          <input type="date" :max="getCurrentDate" />
         </div>
       </div>
       <div class="input-item">
@@ -44,12 +44,14 @@ import AutoComplete from "@/share/AutoComplete.vue";
 import { mapActions, mapGetters } from "vuex";
 import InputRequire from "@/share/InputRequire.vue";
 import LargeInput from "@/share/LargeInput.vue";
+import { updateDate } from "@/utils/index.js";
 export default {
   data() {
     return {
       title: "Mô tả về bản thân",
       placeholder: "Hãy kéo và thả ảnh vào đây hoặc",
       triggerText: "nhấn vào đây",
+      today: new Date(),
     };
   },
   components: {
@@ -63,6 +65,10 @@ export default {
   },
   computed: {
     ...mapGetters("place", ["listPlaces"]),
+    getCurrentDate() {
+      let today = new Date();
+      return updateDate(today);
+    },
   },
   methods: {
     ...mapActions("place", ["getPlaces"]),
@@ -88,6 +94,13 @@ export default {
       height: 192px;
       margin: 0 0 20px 0;
       padding: 0;
+      width: 842px;
+      background-color: #f8f8f8;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border-radius: 7px;
     }
     .drop-description {
       display: flex;
@@ -110,6 +123,11 @@ export default {
   ::v-deep .file-container {
     .list-file {
       margin-left: 0;
+    }
+  }
+  ::v-deep .file-container {
+    button {
+      display: none;
     }
   }
   .input-list {

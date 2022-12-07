@@ -5,6 +5,8 @@
     :maxSize="maxSize"
     :quantityFileUpload="quantityFileUpload"
     :listExtentions="listExtentions"
+    :placeholder="placeholder"
+    :triggerText="triggerText"
   />
 </template>
 

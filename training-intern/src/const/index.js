@@ -8,4 +8,4 @@ export const FILE_TYPE = {
 }
 export const maxSize = convertMBtoBytes(10);
 
-export const listExtentions = ['.docx', '.xlsx', '.pdf']
+export const listExtentions = ['.jpg', '.jpeg', '.png', '.svg', '.avif']

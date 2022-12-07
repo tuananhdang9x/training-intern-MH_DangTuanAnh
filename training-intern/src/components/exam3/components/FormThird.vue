@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container-form-third">
     <div class="input-list">
       <div class="input-item">
         <div class="input-title">
@@ -36,7 +36,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.container-form-third {
   display: flex;
   flex-direction: column;
   margin: 20px 0 24px 20px;

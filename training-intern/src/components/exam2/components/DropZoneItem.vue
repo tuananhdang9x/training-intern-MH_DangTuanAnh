@@ -1,5 +1,5 @@
 <template>
-  <div class="container" @drop.prevent="handleUpload($event, 'drag')">
+  <div class="container-dropzone" @drop.prevent="handleUpload($event, 'drag')">
     <div
       class="drop-zone"
       @dragenter.prevent="toggleAction"

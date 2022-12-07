@@ -1,223 +1,52 @@
 <template>
-  <div class="container">
-    <div class="input-list">
-      <div class="input-item">
-        <div class="input-company">
-          <div class="company-item">
-            <select id="place-list">
-              <option
-                v-for="(company, index) in listCompany"
-                :key="index"
-                value="1"
-              >
-                {{ company }}
-              </option>
-            </select>
-            <div class="down-icon">
-              <IconDown />
-            </div>
-          </div>
-          <div class="input-icon">
-            <IconTrash />
-          </div>
-        </div>
-      </div>
-      <div class="input-item">
-        <div class="input-title">
-          <InputRequire />
-          <div class="input-name">Vị trí từng làm</div>
-        </div>
-        <input type="text" name="name" />
-      </div>
-
-      <div class="input-item">
-        <div class="input-name">Thời gian làm việc</div>
-        <div class="search-input">
-          <input
-            type="date"
-            name="name"
-            placeholder="Chọn các vị trí mà bạn muốn"
-          />
-          <input
-            type="date"
-            name="name"
-            placeholder="Chọn các vị trí mà bạn muốn"
-          />
-        </div>
-      </div>
-      <div class="input-item">
-        <LargeInput :title="title" :requireItem="false" />
-      </div>
-    </div>
+  <div class="container-form-second">
+    <ListForm
+      v-for="item in listForm"
+      :key="item.id"
+      :listCompany="listCompany"
+      :item="item"
+      @handleDeleteItem="handleDeleteItem"
+    />
+    <button @click="handleAddOption">Thêm công ty</button>
   </div>
 </template>
 
 <script>
-import IconTrash from "@/assets/icon/IconTrash.vue";
-import IconDown from "@/assets/icon/IconDown.vue";
-import InputRequire from "@/share/InputRequire.vue";
-import LargeInput from "@/share/LargeInput.vue";
+import ListForm from "@/share/ListForm.vue";
+import { v4 } from "uuid";
 export default {
   data() {
     return {
       title: "Mô tả về công việc",
       listCompany: ["MorSoftware", "FPT", "MeinHart", "Boydens"],
+      listForm: [],
     };
   },
+  mounted() {
+    this.listForm.push({
+      id: v4(),
+    });
+  },
   components: {
-    IconTrash,
-    IconDown,
-    InputRequire,
-    LargeInput,
+    ListForm,
+  },
+  methods: {
+    handleAddOption() {
+      this.listForm.push({
+        id: v4(),
+      });
+    },
+    handleDeleteItem(id) {
+      this.listForm = this.listForm.filter((item) => item.id !== id);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.container {
+.container-form-second {
   display: flex;
   flex-direction: column;
   margin: 20px 0 24px 20px;
-
-  .input-list {
-    width: 1026px;
-    height: 504px;
-    padding: 24px;
-    border: 1px solid #dcdcdc;
-    border-radius: 4px;
-    .input-item {
-      margin-bottom: 10px;
-      .search-input {
-        input {
-          width: 118px;
-          height: 40px;
-          margin-right: 48px;
-        }
-      }
-      .input-company {
-        width: 978px;
-        height: 60px;
-        background: #f8f8f8;
-        border-radius: 4px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .input-icon {
-          width: 32px;
-          height: 32px;
-          margin-right: 16px;
-        }
-        .company-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 898px;
-          height: 40px;
-          background: #ffffff;
-          border: 1px solid #dbdbdb;
-          border-radius: 4px;
-          margin-left: 16px;
-          .down-icon {
-            width: 16px;
-            height: 16px;
-            margin-right: 10px;
-          }
-          input {
-            border: none;
-            width: 98px;
-            height: 24px;
-            font-weight: 400;
-            font-size: 16px;
-            line-height: 24px;
-            color: #333333;
-          }
-        }
-      }
-      .drop-zone {
-        input {
-          background: #f8f8f8;
-          border: 1px solid #dcdcdc;
-          border-radius: 7px;
-          width: 844px;
-          height: 192px;
-          text-align: center;
-        }
-      }
-      .input-limit {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-        color: #666666;
-      }
-      .input-large {
-        margin-bottom: 10px;
-        input {
-          width: 528px;
-          height: 152px;
-          background: #ffffff;
-          border: 1px solid #dcdcdc;
-          border-radius: 4px;
-        }
-      }
-      .search-item {
-        display: flex;
-        align-items: center;
-        width: 100%;
-        background: #ffffff;
-        border: 1px solid #dcdcdc;
-        border-radius: 4px;
-        height: 40px;
-        padding: 8px 10px;
-        .search-icon {
-          width: 14px;
-          height: 14px;
-          margin-right: 8px;
-          display: flex;
-          align-items: center;
-        }
-        .search-input {
-          input {
-            border: none;
-            width: 476px;
-            height: 20px;
-            font-weight: 400;
-            font-size: 14px;
-            line-height: 20px;
-            color: #999999;
-          }
-        }
-      }
-      .input-name {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 20px;
-        color: #333;
-      }
-      input {
-        width: 528px;
-        height: 40px;
-        background: #ffffff;
-        border: 1px solid #dcdcdc;
-        border-radius: 4px;
-        padding: 8px 10px;
-      }
-      .input-desc {
-        font-weight: 400;
-        font-size: 12px;
-        line-height: 20px;
-        color: #666666;
-      }
-      .input-title {
-        display: flex;
-        margin-bottom: 6px;
-        .input-name {
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 20px;
-          color: #333;
-        }
-      }
-    }
-  }
 }
 </style>

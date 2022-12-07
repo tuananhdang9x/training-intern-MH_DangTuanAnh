@@ -13,7 +13,7 @@ export default {
         async getPlaces({ commit }) {
             try {
                 const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1')
-                commit('GET_OPTIONS', res.data)
+                commit('GET_PLACES', res.data)
             } catch (error) {
                 throw Error(error)
             }
