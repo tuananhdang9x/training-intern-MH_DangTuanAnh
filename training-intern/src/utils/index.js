@@ -22,5 +22,3 @@ export function formatAddress(place) {
         return newPlace;
     }
 }
-
-

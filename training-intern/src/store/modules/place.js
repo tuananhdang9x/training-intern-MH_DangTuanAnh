@@ -14,8 +14,8 @@ export default {
     actions: {
         async getOptions({ commit }) {
             try {
-                const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1').then(res => res.data)
-                commit('GET_OPTIONS', res)
+                const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1')
+                commit('GET_OPTIONS', res.data)
             } catch (error) {
                 throw Error(error)
             }

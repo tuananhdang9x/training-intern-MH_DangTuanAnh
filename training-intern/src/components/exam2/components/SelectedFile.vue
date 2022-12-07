@@ -1,5 +1,5 @@
 <template>
-  <div class="file-container" v-if="files.length > 0">
+  <div class="file-container" v-if="files.length">
     <div class="list-file">
       <div class="file-container" v-for="file in files" :key="file.id">
         <div class="file-item">
@@ -13,13 +13,13 @@
             <p>{{ file.name }}</p>
             <p class="file-size">{{ file.size }}</p>
           </div>
-          <div class="file-close" @click="handleDelete(file.id, file.name)">
+          <div class="file-close" @click="handleDelete(file)">
             <IconCancelCircel />
           </div>
         </div>
       </div>
     </div>
-    <button v-if="files.length > 0" @click="handleSubmit" class="upload-btn">
+    <button v-if="files.length" @click="handleSubmit" class="upload-btn">
       Upload
     </button>
   </div>
@@ -52,8 +52,8 @@ export default {
     },
   },
   methods: {
-    handleDelete(id, name) {
-      this.$emit("handleDelete", { id, name });
+    handleDelete(file) {
+      this.$emit("handleDelete", file);
     },
     handleSubmit() {
       this.$emit("handleSubmit");

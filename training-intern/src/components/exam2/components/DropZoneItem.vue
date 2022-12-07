@@ -21,7 +21,7 @@
       <SelectedFile
         :files="files"
         @handleDelete="handleDelete"
-        @handleSubmit="handleSubmit(fileRaws)"
+        @handleSubmit="handleSubmit"
       />
       <div
         v-if="msg.error || msg.success"
@@ -40,6 +40,7 @@ import {
   validateDuplicate,
   validateFileSize,
   validateExtension,
+  validateLimitExtention,
   formatBytes,
 } from "@/utils/validate.js";
 import { v4 as uuidv4 } from "uuid";
@@ -54,8 +55,6 @@ export default {
       },
       isActive: false,
       listFileNames: [],
-      fileRaws: [],
-      MAX_SIZE: "10 MB",
     };
   },
   props: {
@@ -79,33 +78,68 @@ export default {
       type: Boolean,
       default: () => false,
     },
+    MAX_SIZE: {
+      type: Number,
+      default: () => 0,
+    },
+    QUANTITY_FILE_UPLOAD: {
+      type: Number,
+      default: () => 0,
+    },
+    LIST_EXTENTIONS: {
+      type: Array,
+      default: () => [],
+    },
   },
   components: {
     IconUpload,
     SelectedFile,
   },
   methods: {
-    ...mapActions("file", ["addFile", "deleteFile"]),
+    ...mapActions("file", [
+      "addFile",
+      "deleteFile",
+      "addFileRaw",
+      "deleteFileRaw",
+    ]),
     validateFile(files) {
-      Array.from(files).forEach((file) => {
-        if (validateDuplicate(file, this.listFileNames)) {
-          if (validateFileSize(file)) {
-            this.addFile({
-              id: uuidv4(),
-              name: file.name,
-              size: formatBytes(file.size),
-              extType: validateExtension(file.name),
-            });
-            this.listFileNames.push(file.name);
-            this.fileRaws.push(file);
-            this.msg.error = "";
+      if (files.length > this.QUANTITY_FILE_UPLOAD) {
+        this.msg.error =
+          "Upload less than" + " " + this.QUANTITY_FILE_UPLOAD + " " + "file";
+      } else {
+        Array.from(files).forEach((file) => {
+          if (validateLimitExtention(file.name, this.LIST_EXTENTIONS)) {
+            if (validateDuplicate(file, this.listFileNames)) {
+              if (validateFileSize(file, this.MAX_SIZE)) {
+                this.listFileNames.push(file.name);
+                if (this.listFileNames.length <= this.QUANTITY_FILE_UPLOAD) {
+                  this.addFile({
+                    id: uuidv4(),
+                    name: file.name,
+                    size: formatBytes(file.size),
+                    extType: validateExtension(file.name),
+                  });
+                  this.addFileRaw(file);
+                  this.msg.error = "";
+                } else {
+                  this.msg.error =
+                    "Upload less than" +
+                    " " +
+                    this.QUANTITY_FILE_UPLOAD +
+                    " " +
+                    "file";
+                }
+              } else {
+                this.msg.error = "The maximum file size is 10MB";
+              }
+            } else {
+              this.msg.error = "The file already exists";
+            }
           } else {
-            this.msg.error = "The maximum file size is" + " " + this.MAX_SIZE;
+            this.msg.error = "Invalid extention";
           }
-        } else {
-          this.msg.error = "The file already exists";
-        }
-      });
+        });
+      }
     },
     handleUpload(e) {
       let files = e.target.files;
@@ -122,17 +156,15 @@ export default {
     },
     handleDelete(payload) {
       this.deleteFile(payload.id);
+      this.deleteFileRaw(payload.id);
       this.listFileNames = this.listFileNames.filter(
         (name) => name !== payload.name
-      );
-      this.fileRaws = this.fileRaws.filter(
-        (item) => item.name !== payload.name
       );
       this.msg.error = "";
       this.msg.success = "";
     },
-    handleSubmit(fileRaws) {
-      this.$emit("handleSubmit", fileRaws);
+    handleSubmit() {
+      this.$emit("handleSubmit");
       this.msg.error = "";
       this.msg.success = "Upload successfully";
       this.listFileNames = [];
