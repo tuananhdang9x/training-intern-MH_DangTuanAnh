@@ -1,5 +1,5 @@
 <template>
-  <div class="input-description">
+  <div class="input-item">
     <div class="input-title">
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
@@ -7,31 +7,35 @@
     <div class="input-large">
       <input type="text" name="name" />
     </div>
-    <div class="input-limit">0/1000</div>
+    <div class="input-limit">0/{{ wordLimit }}</div>
   </div>
 </template>
 
 <script>
 import InputRequire from "./InputRequire.vue";
 export default {
+  components: {
+    InputRequire,
+  },
   props: {
+    requireItem: {
+      type: Boolean,
+      default: false,
+    },
     title: {
       type: String,
       default: () => "",
     },
-    requireItem: {
-      type: Boolean,
-      default: () => false,
+    wordLimit: {
+      type: Number,
+      default: () => 0,
     },
-  },
-  components: {
-    InputRequire,
   },
 };
 </script>
 
 <style lang="scss" scoped>
-.input-description {
+.input-item {
   margin-bottom: 10px;
   .input-title {
     display: flex;

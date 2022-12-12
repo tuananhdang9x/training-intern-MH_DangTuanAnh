@@ -2,48 +2,53 @@
   <div class="container">
     <div class="header">Đơn ứng tuyển</div>
     <div class="nav-bar">
-      <div class="nav-item" @click="component = 'form-first'">
+      <div class="nav-item">
         <div class="active">
           <p>1</p>
         </div>
         <p class="item-info">Thông tin cá nhân</p>
       </div>
-      <div class="nav-item" @click="component = 'form-second'">
+      <div class="nav-item">
         <div class="item-number">
           <p>2</p>
         </div>
         <p class="item-info">Kinh nhiệm làm việc</p>
       </div>
-      <div class="nav-item" @click="component = 'form-third'">
+      <div class="nav-item">
         <div class="item-number">
           <p>3</p>
         </div>
         <p class="item-info">Xác nhận thông tin</p>
       </div>
     </div>
-    <keep-alive>
-      <component :is="component"></component>
-    </keep-alive>
+    <MultiStepForm :stepData="stepData" />
     <div class="footer-nav">
-      <div class="footer-item">Tiếp</div>
+      <div class="footer-item" @click="handleNextStep">Tiếp</div>
     </div>
   </div>
 </template>
   
   <script>
-import FormFirst from "./components/FormFirst.vue";
-import FormSecond from "./components/FormSecond.vue";
-import FormThird from "./components/FormThird.vue";
+import MultiStepForm from "./components/MultiStepForm.vue";
+import { formData } from "./components/form.js";
 export default {
   components: {
-    "form-first": FormFirst,
-    "form-second": FormSecond,
-    "form-third": FormThird,
+    MultiStepForm,
   },
   data() {
     return {
-      component: "form-first",
+      stepNum: 1,
     };
+  },
+  computed: {
+    stepData() {
+      return formData.filter((item) => item.step === this.stepNum)[0];
+    },
+  },
+  methods: {
+    handleNextStep() {
+      console.log(this.stepData);
+    },
   },
 };
 </script>
@@ -66,9 +71,9 @@ export default {
       font-size: 16px;
       line-height: 24px;
       color: #fff;
+      cursor: pointer;
     }
   }
-
   .header {
     font-weight: 400;
     font-size: 24px;

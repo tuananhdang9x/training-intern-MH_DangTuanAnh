@@ -125,7 +125,6 @@ export default {
       height: 100%;
       margin-right: 28px;
       padding: 0 10px;
-      display: flex;
       align-items: center;
       border: 1px solid #dbdbdb;
       border-radius: 4px;

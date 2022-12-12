@@ -4,24 +4,24 @@ import Vue from 'vue'
 export default {
     namespaced: true,
     state: {
-        places: [],
+        options: [],
     },
     getters: {
-        listPlaces: state => state.places,
+        listOptions: state => state.options,
     },
     actions: {
-        async getPlaces({ commit }) {
+        async getOptions({ commit }) {
             try {
                 const res = await Vue.axios.get('https://Provinces.open-api.vn/api/?depth=1')
-                commit('GET_PLACES', res.data)
+                commit('GET_OPTIONS', res.data)
             } catch (error) {
                 throw Error(error)
             }
         }
     },
     mutations: {
-        GET_PLACES(state, data) {
-            data.map(item => state.places.push({ id: item.code, name: formatAddress(item.name) }));
+        GET_OPTIONS(state, data) {
+            data.map(item => state.options.push({ id: item.code, name: formatAddress(item.name) }));
         },
     }
 }

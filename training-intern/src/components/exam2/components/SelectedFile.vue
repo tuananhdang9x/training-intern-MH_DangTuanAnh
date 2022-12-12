@@ -19,12 +19,7 @@
         </div>
       </div>
     </div>
-    <button
-      v-if="files.length"
-      @click="handleSubmit"
-      class="upload-btn"
-      :disabled="disable"
-    >
+    <button v-if="files.length" @click="handleSubmit" class="upload-btn">
       Upload
     </button>
   </div>
