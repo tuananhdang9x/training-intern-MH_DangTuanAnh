@@ -1,6 +1,13 @@
 <template>
   <div>
-    <MultiInputForm :data="stepData.data" :step="stepData.step" />
+    <MultiInputForm
+      v-for="(item, index) in stepData"
+      :key="index"
+      :data="item.data"
+      :step="item.step"
+      :id="item.id"
+      @handleDelete="handleDelete"
+    />
   </div>
 </template>
 
@@ -12,11 +19,15 @@ export default {
   },
   props: {
     stepData: {
-      type: Object,
-      default: () => ({}),
+      type: Array,
+      default: () => [],
     },
   },
-  methods: {},
+  methods: {
+    handleDelete(id) {
+      this.$emit("handleDelete", id);
+    },
+  },
 };
 </script>
 

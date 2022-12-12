@@ -41,6 +41,23 @@
         :placeholder="item.placeholder"
         :triggerText="item.triggerText"
       />
+      <InputListCompany
+        v-if="item.inputType === 'inputListCompany'"
+        :listOption="item.listOption"
+        :id="id"
+        @handleDelete="handleDelete"
+      />
+      <InputWorkPeriod
+        v-if="item.inputType === 'inputWorkPeriod'"
+        :requireItem="item.requireItem"
+        :title="item.title"
+        :value="item.value"
+      />
+      <InputSalary
+        v-if="item.inputType === 'inputSalary'"
+        :requireItem="item.requireItem"
+        :title="item.title"
+      />
     </div>
   </div>
 </template>
@@ -52,6 +69,9 @@ import InputCity from "./shareComponent/InputCity.vue";
 import InputJobPosition from "./shareComponent/InputJobPosition.vue";
 import InputDescription from "./shareComponent/InputDescription.vue";
 import InputImage from "./shareComponent/InputImage.vue";
+import InputListCompany from "./shareComponent/InputListCompany.vue";
+import InputWorkPeriod from "./shareComponent/InputWorkPeriod.vue";
+import InputSalary from "./shareComponent/InputSalary.vue";
 export default {
   components: {
     InputText,
@@ -60,6 +80,9 @@ export default {
     InputJobPosition,
     InputDescription,
     InputImage,
+    InputListCompany,
+    InputWorkPeriod,
+    InputSalary,
   },
   props: {
     data: {
@@ -70,8 +93,16 @@ export default {
       type: Number,
       default: () => 1,
     },
+    id: {
+      type: String,
+      default: () => "",
+    },
   },
-  methods: {},
+  methods: {
+    handleDelete(id) {
+      this.$emit("handleDelete", id);
+    },
+  },
 };
 </script>
 
@@ -82,7 +113,6 @@ export default {
   align-items: flex-start;
   padding: 20px 32px 24px;
   width: 926px;
-  // height: 849px;
   background: #ffffff;
   border: 1px solid #dcdcdc;
   border-radius: 4px;
@@ -92,14 +122,21 @@ export default {
 .step-two {
   display: flex;
   flex-direction: column;
+  width: 1026px;
   margin: 20px 0 24px 20px;
+  padding: 24px;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
 }
 
 .step-three {
   display: flex;
   flex-direction: column;
   margin: 20px 0 24px 20px;
-  width: 932px;
-  height: 618px;
+  width: 926px;
+  background: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-radius: 4px;
+  padding: 20px 32px 24px;
 }
 </style>

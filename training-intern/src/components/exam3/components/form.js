@@ -1,6 +1,6 @@
 import { LIST_COMPANY } from '@/const/multiForm.js'
 
-const formFirst = [
+export const formFirst = [
     {
         id: 1,
         inputType: "inputText",
@@ -43,12 +43,11 @@ const formFirst = [
     },
 ]
 
-const formSecond = [
+export const formSecond = [
     {
         id: 1,
         inputType: "inputListCompany",
         listOption: LIST_COMPANY,
-        requireItem: false
     },
     {
         id: 2,
@@ -69,10 +68,10 @@ const formSecond = [
         title: "Mô tả về công việc",
         requireItem: false,
         wordLimit: 5000
-    }
+    },
 ]
 
-const formThird = [
+export const formThird = [
     {
         id: 1,
         inputType: "inputDescription",
@@ -86,25 +85,4 @@ const formThird = [
         title: "Mức lương mong muốn",
         requireItem: true,
     }
-]
-
-export const formData = [
-    {
-        id: 1,
-        step: 1,
-        data: formFirst,
-        completed: false
-    },
-    {
-        id: 2,
-        step: 2,
-        data: formSecond,
-        completed: false
-    },
-    {
-        id: 3,
-        step: 3,
-        data: formThird,
-        completed: false
-    },
 ]
