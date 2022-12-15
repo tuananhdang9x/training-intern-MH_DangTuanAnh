@@ -11,28 +11,40 @@
         v-if="item.inputType === 'inputText'"
         :requireItem="item.requireItem"
         :title="item.title"
+        :errorMsg="item.errorMsg"
+        :value="item.value"
+        @onChange="onChange"
       />
       <InputDateOfBirth
         v-if="item.inputType === 'inputDob'"
         :requireItem="item.requireItem"
         :title="item.title"
+        :errorMsg="item.errorMsg"
+        :value="item.value"
+        @onChangeDate="onChangeDate"
       />
       <InputCity
         v-if="item.inputType === 'inputCity'"
         :requireItem="item.requireItem"
         :title="item.title"
+        :value="item.value"
+        @onChooseCity="onChooseCity"
       />
       <InputJobPosition
         v-if="item.inputType === 'inputJobPosition'"
         :requireItem="item.requireItem"
         :title="item.title"
         :description="item.description"
+        @onChangeJob="onChangeJob"
       />
       <InputDescription
         v-if="item.inputType === 'inputDescription'"
         :requireItem="item.requireItem"
         :title="item.title"
         :wordLimit="item.wordLimit"
+        :errorMsg="item.errorMsg"
+        :value="item.value"
+        @onChangeDesc="onChangeDesc"
       />
       <InputImage
         v-if="item.inputType === 'inputImage'"
@@ -40,6 +52,7 @@
         :title="item.title"
         :placeholder="item.placeholder"
         :triggerText="item.triggerText"
+        @onAddItem="onAddItem"
       />
       <InputListCompany
         v-if="item.inputType === 'inputListCompany'"
@@ -101,6 +114,24 @@ export default {
   methods: {
     handleDelete(id) {
       this.$emit("handleDelete", id);
+    },
+    onChange(keyword) {
+      this.$emit("onChange", keyword);
+    },
+    onChangeDate(value) {
+      this.$emit("onChangeDate", value);
+    },
+    onChangeDesc(keyword) {
+      this.$emit("onChangeDesc", keyword);
+    },
+    onChooseCity(e) {
+      this.$emit("onChooseCity", e);
+    },
+    onChangeJob() {
+      this.$emit("onChangeJob");
+    },
+    onAddItem() {
+      this.$emit("onAddItem");
     },
   },
 };

@@ -76,6 +76,7 @@ export default {
       this.addChoseList(payload);
       this.keyword = "";
       this.isShow = false;
+      this.$emit("onChangeJob");
     },
     handleDelete(payload) {
       this.deleteChoseItem(payload.id);

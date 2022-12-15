@@ -165,6 +165,7 @@ export default {
           break;
       }
       this.msg.success = "";
+      this.$emit("onAddItem");
     },
 
     toggleAction() {

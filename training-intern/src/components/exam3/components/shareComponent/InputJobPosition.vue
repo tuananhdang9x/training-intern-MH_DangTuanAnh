@@ -7,7 +7,7 @@
     <div class="input-desc">
       {{ description }}
     </div>
-    <AutoComplete />
+    <AutoComplete @onChangeJob="onChangeJob" />
   </div>
 </template>
 
@@ -31,6 +31,11 @@ export default {
     description: {
       type: String,
       default: () => "",
+    },
+  },
+  methods: {
+    onChangeJob() {
+      this.$emit("onChangeJob");
     },
   },
 };

@@ -1,6 +1,7 @@
 <template>
   <DropZoneItem
     @handleSubmit="handleSubmit"
+    @onAddItem="onAddItem"
     :files="getFiles"
     :maxSize="maxSize"
     :quantityFileUpload="quantityFileUpload"
@@ -53,6 +54,9 @@ export default {
       } catch (error) {
         throw Error(error);
       }
+    },
+    onAddItem() {
+      this.$emit("onAddItem");
     },
   },
   computed: {

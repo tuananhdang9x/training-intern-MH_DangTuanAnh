@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AutoCompleteHomeVue />
+    <AutoCompleteHomeVue @onChangeJob="onChangeJob" />
   </div>
 </template>
 
@@ -9,6 +9,11 @@ import AutoCompleteHomeVue from "@/components/exam1/AutoCompleteHome.vue";
 export default {
   components: {
     AutoCompleteHomeVue,
+  },
+  methods: {
+    onChangeJob() {
+      this.$emit("onChangeJob");
+    },
   },
 };
 </script>

@@ -4,8 +4,9 @@
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
     </div>
-    <select id="place-list">
-      <option v-for="item in listOptions" :key="item.code" value="1">
+    <select id="place-list" @change="onChooseCity" v-model="city">
+      <option disabled selected value>Lựa chọn thành phố...</option>
+      <option v-for="item in listOptions" :key="item.code">
         {{ item.name }}
       </option>
     </select>
@@ -16,6 +17,11 @@
 import { mapGetters, mapActions } from "vuex";
 import InputRequire from "./InputRequire.vue";
 export default {
+  data() {
+    return {
+      city: this.value,
+    };
+  },
   created() {
     this.getOptions();
   },
@@ -31,12 +37,19 @@ export default {
       type: String,
       default: () => "",
     },
+    value: {
+      type: String,
+      default: () => "",
+    },
   },
   computed: {
     ...mapGetters("place", ["listOptions"]),
   },
   methods: {
     ...mapActions("place", ["getOptions"]),
+    onChooseCity(e) {
+      this.$emit("onChooseCity", e);
+    },
   },
 };
 </script>
@@ -60,6 +73,9 @@ export default {
     background: #ffffff;
     border: 1px solid #dbdbdb;
     border-radius: 4px;
+    &:focus {
+      outline: none;
+    }
   }
 }
 </style>

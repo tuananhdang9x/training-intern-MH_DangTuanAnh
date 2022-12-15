@@ -1,5 +1,9 @@
 <template>
-  <DropZoneHome :placeholder="placeholder" :triggerText="triggerText" />
+  <DropZoneHome
+    :placeholder="placeholder"
+    :triggerText="triggerText"
+    @onAddItem="onAddItem"
+  />
 </template>
 
 <script>
@@ -16,6 +20,11 @@ export default {
     triggerText: {
       type: String,
       default: () => "",
+    },
+  },
+  methods: {
+    onAddItem() {
+      this.$emit("onAddItem");
     },
   },
 };

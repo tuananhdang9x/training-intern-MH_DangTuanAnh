@@ -4,7 +4,11 @@
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
     </div>
-    <DropZone :placeholder="placeholder" :triggerText="triggerText" />
+    <DropZone
+      :placeholder="placeholder"
+      :triggerText="triggerText"
+      @onAddItem="onAddItem"
+    />
   </div>
 </template>
 
@@ -30,6 +34,11 @@ export default {
     title: {
       type: String,
       default: () => "",
+    },
+  },
+  methods: {
+    onAddItem() {
+      this.$emit("onAddItem");
     },
   },
 };

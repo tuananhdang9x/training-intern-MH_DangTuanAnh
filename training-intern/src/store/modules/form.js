@@ -1,4 +1,4 @@
-import { formFirst, formSecond, formThird } from '@/components/exam3/components/form.js'
+import { formFirst, formSecond, formThird } from '@/components/exam3/components/formData.js'
 
 export default {
     namespaced: true,
@@ -22,25 +22,17 @@ export default {
                 data: formThird,
                 completed: false
             },
-        ]
+        ],
+        dataExport: {}
     },
     getters: {
-        getFormData: state => state.formData
+        getFormData: state => state.formData,
+        getDataExport: state => state.dataExport
     },
     actions: {
-        addForm({ commit }, payload) {
-            commit('ADD_FORM', payload)
-        },
-        deleteForm({ commit }, id) {
-            commit('DELETE_FORM', id)
-        }
+
     },
     mutations: {
-        ADD_FORM(state, payload) {
-            state.formData.push(payload)
-        },
-        DELETE_FORM(state, id) {
-            state.formData = state.formData.filter(item => item.id !== id)
-        }
+
     }
 }

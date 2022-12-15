@@ -2,6 +2,7 @@
   <AutoCompleteItem
     :placeholder="'Chọn các vị trí mà bạn muốn...'"
     :listOptions="listOptions"
+    @onChangeJob="onChangeJob"
   />
 </template>
   
@@ -20,6 +21,9 @@ export default {
   },
   methods: {
     ...mapActions("list", ["getOptions"]),
+    onChangeJob() {
+      this.$emit("onChangeJob");
+    },
   },
   props: {
     type: {

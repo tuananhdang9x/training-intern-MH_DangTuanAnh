@@ -5,15 +5,27 @@
       <div class="input-name">{{ title }}</div>
     </div>
     <div class="input-date">
-      <input type="date" :max="getCurrentDate" />
+      <input
+        type="date"
+        @change="onChangeDate"
+        :class="{ error: errorMsg.length }"
+        v-model="date"
+      />
+    </div>
+    <div class="msg" v-if="errorMsg.length">
+      <p>{{ errorMsg }}</p>
     </div>
   </div>
 </template>
   
   <script>
 import InputRequire from "./InputRequire.vue";
-import { updateDate } from "@/utils/index.js";
 export default {
+  data() {
+    return {
+      date: this.value,
+    };
+  },
   components: {
     InputRequire,
   },
@@ -26,11 +38,18 @@ export default {
       type: String,
       default: () => "",
     },
+    errorMsg: {
+      type: String,
+      default: () => "",
+    },
+    value: {
+      type: String,
+      default: () => "",
+    },
   },
-  computed: {
-    getCurrentDate() {
-      let today = new Date();
-      return updateDate(today);
+  methods: {
+    onChangeDate(e) {
+      this.$emit("onChangeDate", e.target.value);
     },
   },
 };
@@ -39,6 +58,14 @@ export default {
   <style lang="scss" scoped>
 .input-item {
   margin-bottom: 10px;
+
+  .msg {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: red;
+    margin-top: 6px;
+  }
   .input-title {
     display: flex;
     margin-bottom: 6px;
@@ -50,11 +77,17 @@ export default {
     }
   }
   .input-date {
+    .error {
+      border: 1px solid red;
+    }
     input {
       width: 118px;
       height: 40px;
       border: 1px solid #dcdcdc;
       border-radius: 2px;
+      &:focus {
+        outline: none;
+      }
     }
   }
 }
