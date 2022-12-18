@@ -1,81 +1,55 @@
 <template>
-  <div class="container">
-    <div class="header">Đơn ứng tuyển</div>
-    <div class="nav-bar">
-      <div class="nav-item">
-        <div class="active">
-          <p>1</p>
-        </div>
-        <p class="item-info">Thông tin cá nhân</p>
-      </div>
-      <div class="nav-item">
-        <div class="item-number">
-          <p>2</p>
-        </div>
-        <p class="item-info">Kinh nhiệm làm việc</p>
-      </div>
-      <div class="nav-item">
-        <div class="item-number">
-          <p>3</p>
-        </div>
-        <p class="item-info">Xác nhận thông tin</p>
-      </div>
-    </div>
+  <div id="container-multiform">
+    <NavBar :data="getMultiForm" :step="stepNum" @onChangeStep="onChangeStep" />
     <MultiStepForm
       :stepData="stepData"
       @handleDelete="handleDelete"
-      @onChange="(e) => onChange(e, stepData)"
-      @onChangeDate="(e) => onChangeDate(e, stepData)"
-      @onChangeDesc="(e) => onChangeDesc(e, stepData)"
+      @onChange="onChange"
+      @onChangeDate="onChangeDate"
+      @onChangeDesc="onChangeDesc"
       @onChooseCity="onChooseCity"
       @onChangeJob="onChangeJob"
       @onAddItem="onAddItem"
+      @onChooseCompany="onChooseCompany"
+      @onStartTime="onStartTime"
+      @onEndTime="onEndTime"
+      @onChangeSalary="onChangeSalary"
     />
-    <div class="footer">
-      <div class="add-item" @click="handleAddItem" v-if="stepNum === 2">
-        <div class="add-icon">
-          <IconPlus />
-        </div>
-        <p>Thêm công ty</p>
-      </div>
-      <div class="footer-nav">
-        <div
-          class="footer-next-item"
-          @click="handleNextStep"
-          v-if="stepNum !== 3"
-        >
-          <p>Tiếp</p>
-        </div>
-        <div
-          class="footer-prev-item"
-          @click="handlePrevStep"
-          v-if="stepNum === 2"
-        >
-          <p>Quay lại</p>
-        </div>
-      </div>
-      <div class="finish-btn" @click="handleSubmit" v-if="stepNum === 3">
-        <p>Hoàn Thành</p>
-      </div>
-    </div>
+    <FormFooter
+      :step="stepNum"
+      @handleAddItem="handleAddItem"
+      @handleNextStep="handleNextStep"
+      @handlePrevStep="handlePrevStep"
+      @handleSubmit="handleSubmit"
+    />
   </div>
 </template>
   
   <script>
 import MultiStepForm from "./components/MultiStepForm.vue";
-import IconPlus from "@/assets/icon/IconPlus.vue";
-import { mapGetters } from "vuex";
+import NavBar from "./components/shareComponent/NavBar.vue";
+import FormFooter from "./components/shareComponent/FormFooter.vue";
+import { mapActions, mapGetters } from "vuex";
 import {
   formFirst,
-  formSecondDefault,
+  formDefault,
   formSecond,
+  formThird,
 } from "./components/formData.js";
-import { updateDate } from "@/utils/index.js";
-import { v4 } from "uuid";
+import {
+  validateForm,
+  validateInputText,
+  validateDate,
+  validateCompany,
+  validateNextStep,
+  validateDoB,
+  validateDesc,
+} from "@/utils/validateMultiForm.js";
 export default {
   components: {
     MultiStepForm,
-    IconPlus,
+    NavBar,
+    FormFooter,
   },
   data() {
     return {
@@ -83,68 +57,22 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("form", ["getFormData"]),
     ...mapGetters("list", ["listChoseOptions"]),
     ...mapGetters("file", ["getFiles"]),
+    ...mapGetters("form", ["getMultiForm", "getDataExport"]),
 
     stepData() {
-      return this.getFormData.filter((item) => item.step === this.stepNum)[0];
-    },
-    validate() {
-      let isCheck = true;
-
-      let checkValueText = this.stepData.data.filter(
-        (item) => item.inputType === "inputText"
-      )[0].value;
-
-      if (!!checkValueText === false) {
-        this.stepData.data.filter(
-          (item) => item.inputType === "inputText"
-        )[0].errorMsg = "this field is required";
-      }
-      let checkMsgText = this.stepData.data.filter(
-        (item) => item.inputType === "inputText"
-      )[0].errorMsg;
-
-      if (!!checkMsgText === true) {
-        isCheck = false;
-      }
-
-      let checkValueDob = this.stepData.data.filter(
-        (item) => item.inputType === "inputDob"
-      )[0].value;
-      if (!!checkValueDob === false) {
-        this.stepData.data.filter(
-          (item) => item.inputType === "inputDob"
-        )[0].errorMsg = "this field is required";
-      }
-      let checkMsgDob = this.stepData.data.filter(
-        (item) => item.inputType === "inputDob"
-      )[0].errorMsg;
-
-      if (!!checkMsgDob === true) {
-        isCheck = false;
-      }
-
-      let checkMsgDesc = this.stepData.data.filter(
-        (item) => item.inputType === "inputDescription"
-      )[0].errorMsg;
-      if (!!checkMsgDesc === true) {
-        isCheck = false;
-      }
-      return isCheck;
+      return this.getMultiForm.filter((item) => item.step === this.stepNum)[0];
     },
   },
   methods: {
+    ...mapActions("form", ["exportData"]),
     handleNextStep() {
-      if (this.validate) {
+      if (validateNextStep(this.stepData)) {
         if (this.stepNum < 3) {
           this.stepNum++;
-        } else {
-          this.stepNum = 1;
         }
       }
-      console.log(formFirst);
     },
     handlePrevStep() {
       if (this.stepNum > 1) {
@@ -152,246 +80,113 @@ export default {
       }
     },
     handleAddItem() {
-      formSecond.push({
-        id: v4(),
-        formSecondDefault,
-      });
+      formSecond.push(JSON.parse(JSON.stringify(formDefault)));
     },
     handleSubmit() {
-      this.stepNum = 1;
-    },
-    handleDelete(id) {
-      let inx = formSecond.indexOf(
-        formSecond.filter((item) => item.id === id)[0]
-      );
-      formSecond.splice(inx, 1);
-    },
-    onChange(e, stepData) {
-      if (e.length > 100) {
-        stepData.data.filter(
-          (item) => item.inputType === "inputText"
-        )[0].errorMsg = "maximum 100 characters allowed";
-      } else {
-        stepData.data.filter(
-          (item) => item.inputType === "inputText"
-        )[0].errorMsg = "";
+      if (validateForm(this.stepData)) {
+        var data = {};
+        let formSubmit = [...formFirst, ...formThird];
+        formSubmit.forEach((list) => {
+          list.forEach((item) => (data[item.key] = item.value));
+        });
+        data["form_second"] = [
+          formSecond.map((list) => {
+            let form = {};
+            list.forEach((item) => {
+              form[item.key] = item.value;
+            });
+            return form;
+          }),
+        ];
+        this.exportData(data);
+        console.log("Data Export:", this.getDataExport);
       }
-
-      stepData.data.filter((item) => item.inputType === "inputText")[0].value =
-        e;
     },
-    onChangeDate(e, stepData) {
-      let today = new Date();
-
-      if (e > updateDate(today)) {
-        stepData.data.filter(
-          (item) => item.inputType === "inputDob"
-        )[0].errorMsg = "the date should be after today";
-      } else {
-        stepData.data.filter(
-          (item) => item.inputType === "inputDob"
-        )[0].errorMsg = "";
-      }
-
-      stepData.data.filter((item) => item.inputType === "inputDob")[0].value =
-        e;
+    handleDelete(index) {
+      formSecond.splice(index, 1);
     },
-    onChangeDesc(e, stepData) {
-      console.log(e, stepData);
-      if (e.length > 1000) {
-        stepData.data.filter(
-          (item) => item.inputType === "inputDescription"
-        )[0].errorMsg = "maximum 1000 characters allowed";
-      } else {
-        stepData.data.filter(
-          (item) => item.inputType === "inputDescription"
-        )[0].errorMsg = "";
+    onChange(keyword, step, index) {
+      if (validateInputText(this.stepData, keyword, step, index)) {
+        if (step === 1) {
+          this.stepData.data[0][0].value = keyword;
+        } else {
+          this.stepData.data[index][1].value = keyword;
+        }
       }
-
-      stepData.data.filter(
-        (item) => item.inputType === "inputDescription"
-      )[0].value = e;
+    },
+    onChangeDate(value) {
+      validateDoB(this.stepData, value);
+    },
+    onChangeDesc(keyword, step, index) {
+      validateDesc(this.stepData, keyword, step, index);
     },
     onChooseCity(e) {
-      formFirst.filter((item) => item.inputType === "inputCity")[0].value =
+      formFirst[0].filter((item) => item.inputType === "inputCity")[0].value =
         e.target.value;
     },
     onChangeJob() {
-      formFirst.filter(
+      formFirst[0].filter(
         (item) => item.inputType === "inputJobPosition"
       )[0].value = this.listChoseOptions;
     },
     onAddItem() {
-      formFirst.filter((item) => item.inputType === "inputImage")[0].value =
+      formFirst[0].filter((item) => item.inputType === "inputImage")[0].value =
         this.getFiles;
+    },
+    onChooseCompany(event, index) {
+      formSecond[index][0].value = event.target.value;
+      validateCompany(this.stepData, index);
+    },
+    onStartTime(start, index) {
+      formSecond[index].filter(
+        (item) => item.inputType === "inputWorkPeriod"
+      )[0].value.from = start;
+      validateDate(this.stepData, index);
+    },
+    onEndTime(end, index) {
+      let getWorkPeriod = formSecond[index].filter(
+        (item) => item.inputType === "inputWorkPeriod"
+      )[0];
+      getWorkPeriod.value.to = end;
+      validateDate(this.stepData, index);
+    },
+    onChangeSalary(salary) {
+      formThird[0][1].value = salary;
+      validateForm(this.stepData);
+    },
+    onChangeStep(step) {
+      if (step > this.stepNum) {
+        if (step === 3) {
+          if (
+            this.getMultiForm[0].completed &&
+            this.getMultiForm[1].completed
+          ) {
+            this.stepNum = step;
+          } else {
+            if (this.stepNum === 1) {
+              validateNextStep(this.getMultiForm[0]);
+            }
+            if (this.stepNum === 2) {
+              validateNextStep(this.getMultiForm[1]);
+            }
+          }
+        }
+        if (step === 2) {
+          if (validateNextStep(this.getMultiForm[0])) {
+            this.stepNum = step;
+          }
+        }
+      } else {
+        this.stepNum = step;
+      }
     },
   },
 };
 </script>
   
 <style lang="scss" scoped>
-.container {
+#container-multiform {
   display: flex;
   flex-direction: column;
-  .footer {
-    margin-left: 20px;
-    .finish-btn {
-      cursor: pointer;
-      width: 142px;
-      height: 40px;
-      background: #dcdcdc;
-      border-radius: 3px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      p {
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 24px;
-        color: #ffffff;
-      }
-    }
-    .footer-nav {
-      display: flex;
-      .footer-next-item {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 102px;
-        height: 40px;
-        background: #627d98;
-        border-radius: 3px;
-        margin-right: 26px;
-        p {
-          font-weight: 700;
-          font-size: 16px;
-          line-height: 24px;
-          color: #ffffff;
-        }
-      }
-
-      .footer-prev-item {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 102px;
-        height: 40px;
-        background: #ffffff;
-        border: 1px solid #dcdcdc;
-        border-radius: 3px;
-        p {
-          font-weight: 500;
-          font-size: 16px;
-          line-height: 24px;
-          color: #666666;
-        }
-      }
-    }
-    .add-item {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      width: 151px;
-      height: 40px;
-      background: #ffffff;
-      border: 1px solid #dcdcdc;
-      border-radius: 3px;
-      margin-bottom: 24px;
-      .add-icon {
-        padding: 8px;
-      }
-      p {
-        color: #48647f;
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 24px;
-      }
-    }
-    .footer-item {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 102px;
-      height: 40px;
-      background: #dcdcdc;
-      border-radius: 3px;
-      font-weight: 700;
-      font-size: 16px;
-      line-height: 24px;
-      color: #fff;
-      cursor: pointer;
-    }
-  }
-  .header {
-    font-weight: 400;
-    font-size: 24px;
-    line-height: 36px;
-    margin-bottom: 18px;
-    margin-left: 20px;
-  }
-  .nav-bar {
-    display: flex;
-    margin-left: 20px;
-    position: relative;
-    &::before {
-      content: "";
-      width: 503px;
-      height: 3px;
-      background-color: #dbdbdb;
-      position: absolute;
-      top: 18px;
-      left: 73px;
-      z-index: -1;
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-right: 150px;
-      cursor: pointer;
-      .active {
-        width: 40px;
-        height: 40px;
-        border-radius: 90px;
-        background-color: #617d98;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 10px;
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 20px;
-        color: #fff;
-      }
-      .item-number {
-        width: 40px;
-        height: 40px;
-        border-radius: 90px;
-        background-color: #dbdbdb;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: 10px;
-        font-weight: 700;
-        font-size: 14px;
-        line-height: 20px;
-        p {
-          font-weight: 700;
-          font-size: 14px;
-          line-height: 20px;
-          color: #fff;
-        }
-      }
-      .item-info {
-        font-weight: 400;
-        font-size: 14px;
-        line-height: 24px;
-        color: #333;
-      }
-    }
-  }
 }
 </style>

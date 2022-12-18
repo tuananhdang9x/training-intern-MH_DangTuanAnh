@@ -1,16 +1,18 @@
 <template>
-  <div class="input-item">
+  <div class="input-item" :class="{ 'form-2': step === 2 }">
     <div class="input-title">
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
     </div>
     <input
       type="text"
-      @change="onChange"
-      :class="{ error: errorMsg.length }"
+      @change="onChange(keyword, step, index)"
+      :class="{
+        error: errorMsg,
+      }"
       v-model="keyword"
     />
-    <div class="msg" v-if="errorMsg.length">
+    <div class="msg" v-if="errorMsg">
       <p>{{ errorMsg }}</p>
     </div>
   </div>
@@ -24,6 +26,7 @@ export default {
       keyword: this.value,
     };
   },
+
   components: {
     InputRequire,
   },
@@ -44,10 +47,18 @@ export default {
       type: String,
       default: () => "",
     },
+    step: {
+      type: Number,
+      default: () => 1,
+    },
+    index: {
+      type: Number,
+      default: () => 0,
+    },
   },
   methods: {
-    onChange() {
-      this.$emit("onChange", this.keyword);
+    onChange(keyword, step, index) {
+      this.$emit("onChange", keyword, step, index);
     },
   },
 };
@@ -87,5 +98,8 @@ export default {
       outline: none;
     }
   }
+}
+.input-item .form-2 {
+  margin-bottom: 14px;
 }
 </style>

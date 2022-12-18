@@ -68,11 +68,22 @@ export default {
     }
   }
   #place-list {
+    padding: 8px 10px;
     width: 528px;
     height: 40px;
     background: #ffffff;
     border: 1px solid #dbdbdb;
     border-radius: 4px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("@/assets/icon/CaretDown.svg");
+    background-repeat: no-repeat;
+    background-position-x: 98%;
+    background-position-y: 12px;
+    border: 1px solid #dfdfdf;
+    border-radius: 2px;
+
     &:focus {
       outline: none;
     }

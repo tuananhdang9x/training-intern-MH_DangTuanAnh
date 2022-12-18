@@ -5,7 +5,15 @@
       <div class="input-name">{{ title }}</div>
     </div>
     <div class="input-salary">
-      <input type="text" name="name" />
+      <input
+        type="text"
+        :class="{ error: errorMsg }"
+        @change="onChangeSalary(salary)"
+        v-model="salary"
+      />
+    </div>
+    <div class="msg" v-if="errorMsg">
+      <p>{{ errorMsg }}</p>
     </div>
   </div>
 </template>
@@ -13,6 +21,11 @@
 <script>
 import InputRequire from "./InputRequire.vue";
 export default {
+  data() {
+    return {
+      salary: this.value,
+    };
+  },
   components: {
     InputRequire,
   },
@@ -25,6 +38,19 @@ export default {
       type: String,
       default: () => "",
     },
+    value: {
+      type: String,
+      default: () => "",
+    },
+    errorMsg: {
+      type: String,
+      default: () => "",
+    },
+  },
+  methods: {
+    onChangeSalary(salary) {
+      this.$emit("onChangeSalary", salary);
+    },
   },
 };
 </script>
@@ -32,6 +58,13 @@ export default {
 <style lang="scss" scoped>
 .input-item {
   margin-bottom: 10px;
+  .msg {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: red;
+    margin-top: 6px;
+  }
   .input-title {
     display: flex;
     margin-bottom: 6px;
@@ -43,11 +76,17 @@ export default {
     }
   }
   .input-salary {
+    .error {
+      border: 1px solid red;
+    }
     input {
       width: 119px;
       height: 40px;
       border: 1px solid #dbdbdb;
       border-radius: 4px;
+      &:focus {
+        outline: none;
+      }
     }
   }
 }

@@ -12,6 +12,8 @@
         :requireItem="item.requireItem"
         :title="item.title"
         :errorMsg="item.errorMsg"
+        :step="step"
+        :index="index"
         :value="item.value"
         @onChange="onChange"
       />
@@ -44,6 +46,8 @@
         :wordLimit="item.wordLimit"
         :errorMsg="item.errorMsg"
         :value="item.value"
+        :index="index"
+        :step="step"
         @onChangeDesc="onChangeDesc"
       />
       <InputImage
@@ -57,19 +61,29 @@
       <InputListCompany
         v-if="item.inputType === 'inputListCompany'"
         :listOption="item.listOption"
-        :id="id"
+        :value="item.value"
+        :index="index"
+        :errorMsg="item.errorMsg"
         @handleDelete="handleDelete"
+        @onChooseCompany="onChooseCompany"
       />
       <InputWorkPeriod
         v-if="item.inputType === 'inputWorkPeriod'"
         :requireItem="item.requireItem"
         :title="item.title"
         :value="item.value"
+        :index="index"
+        :errorMsg="item.errorMsg"
+        @onStartTime="onStartTime"
+        @onEndTime="onEndTime"
       />
       <InputSalary
         v-if="item.inputType === 'inputSalary'"
         :requireItem="item.requireItem"
         :title="item.title"
+        :value="item.value"
+        :errorMsg="item.errorMsg"
+        @onChangeSalary="onChangeSalary"
       />
     </div>
   </div>
@@ -106,23 +120,23 @@ export default {
       type: Number,
       default: () => 1,
     },
-    id: {
-      type: String,
-      default: () => "",
+    index: {
+      type: Number,
+      default: () => 0,
     },
   },
   methods: {
-    handleDelete(id) {
-      this.$emit("handleDelete", id);
+    handleDelete(index) {
+      this.$emit("handleDelete", index);
     },
-    onChange(keyword) {
-      this.$emit("onChange", keyword);
+    onChange(keyword, step, index) {
+      this.$emit("onChange", keyword, step, index);
     },
     onChangeDate(value) {
       this.$emit("onChangeDate", value);
     },
-    onChangeDesc(keyword) {
-      this.$emit("onChangeDesc", keyword);
+    onChangeDesc(keyword, step, index) {
+      this.$emit("onChangeDesc", keyword, step, index);
     },
     onChooseCity(e) {
       this.$emit("onChooseCity", e);
@@ -132,6 +146,18 @@ export default {
     },
     onAddItem() {
       this.$emit("onAddItem");
+    },
+    onChooseCompany(event, index) {
+      this.$emit("onChooseCompany", event, index);
+    },
+    onStartTime(start, index) {
+      this.$emit("onStartTime", start, index);
+    },
+    onEndTime(end, index) {
+      this.$emit("onEndTime", end, index);
+    },
+    onChangeSalary(salary) {
+      this.$emit("onChangeSalary", salary);
     },
   },
 };

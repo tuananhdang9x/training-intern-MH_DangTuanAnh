@@ -1,67 +1,69 @@
 import { LIST_COMPANY } from '@/const/multiForm.js'
 
 export const formFirst = [
-    {
-        id: 1,
-        inputType: "inputText",
-        title: "Họ và tên",
-        key: "your_name",
-        value: "",
-        errorMsg: "",
-        requireItem: true
-    },
-    {
-        id: 2,
-        inputType: "inputDob",
-        title: "Ngày sinh",
-        key: "your_birthDay",
-        value: "",
-        errorMsg: "",
-        requireItem: true
-    },
-    {
-        id: 3,
-        inputType: "inputCity",
-        title: "Thành phố",
-        key: "your_city",
-        value: "",
-        errorMsg: "",
-        requireItem: false
+    [
+        {
+            id: 1,
+            inputType: "inputText",
+            title: "Họ và tên",
+            key: "your_name",
+            value: "",
+            errorMsg: "",
+            requireItem: true
+        },
+        {
+            id: 2,
+            inputType: "inputDob",
+            title: "Ngày sinh",
+            key: "your_birthDay",
+            value: "",
+            errorMsg: "",
+            requireItem: true
+        },
+        {
+            id: 3,
+            inputType: "inputCity",
+            title: "Thành phố",
+            key: "your_city",
+            value: "",
+            errorMsg: "",
+            requireItem: false
 
-    },
-    {
-        id: 4,
-        inputType: "inputJobPosition",
-        title: "Vị trí làm việc",
-        description: "Có thể chọn được nhiều vị trí mà bạn muốn làm việc",
-        key: "apply_job_position",
-        value: [],
-        errorMsg: "",
-        requireItem: false
-    },
-    {
-        id: 5,
-        inputType: "inputDescription",
-        title: "Mô tả về bản thân",
-        keyword: "your_info",
-        wordLimit: 1000,
-        value: "",
-        errorMsg: "",
-        requireItem: false
-    },
-    {
-        id: 6,
-        inputType: "inputImage",
-        title: "Ảnh cá nhân",
-        key: "your_photo",
-        placeholder: "Hãy kéo và thả ảnh vào đây hoặc",
-        triggerText: "nhấn vào đây",
-        value: [],
-        requireItem: false
-    },
+        },
+        {
+            id: 4,
+            inputType: "inputJobPosition",
+            title: "Vị trí làm việc",
+            description: "Có thể chọn được nhiều vị trí mà bạn muốn làm việc",
+            key: "apply_job_position",
+            value: [],
+            errorMsg: "",
+            requireItem: false
+        },
+        {
+            id: 5,
+            inputType: "inputDescription",
+            title: "Mô tả về bản thân",
+            key: "your_info",
+            wordLimit: 1000,
+            value: "",
+            errorMsg: "",
+            requireItem: false
+        },
+        {
+            id: 6,
+            inputType: "inputImage",
+            title: "Ảnh cá nhân",
+            key: "your_photo",
+            placeholder: "Hãy kéo và thả ảnh vào đây hoặc",
+            triggerText: "nhấn vào đây",
+            value: [],
+            requireItem: false
+        },
+    ]
 ]
 
-export const formSecondDefault = [
+export const formDefault = [
     {
         id: 1,
         inputType: "inputListCompany",
@@ -100,31 +102,30 @@ export const formSecondDefault = [
     },
 ]
 
-export const formSecond = [
-    {
-        id: "1",
-        formSecondDefault
-    }
-]
 
 export const formThird = [
-    {
-        id: 1,
-        inputType: "inputDescription",
-        title: "Lý do muốn ứng tuyển vào công ty",
-        wordLimit: 1000,
-        key: "apply_purposes",
-        value: "",
-        errorMsg: "",
-        requireItem: true
-    },
-    {
-        id: 2,
-        inputType: "inputSalary",
-        title: "Mức lương mong muốn",
-        key: "salary_expectation",
-        value: "",
-        errorMsg: "",
-        requireItem: true
-    }
+    [
+        {
+            id: 1,
+            inputType: "inputDescription",
+            title: "Lý do muốn ứng tuyển vào công ty",
+            wordLimit: 1000,
+            key: "apply_purposes",
+            value: "",
+            errorMsg: "",
+            requireItem: true
+        },
+        {
+            id: 2,
+            inputType: "inputSalary",
+            title: "Mức lương mong muốn",
+            key: "salary_expectation",
+            value: "",
+            errorMsg: "",
+            requireItem: true
+        }
+    ]
 ]
+export const formSecond = [JSON.parse(JSON.stringify(formDefault))]
+
+

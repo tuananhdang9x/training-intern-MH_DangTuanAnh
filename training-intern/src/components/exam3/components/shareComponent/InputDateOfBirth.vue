@@ -8,11 +8,11 @@
       <input
         type="date"
         @change="onChangeDate"
-        :class="{ error: errorMsg.length }"
+        :class="{ error: errorMsg }"
         v-model="date"
       />
     </div>
-    <div class="msg" v-if="errorMsg.length">
+    <div class="msg" v-if="errorMsg">
       <p>{{ errorMsg }}</p>
     </div>
   </div>
@@ -81,12 +81,24 @@ export default {
       border: 1px solid red;
     }
     input {
-      width: 118px;
+      width: 125px;
       height: 40px;
+      padding: 8px;
       border: 1px solid #dcdcdc;
       border-radius: 2px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      color: #000000;
       &:focus {
         outline: none;
+      }
+      &::-webkit-calendar-picker-indicator {
+        color: #ccc;
+        opacity: 0.4;
+        display: block;
+        width: 20px;
+        height: 20px;
       }
     }
   }

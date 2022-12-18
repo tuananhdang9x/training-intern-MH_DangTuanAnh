@@ -80,7 +80,7 @@ export default {
 <style scoped>
 .side-bar {
   background-color: #f0f0f0;
-  height: 1200px;
+  height: 5000px;
 }
 .list-link {
   list-style: none;

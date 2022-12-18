@@ -9,12 +9,14 @@
         type="text"
         name="name"
         v-model="keyword"
-        @change="onChangeDesc"
-        :class="{ error: errorMsg.length }"
+        @change="onChangeDesc(keyword, step, index)"
+        :class="{ error: errorMsg }"
       />
     </div>
-    <div class="input-limit">{{ keyword.length }}/{{ wordLimit }}</div>
-    <div class="msg" v-if="errorMsg.length">
+    <div class="input-limit" v-if="step !== 2">
+      {{ keyword.length }}/{{ wordLimit }}
+    </div>
+    <div class="msg" v-if="errorMsg">
       <p>{{ errorMsg }}</p>
     </div>
   </div>
@@ -52,10 +54,18 @@ export default {
       type: String,
       default: () => "",
     },
+    index: {
+      type: Number,
+      default: () => 0,
+    },
+    step: {
+      type: Number,
+      default: () => 1,
+    },
   },
   methods: {
-    onChangeDesc() {
-      this.$emit("onChangeDesc", this.keyword);
+    onChangeDesc(keyword, step, index) {
+      this.$emit("onChangeDesc", keyword, step, index);
     },
   },
 };
@@ -63,7 +73,7 @@ export default {
 
 <style lang="scss" scoped>
 .input-item {
-  margin-bottom: 10px;
+  margin-bottom: 24px;
 
   .msg {
     font-weight: 400;
@@ -91,6 +101,7 @@ export default {
     input {
       width: 528px;
       height: 152px;
+      padding: 8px 10px;
       background: #ffffff;
       border: 1px solid #dcdcdc;
       border-radius: 4px;

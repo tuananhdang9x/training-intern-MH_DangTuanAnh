@@ -83,6 +83,9 @@ export default {
         appearance: none;
         border: none;
         outline: none;
+        &:focus {
+          outline: none;
+        }
       }
       .search-icon {
         width: 24px;

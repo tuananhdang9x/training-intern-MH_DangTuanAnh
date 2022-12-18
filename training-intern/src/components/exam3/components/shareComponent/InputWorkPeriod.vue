@@ -9,6 +9,9 @@
         type="date"
         name="name"
         placeholder="Chọn các vị trí mà bạn muốn"
+        v-model="start"
+        @change="onStartTime(start, index)"
+        :class="{ error: errorMsg }"
       />
       <div class="input-icon">
         <IconMinus />
@@ -17,7 +20,13 @@
         type="date"
         name="name"
         placeholder="Chọn các vị trí mà bạn muốn"
+        v-model="end"
+        @change="onEndTime(end, index)"
+        :class="{ error: errorMsg }"
       />
+    </div>
+    <div class="msg" v-if="errorMsg">
+      <p>{{ errorMsg }}</p>
     </div>
   </div>
 </template>
@@ -26,6 +35,12 @@
 import IconMinus from "@/assets/icon/IconMinus.vue";
 import InputRequire from "./InputRequire.vue";
 export default {
+  data() {
+    return {
+      start: this.value.from,
+      end: this.value.to,
+    };
+  },
   components: {
     InputRequire,
     IconMinus,
@@ -39,13 +54,40 @@ export default {
       type: String,
       default: () => "",
     },
+    index: {
+      type: Number,
+      default: () => 0,
+    },
+    value: {
+      type: Object,
+      default: () => ({}),
+    },
+    errorMsg: {
+      type: String,
+      default: () => "",
+    },
+  },
+  methods: {
+    onStartTime(start, index) {
+      this.$emit("onStartTime", start, index);
+    },
+    onEndTime(end, index) {
+      this.$emit("onEndTime", end, index);
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .input-item {
-  margin-bottom: 10px;
+  margin-bottom: 24px;
+  .msg {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: red;
+    margin-top: 6px;
+  }
   .input-title {
     display: flex;
     margin-bottom: 6px;
@@ -59,13 +101,29 @@ export default {
   .search-input {
     display: flex;
     align-items: center;
+    .error {
+      border: 1px solid red;
+    }
     input {
-      width: 118px;
+      width: 125px;
       height: 40px;
-      margin-right: 16px;
-      background: #ffffff;
+      padding: 8px;
       border: 1px solid #dcdcdc;
       border-radius: 2px;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+      margin-right: 16px;
+      &::-webkit-calendar-picker-indicator {
+        color: #ccc;
+        opacity: 0.4;
+        display: block;
+        width: 20px;
+        height: 20px;
+      }
+      &:focus {
+        outline: none;
+      }
     }
     .input-icon {
       margin-right: 16px;

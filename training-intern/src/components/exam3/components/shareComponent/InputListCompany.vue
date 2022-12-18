@@ -2,15 +2,24 @@
   <div class="input-item">
     <div class="input-company">
       <div class="company-item">
-        <select id="place-list">
-          <option v-for="(company, index) in listOption" :key="index" value="1">
+        <select
+          id="company-list"
+          @change="onChooseCompany($event, index)"
+          v-model="company"
+          :class="{ error: errorMsg }"
+        >
+          <option disabled selected value>Lựa chọn công ty...</option>
+          <option v-for="(company, index) in listOption" :key="index">
             {{ company }}
           </option>
         </select>
       </div>
-      <div class="input-icon" @click="handleDelete(id)">
+      <div class="input-icon" @click="handleDelete(index)">
         <IconTrash />
       </div>
+    </div>
+    <div class="msg" v-if="errorMsg">
+      <p>{{ errorMsg }}</p>
     </div>
   </div>
 </template>
@@ -18,6 +27,11 @@
   <script>
 import IconTrash from "@/assets/icon/IconTrash.vue";
 export default {
+  data() {
+    return {
+      company: this.value,
+    };
+  },
   components: {
     IconTrash,
   },
@@ -26,14 +40,25 @@ export default {
       type: Array,
       default: () => [],
     },
-    id: {
+    index: {
+      type: Number,
+      default: () => 0,
+    },
+    value: {
+      type: String,
+      default: () => "",
+    },
+    errorMsg: {
       type: String,
       default: () => "",
     },
   },
   methods: {
-    handleDelete(id) {
-      this.$emit("handleDelete", id);
+    handleDelete(index) {
+      this.$emit("handleDelete", index);
+    },
+    onChooseCompany(event, index) {
+      this.$emit("onChooseCompany", event, index);
     },
   },
 };
@@ -41,7 +66,14 @@ export default {
   
   <style lang="scss" scoped>
 .input-item {
-  margin-bottom: 10px;
+  margin-bottom: 24px;
+  .msg {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: red;
+    margin-top: 6px;
+  }
   .input-company {
     width: 978px;
     height: 60px;
@@ -57,7 +89,10 @@ export default {
       cursor: pointer;
     }
     .company-item {
-      #place-list {
+      .error {
+        border: 1px solid red !important;
+      }
+      #company-list {
         display: flex;
         align-items: center;
         justify-content: space-between;

@@ -1,27 +1,24 @@
 <template>
   <div>
-    <div v-if="stepData.step === 1 || stepData.step === 3">
-      <MultiInputForm
-        :data="stepData.data"
-        :step="stepData.step"
-        @onChange="onChange"
-        @onChangeDate="onChangeDate"
-        @onChangeDesc="onChangeDesc"
-        @onChooseCity="onChooseCity"
-        @onChangeJob="onChangeJob"
-        @onAddItem="onAddItem"
-      />
-    </div>
-    <div v-if="stepData.step === 2">
-      <MultiInputForm
-        v-for="data in stepData.data"
-        :key="data.id"
-        :data="data.formSecondDefault"
-        :step="stepData.step"
-        :id="data.id"
-        @handleDelete="handleDelete"
-      />
-    </div>
+    <MultiInputForm
+      v-for="(item, index) in stepData.data"
+      :key="index"
+      :data="item"
+      :step="stepData.step"
+      :id="stepData.id"
+      :index="index"
+      @handleDelete="handleDelete"
+      @onChooseCompany="onChooseCompany"
+      @onChange="onChange"
+      @onChangeDate="onChangeDate"
+      @onChangeDesc="onChangeDesc"
+      @onChooseCity="onChooseCity"
+      @onChangeJob="onChangeJob"
+      @onAddItem="onAddItem"
+      @onStartTime="onStartTime"
+      @onEndTime="onEndTime"
+      @onChangeSalary="onChangeSalary"
+    />
   </div>
 </template>
 
@@ -38,17 +35,17 @@ export default {
     },
   },
   methods: {
-    handleDelete(id) {
-      this.$emit("handleDelete", id);
+    handleDelete(index) {
+      this.$emit("handleDelete", index);
     },
-    onChange(keyword) {
-      this.$emit("onChange", keyword);
+    onChange(keyword, step, index) {
+      this.$emit("onChange", keyword, step, index);
     },
     onChangeDate(value) {
       this.$emit("onChangeDate", value);
     },
-    onChangeDesc(keyword) {
-      this.$emit("onChangeDesc", keyword);
+    onChangeDesc(keyword, step, index) {
+      this.$emit("onChangeDesc", keyword, step, index);
     },
     onChooseCity(e) {
       this.$emit("onChooseCity", e);
@@ -58,6 +55,18 @@ export default {
     },
     onAddItem() {
       this.$emit("onAddItem");
+    },
+    onChooseCompany(event, index) {
+      this.$emit("onChooseCompany", event, index);
+    },
+    onStartTime(start, index) {
+      this.$emit("onStartTime", start, index);
+    },
+    onEndTime(end, index) {
+      this.$emit("onEndTime", end, index);
+    },
+    onChangeSalary(salary) {
+      this.$emit("onChangeSalary", salary);
     },
   },
 };
