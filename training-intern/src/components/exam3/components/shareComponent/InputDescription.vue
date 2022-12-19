@@ -5,13 +5,13 @@
       <div class="input-name">{{ title }}</div>
     </div>
     <div class="input-large">
-      <input
+      <textarea
         type="text"
         name="name"
         v-model="keyword"
         @change="onChangeDesc(keyword, step, index)"
         :class="{ error: errorMsg }"
-      />
+      ></textarea>
     </div>
     <div class="input-limit" v-if="step !== 2">
       {{ keyword.length }}/{{ wordLimit }}
@@ -98,13 +98,17 @@ export default {
     .error {
       border: 1px solid red;
     }
-    input {
+    textarea {
       width: 528px;
       height: 152px;
       padding: 8px 10px;
       background: #ffffff;
       border: 1px solid #dcdcdc;
       border-radius: 4px;
+      resize: none;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
       &:focus {
         outline: none;
       }
