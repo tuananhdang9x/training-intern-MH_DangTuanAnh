@@ -197,7 +197,7 @@ export function validateDoB(stepData, value) {
     let today = new Date();
 
     if (value > updateDate(today)) {
-        stepData.data[0][1].errorMsg = "the date should be after today";
+        stepData.data[0][1].errorMsg = "the date should be before today";
     } else {
         stepData.data[0][1].errorMsg = "";
     }
@@ -232,11 +232,16 @@ export function validateDesc(stepData, keyword, step, index) {
 }
 
 export function validateDate(stepData, index) {
+    let today = new Date();
     let isCheck = true;
 
     let date = stepData.data[index][2].value;
     if (date.from && date.to !== "") {
-        if (date.from > date.to) {
+        if (date.from > updateDate(today) || date.to > updateDate(today)) {
+            stepData.data[index][2].errorMsg = "the date should be before today"
+            isCheck = false;
+            stepData.completed = false;
+        } else if (date.from > date.to) {
             stepData.data[index][2].errorMsg = "the end date cannot be before the start date"
             isCheck = false;
             stepData.completed = false;
