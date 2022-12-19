@@ -141,14 +141,18 @@ export default {
       formSecond[index].filter(
         (item) => item.inputType === "inputWorkPeriod"
       )[0].value.from = start;
-      validateDate(this.stepData, index);
+      if (validateDate(this.stepData, index)) {
+        this.$toasted.show("the date confict was found");
+      }
     },
     onEndTime(end, index) {
       let getWorkPeriod = formSecond[index].filter(
         (item) => item.inputType === "inputWorkPeriod"
       )[0];
       getWorkPeriod.value.to = end;
-      validateDate(this.stepData, index);
+      if (validateDate(this.stepData, index)) {
+        this.$toasted.show("the date confict was found");
+      }
     },
     onChangeSalary(salary) {
       formThird[0][1].value = salary;
@@ -189,4 +193,4 @@ export default {
   display: flex;
   flex-direction: column;
 }
-</style>
+</style>  

@@ -254,6 +254,7 @@ export function validateDate(stepData, index) {
         }
     }
 
+    let isConflict = false;
     if (stepData.data.length > 1 && isCheck) {
         for (let i = 0; i < stepData.data.length; i++) {
             for (let j = 1; j < stepData.data.length; j++) {
@@ -264,7 +265,7 @@ export function validateDate(stepData, index) {
                         stepData.data[i][2].errorMsg = "the date conflict was found"
                         stepData.data[j][2].errorMsg = "the date conflict was found"
                         stepData.completed = false;
-                        alert('the date conflict was found')
+                        isConflict = true;
                     } else {
                         stepData.data[i][2].errorMsg = ""
                         stepData.data[j][2].errorMsg = ""
@@ -273,7 +274,12 @@ export function validateDate(stepData, index) {
             }
         }
     }
+    return isConflict;
 }
+
+
+
+
 
 
 
