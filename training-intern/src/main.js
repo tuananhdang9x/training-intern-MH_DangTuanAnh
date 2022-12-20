@@ -17,7 +17,6 @@ Vue.use(VueAxios, axios)
 Vue.use(Toasted, {
   position: 'top-center',
   duration: 3000,
-  theme: 'outline'
 })
 
 const router = new VueRouter({

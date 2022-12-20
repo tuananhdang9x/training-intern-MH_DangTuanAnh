@@ -65,15 +65,16 @@ export const formFirst = [
 
 export const formDefault = [
     {
-        id: 1,
+        id: 7,
         inputType: "inputListCompany",
         listOption: LIST_COMPANY,
         key: "chosen_company",
         value: "",
-        errorMsg: ""
+        errorMsg: "",
+        requireItem: true
     },
     {
-        id: 2,
+        id: 8,
         inputType: "inputText",
         title: "Vị trí từng làm",
         key: "prev_job_position",
@@ -82,7 +83,7 @@ export const formDefault = [
         requireItem: true
     },
     {
-        id: 3,
+        id: 9,
         inputType: "inputWorkPeriod",
         title: "Thời gian làm việc",
         key: "working_period",
@@ -91,7 +92,7 @@ export const formDefault = [
         requireItem: true
     },
     {
-        id: 4,
+        id: 10,
         inputType: "inputDescription",
         title: "Mô tả về công việc",
         wordLimit: 5000,
@@ -106,7 +107,7 @@ export const formDefault = [
 export const formThird = [
     [
         {
-            id: 1,
+            id: 11,
             inputType: "inputDescription",
             title: "Lý do muốn ứng tuyển vào công ty",
             wordLimit: 1000,
@@ -116,7 +117,7 @@ export const formThird = [
             requireItem: true
         },
         {
-            id: 2,
+            id: 12,
             inputType: "inputSalary",
             title: "Mức lương mong muốn",
             key: "salary_expectation",

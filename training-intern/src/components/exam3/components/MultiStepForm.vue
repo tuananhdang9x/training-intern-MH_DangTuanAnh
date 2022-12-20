@@ -5,19 +5,16 @@
       :key="index"
       :data="item"
       :step="stepData.step"
-      :id="stepData.id"
+      :id="item.id"
       :index="index"
       @handleDelete="handleDelete"
-      @onChooseCompany="onChooseCompany"
       @onChange="onChange"
-      @onChangeDate="onChangeDate"
-      @onChangeDesc="onChangeDesc"
-      @onChooseCity="onChooseCity"
-      @onChangeJob="onChangeJob"
-      @onAddItem="onAddItem"
       @onStartTime="onStartTime"
       @onEndTime="onEndTime"
-      @onChangeSalary="onChangeSalary"
+      @handleAddItem="handleAddItem"
+      @handleNextStep="handleNextStep"
+      @handlePrevStep="handlePrevStep"
+      @handleSubmit="handleSubmit"
     />
   </div>
 </template>
@@ -38,35 +35,26 @@ export default {
     handleDelete(index) {
       this.$emit("handleDelete", index);
     },
-    onChange(keyword, step, index) {
-      this.$emit("onChange", keyword, step, index);
+    onChange(payload) {
+      this.$emit("onChange", payload);
     },
-    onChangeDate(value) {
-      this.$emit("onChangeDate", value);
+    onStartTime(payload) {
+      this.$emit("onStartTime", payload);
     },
-    onChangeDesc(keyword, step, index) {
-      this.$emit("onChangeDesc", keyword, step, index);
+    onEndTime(payload) {
+      this.$emit("onEndTime", payload);
     },
-    onChooseCity(e) {
-      this.$emit("onChooseCity", e);
+    handleAddItem() {
+      this.$emit("handleAddItem");
     },
-    onChangeJob() {
-      this.$emit("onChangeJob");
+    handleNextStep(payload) {
+      this.$emit("handleNextStep", payload);
     },
-    onAddItem() {
-      this.$emit("onAddItem");
+    handlePrevStep() {
+      this.$emit("handlePrevStep");
     },
-    onChooseCompany(event, index) {
-      this.$emit("onChooseCompany", event, index);
-    },
-    onStartTime(start, index) {
-      this.$emit("onStartTime", start, index);
-    },
-    onEndTime(end, index) {
-      this.$emit("onEndTime", end, index);
-    },
-    onChangeSalary(salary) {
-      this.$emit("onChangeSalary", salary);
+    handleSubmit(payload) {
+      this.$emit("handleSubmit", payload);
     },
   },
 };

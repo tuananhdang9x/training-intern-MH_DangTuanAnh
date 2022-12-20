@@ -1,280 +1,294 @@
 import { updateDate } from "@/utils/index.js";
 
-export function validateForm(stepData) {
-    if (stepData.step === 1) {
-        let isCheck = true;
-        let getInputText = stepData.data[0].filter(
-            (item) => item.inputType === "inputText"
-        )[0];
-
-        let checkValueText = getInputText.value;
-        if (!!checkValueText === false) {
-            getInputText.errorMsg = "this field is required";
-        }
-
-        let checkMsgText = getInputText.errorMsg;
-        if (!!checkMsgText === true) {
-            isCheck = false;
-        }
-
-        let getInputDob = stepData.data[0].filter(
-            (item) => item.inputType === "inputDob"
-        )[0];
-        let checkValueDob = getInputDob.value;
-        if (!!checkValueDob === false) {
-            getInputDob.errorMsg = "this field is required";
-        }
-        let checkMsgDob = getInputDob.errorMsg;
-
-        if (!!checkMsgDob === true) {
-            isCheck = false;
-        }
-
-        let getInputDesc = stepData.data[0].filter(
-            (item) => item.inputType === "inputDescription"
-        )[0];
-        let checkMsgDesc = getInputDesc.errorMsg;
-        if (!!checkMsgDesc === true) {
-            isCheck = false;
-        }
-
-        return isCheck;
-    }
-
-    if (stepData.step === 2) {
-        let isCheck = true;
-        stepData.data.forEach(item => {
-            if (item[1].value === "") {
-                item[1].errorMsg = "this field is required";
-            } else {
-                item.errorMsg = "";
-            }
-            if (!!item[1].errorMsg === true) {
-                isCheck = false;
-            }
-            if (item[2].value.from === "" || item[2].value.to === "") {
-                item[2].errorMsg = "this field is required";
-            }
-            if (!!item[2].errorMsg === true) {
-                isCheck = false;
-            }
-            if (!!item[3].errorMsg === true) {
-                isCheck = false;
+export function validateLastForm(stepData) {
+    console.log('active here')
+    console.log(stepData)
+    let isValid = true
+    let count = 0;
+    stepData.data.forEach(list => {
+        list.forEach(item => {
+            if (item.requireItem === true) {
+                count++
             }
         })
-        return isCheck;
+    })
+    console.log(count)
+    if (stepData.status.length < count) {
+        isValid = false;
+    } else {
+        stepData.status.forEach(item => {
+            if (item.completed === false) {
+                isValid = false
+            }
+        })
     }
-
-    if (stepData.step === 3) {
-        let isCheck = true;
-
-        let getInputDesc = stepData.data[0].filter(
-            (item) => item.inputType === "inputDescription"
-        )[0];
-
-        if (getInputDesc.value === "") {
-            getInputDesc.errorMsg = "this field is required"
-            isCheck = false;
-        } else {
-            getInputDesc.errorMsg = ""
-        }
-        let checkMsgDesc = getInputDesc.errorMsg;
-        if (!!checkMsgDesc === true) {
-            isCheck = false;
-        }
-        let getInputSalary = stepData.data[0][1];
-
-        if (getInputSalary.value === "") {
-            getInputSalary.errorMsg = "this field is required"
-            isCheck = false;
-        } else if (getInputSalary.value.length > 10) {
-            getInputSalary.errorMsg = "maximum 10 characters are required"
-            isCheck = false;
-        } else if (isNaN(getInputSalary.value)) {
-            getInputSalary.errorMsg = "invalid number"
-            isCheck = false;
-        } else {
-            getInputSalary.errorMsg = ""
-        }
-
-        if (!!getInputSalary.errorMsg === true) {
-            isCheck = false;
-        }
-        return isCheck;
-    }
+    console.log(isValid)
+    return isValid
 }
 
-export function validateNextStep(data) {
-    data.completed = true
-    switch (data.step) {
-        case 1:
-            data.completed = validateForm(data);
+export function validateNextStep(stepData, step) {
+    let isValid = true
+    switch (step) {
+        case 1: {
+            let count = 0;
+            stepData.data[step - 1].forEach(item => {
+                if (item.requireItem === true) {
+                    count++
+                }
+            })
+            if (stepData.status.length < count) {
+                isValid = false;
+            } else {
+                stepData.status.forEach(item => {
+                    if (item.completed === false) {
+                        isValid = false
+                    }
+                })
+            }
+        }
             break;
-        case 2:
-            if (validateListCompany(data) === false) {
-                data.completed = false;
+        case 2: {
+            let count = 0;
+            stepData.data.forEach(list => {
+                list.forEach(item => {
+                    if (item.requireItem === true) {
+                        count++
+                    }
+                })
+            })
+            if (stepData.status.length < count) {
+                isValid = false;
+            } else {
+                stepData.status.forEach(item => {
+                    if (item.completed === false) {
+                        isValid = false
+                    }
+                })
             }
-            if (validateForm(data) === false) {
-                data.completed = false;
-            }
+        }
             break;
         default:
             console.log("Invalid step");
             break;
     }
-    return data.completed;
+    return isValid;
 }
 
-export function validateListCompany(stepData) {
+export function validateSalary(stepData, salary, index, id) {
+    console.log(stepData, salary, index, id)
+    let isCheck = true;
+    let inputSalary = stepData.data[index].filter(item => item.id === id)[0];
+    console.log('inputSalary', inputSalary)
+    inputSalary.value = salary
+
+    if (salary === "") {
+        inputSalary.errorMsg = "this field is required"
+        isCheck = false;
+    } else if (isNaN(salary)) {
+        inputSalary.errorMsg = "invalid number"
+        isCheck = false;
+    } else if (salary.length > 10) {
+        inputSalary.errorMsg = "maximum 10 characters are required"
+        isCheck = false;
+    } else {
+        inputSalary.errorMsg = ""
+    }
+
+    addStatus(stepData, id, isCheck, index)
+    return isCheck
+}
+
+export function validateCompany(stepData, value, id, index) {
+    let isCheck = true
+    let inputCompany = stepData.data[index].filter(item => item.id === id)[0]
+    inputCompany.value = value
+    if (value === "") {
+        inputCompany.errorMsg = "this field is required";
+        isCheck = false
+    } else {
+        inputCompany.errorMsg = "";
+    }
+
+    addStatus(stepData, id, isCheck, index)
+    return isCheck;
+}
+
+export function validateInputText(stepData, keyword, step, index, id) {
+    let isCheck = true;
+    switch (step) {
+        case 1: {
+            let inputText = stepData.data[index].filter(item => item.id === id)[0]
+            inputText.value = keyword
+            if (keyword === "") {
+                inputText.errorMsg = "this field is required";
+                isCheck = false
+            } else if (keyword.length > 100) {
+                inputText.errorMsg = "maximum 100 characters allowed";
+                isCheck = false
+            } else {
+                inputText.errorMsg = "";
+            }
+            break;
+        }
+
+        case 2: {
+
+            let inputText = stepData.data[index].filter(
+                (item) => item.id === id
+            )[0];
+            inputText.value = keyword
+            if (keyword === "" && inputText.value === "") {
+                inputText.errorMsg = "this field is required";
+                isCheck = false
+            } else if (keyword.length > 100) {
+                inputText.errorMsg = "maximum 100 characters allowed";
+                isCheck = false;
+            } else {
+                inputText.errorMsg = "";
+            }
+            break;
+        }
+        default:
+            console.log('Invalid step')
+            break;
+    }
+    addStatus(stepData, id, isCheck, index)
+    return isCheck
+}
+
+export function validateDoB(stepData, value, index, id) {
+    let isCheck = true;
+    let today = new Date();
+    let dateOfBirth = stepData.data[index].filter(item => item.id === id)[0]
+    dateOfBirth.value = value
+    if (dateOfBirth.value === "") {
+        dateOfBirth.errorMsg = "this field is required";
+        isCheck = false
+    } else if (value > updateDate(today)) {
+        dateOfBirth.errorMsg = "the date should be before today";
+        isCheck = false
+    } else {
+        dateOfBirth.errorMsg = "";
+    }
+    dateOfBirth.value = value;
+    addStatus(stepData, id, isCheck, index)
+    return isCheck;
+}
+
+export function validateDesc(stepData, keyword, step, index, id) {
+    let isCheck = true
+    switch (step) {
+        case 1: {
+            let inputDesc = stepData.data[index].filter(item => item.id === id)[0]
+            inputDesc.value = keyword
+            if (keyword.length > 1000) {
+                inputDesc.errorMsg = "maximum 1000 characters allowed";
+                isCheck = false
+            } else {
+                inputDesc.errorMsg = "";
+            }
+            break;
+        }
+        case 2: {
+            stepData.data.forEach(item => {
+                let inputDesc = item.filter(item => item.id === id)[0]
+                inputDesc.value = keyword
+                if (keyword.length > 5000) {
+                    inputDesc.errorMsg = "maximum 5000 characters allowed";
+                    isCheck = false
+                } else {
+                    inputDesc.errorMsg = "";
+                }
+            })
+            break;
+        }
+        case 3: {
+            let inputDesc = stepData.data[index].filter(item => item.id === id)[0]
+            inputDesc.value = keyword
+            if (keyword.length > 1000) {
+                inputDesc.errorMsg = "maximum 1000 characters allowed";
+                isCheck = false
+            } else {
+                inputDesc.errorMsg = "";
+            }
+            break;
+        }
+        default:
+            console.log('Invalid step')
+            break;
+    }
+    addStatus(stepData, id, isCheck, index)
+    return isCheck;
+}
+
+export function validateDate(stepData, index, id) {
+    let today = new Date();
     let isCheck = true;
     stepData.data.forEach(item => {
-        if (item[0].value === "") {
-            item[0].errorMsg = "this field is required";
-        } else {
-            item[0].errorMsg = "";
-        }
+        let inputDate = item.filter(item => item.id === id)[0]
 
-        if (!!item[0].errorMsg === true) {
-            isCheck = false;
-            stepData.completed = false;
+        if (inputDate.value.from === "" && inputDate.value.to === "") {
+            inputDate.errorMsg = "this field is required"
+            isCheck = false
+        } else {
+            if (inputDate.value.from > updateDate(today) || inputDate.value.to > updateDate(today)) {
+                inputDate.errorMsg = "the date should be before today"
+                isCheck = false;
+            } else if (inputDate.value.from > inputDate.value.to && inputDate.value.to !== "") {
+                inputDate.errorMsg = "the end date cannot be before the start date"
+                isCheck = false;
+            } else if (inputDate.value.from === inputDate.value.to) {
+                inputDate.errorMsg = "invalid date"
+                isCheck = false;
+            } else {
+                inputDate.errorMsg = ""
+            }
         }
     })
-    return isCheck;
-}
-export function validateCompany(stepData, index) {
-    let isCheck = true;
-    let checkCompany = stepData.data[index][0]
-    if (checkCompany.value === "") {
-        checkCompany.errorMsg = "this field is required";
-    } else {
-        checkCompany.errorMsg = "";
-    }
-
-    if (!!checkCompany.errorMsg === true) {
-        isCheck = false;
-        stepData.completed = false;
-    }
-    return isCheck;
-}
-
-export function validateInputText(stepData, keyword, step, index) {
-
-    let isCheck = true;
-
-    if (step === 1) {
-        let getInputText = stepData.data[0][0]
-        if (keyword === "") {
-            getInputText.errorMsg = "this field is required";
-            isCheck = false
-            stepData.completed = false;
-        } else if (keyword.length > 100) {
-            getInputText.errorMsg = "maximum 100 characters allowed";
-            isCheck = false
-            stepData.completed = false;
-        } else {
-            getInputText.errorMsg = "";
-        }
-    } else {
-        let getInputText = stepData.data[index].filter(
-            (item) => item.inputType === "inputText"
-        )[0];
-        if (keyword === "") {
-            getInputText.errorMsg = "this field is required";
-            isCheck = false
-            stepData.completed = false;
-        } else if (keyword.length > 100) {
-            getInputText.errorMsg = "maximum 100 characters allowed";
-            isCheck = false;
-            stepData.completed = false;
-        } else {
-            getInputText.errorMsg = "";
-        }
-    }
-    return isCheck;
-}
-
-export function validateDoB(stepData, value) {
-    let today = new Date();
-
-    if (value > updateDate(today)) {
-        stepData.data[0][1].errorMsg = "the date should be before today";
-    } else {
-        stepData.data[0][1].errorMsg = "";
-    }
-
-    stepData.data[0][1].value = value;
-}
-
-export function validateDesc(stepData, keyword, step, index) {
-    if (step === 1 || step === 3) {
-        if (keyword.length > 1000) {
-            stepData.data[0].filter(
-                (item) => item.inputType === "inputDescription"
-            )[0].errorMsg = "maximum 1000 characters allowed";
-        } else {
-            stepData.data[0].filter(
-                (item) => item.inputType === "inputDescription"
-            )[0].errorMsg = "";
-        }
-
-        stepData.data[0].filter(
-            (item) => item.inputType === "inputDescription"
-        )[0].value = keyword;
-    } else {
-        if (keyword.length > 5000) {
-            stepData.data[index][3].errorMsg = "maximum 5000 characters allowed";
-        } else {
-            stepData.data[index][3].errorMsg = "";
-        }
-
-        stepData.data[index][3].value = keyword;
-    }
-}
-
-export function validateDate(stepData, index) {
-    let today = new Date();
-    let isCheck = true;
-
-    let date = stepData.data[index][2].value;
-    if (date.from && date.to !== "") {
-        if (date.from > updateDate(today) || date.to > updateDate(today)) {
-            stepData.data[index][2].errorMsg = "the date should be before today"
-            isCheck = false;
-            stepData.completed = false;
-        } else if (date.from > date.to) {
-            stepData.data[index][2].errorMsg = "the end date cannot be before the start date"
-            isCheck = false;
-            stepData.completed = false;
-        } else if (date.from === date.to) {
-            stepData.data[index][2].errorMsg = "invalid date"
-            isCheck = false;
-            stepData.completed = false;
-        } else {
-            stepData.data[index][2].errorMsg = ""
-        }
-    }
-
     let isConflict = false;
     if (stepData.data.length > 1 && isCheck) {
         for (let i = 0; i < stepData.data.length; i++) {
             for (let j = 1; j < stepData.data.length; j++) {
-                let itemI = stepData.data[i][2].value
-                let itemJ = stepData.data[j][2].value
-                if (itemI.from && itemJ.from !== "" && i !== j) {
-                    if (itemI.from <= itemJ.to && itemJ.from <= itemI.to) {
-                        stepData.data[i][2].errorMsg = "the date conflict was found"
-                        stepData.data[j][2].errorMsg = "the date conflict was found"
-                        stepData.completed = false;
-                        isConflict = true;
-                    } else {
-                        stepData.data[i][2].errorMsg = ""
-                        stepData.data[j][2].errorMsg = ""
+                let itemI = stepData.data[i].filter(item => item.id === id)[0]
+                let itemJ = stepData.data[j].filter(item => item.id === id)[0]
+                if (itemI.value.from && itemJ.value.from !== "" && i < j) {
+                    if (itemI.value.from <= itemJ.value.to && itemJ.value.from <= itemI.value.to) {
+                        itemI.errorMsg = "the date conflict was found"
+                        itemJ.errorMsg = "the date conflict was found"
+                        isCheck = false
+                        isConflict = true
                     }
                 }
             }
         }
     }
+    addStatus(stepData, id, isCheck, index)
     return isConflict;
+}
+
+function addStatus(stepData, id, isCheck, index) {
+    if (stepData.status.length > 0) {
+        let isDuplicate = false;
+        stepData.status.forEach(item => {
+            if (item.id === "A" + index + id) {
+                if (item.completed !== isCheck) {
+                    item.completed = isCheck
+                }
+                isDuplicate = true
+            }
+        })
+        if (!isDuplicate) {
+            stepData.status.push({
+                id: "A" + index + id,
+                completed: isCheck
+            })
+        }
+    } else {
+        stepData.status.push({
+            id: "A" + index + id,
+            completed: isCheck
+        })
+    }
 }
 
 

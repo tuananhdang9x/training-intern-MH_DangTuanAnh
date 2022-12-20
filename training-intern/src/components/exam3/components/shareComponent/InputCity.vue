@@ -4,7 +4,11 @@
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
     </div>
-    <select id="place-list" @change="onChooseCity" v-model="city">
+    <select
+      id="place-list"
+      @change="onChange($event, inputType, id, index)"
+      v-model="city"
+    >
       <option disabled selected value>Lựa chọn thành phố...</option>
       <option v-for="item in listOptions" :key="item.code">
         {{ item.name }}
@@ -41,14 +45,26 @@ export default {
       type: String,
       default: () => "",
     },
+    inputType: {
+      type: String,
+      default: () => "",
+    },
+    id: {
+      type: Number,
+      default: () => 0,
+    },
+    index: {
+      type: Number,
+      default: () => 0,
+    },
   },
   computed: {
     ...mapGetters("place", ["listOptions"]),
   },
   methods: {
     ...mapActions("place", ["getOptions"]),
-    onChooseCity(e) {
-      this.$emit("onChooseCity", e);
+    onChange(event, inputType, id, index) {
+      this.$emit("onChange", { event, inputType, id, index });
     },
   },
 };

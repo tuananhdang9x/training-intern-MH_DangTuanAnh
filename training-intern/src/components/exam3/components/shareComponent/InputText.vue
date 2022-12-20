@@ -6,7 +6,7 @@
     </div>
     <input
       type="text"
-      @change="onChange(keyword, step, index)"
+      @change="onChange(keyword, step, index, inputType, id)"
       :class="{
         error: errorMsg,
       }"
@@ -55,10 +55,18 @@ export default {
       type: Number,
       default: () => 0,
     },
+    inputType: {
+      type: String,
+      default: () => "",
+    },
+    id: {
+      type: Number,
+      default: () => 0,
+    },
   },
   methods: {
-    onChange(keyword, step, index) {
-      this.$emit("onChange", keyword, step, index);
+    onChange(keyword, step, index, inputType, id) {
+      this.$emit("onChange", { keyword, step, index, inputType, id });
     },
   },
 };

@@ -8,7 +8,7 @@
         <div class="selected-item">
           <SelectedItem
             v-for="result in listChoseOptions"
-            :key="result.id"
+            :key="'B' + result.id"
             :result="result"
             @handleDelete="handleDelete"
           />
@@ -110,8 +110,6 @@ export default {
 
 <style lang="scss" scoped>
 .container {
-  // margin-left: 179px;
-  // margin-top: 168px;
   font-family: "Noto Sans JP", sans-serif;
   .input-container {
     position: relative;

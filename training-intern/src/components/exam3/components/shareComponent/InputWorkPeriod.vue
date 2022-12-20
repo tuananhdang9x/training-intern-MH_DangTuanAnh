@@ -10,7 +10,7 @@
         name="name"
         placeholder="Chọn các vị trí mà bạn muốn"
         v-model="start"
-        @change="onStartTime(start, index)"
+        @change="onStartTime(start, index, id)"
         :class="{ error: errorMsg }"
       />
       <div class="input-icon">
@@ -21,7 +21,7 @@
         name="name"
         placeholder="Chọn các vị trí mà bạn muốn"
         v-model="end"
-        @change="onEndTime(end, index)"
+        @change="onEndTime(end, index, id)"
         :class="{ error: errorMsg }"
       />
     </div>
@@ -66,13 +66,17 @@ export default {
       type: String,
       default: () => "",
     },
+    id: {
+      type: Number,
+      default: () => 0,
+    },
   },
   methods: {
-    onStartTime(start, index) {
-      this.$emit("onStartTime", start, index);
+    onStartTime(start, index, id) {
+      this.$emit("onStartTime", { start, index, id });
     },
-    onEndTime(end, index) {
-      this.$emit("onEndTime", end, index);
+    onEndTime(end, index, id) {
+      this.$emit("onEndTime", { end, index, id });
     },
   },
 };

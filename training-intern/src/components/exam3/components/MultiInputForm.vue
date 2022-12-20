@@ -15,6 +15,8 @@
         :step="step"
         :index="index"
         :value="item.value"
+        :id="item.id"
+        :inputType="item.inputType"
         @onChange="onChange"
       />
       <InputDateOfBirth
@@ -22,22 +24,31 @@
         :requireItem="item.requireItem"
         :title="item.title"
         :errorMsg="item.errorMsg"
+        :index="index"
         :value="item.value"
-        @onChangeDate="onChangeDate"
+        :id="item.id"
+        :inputType="item.inputType"
+        @onChange="onChange"
       />
       <InputCity
         v-if="item.inputType === 'inputCity'"
         :requireItem="item.requireItem"
         :title="item.title"
         :value="item.value"
-        @onChooseCity="onChooseCity"
+        :index="index"
+        :id="item.id"
+        :inputType="item.inputType"
+        @onChange="onChange"
       />
       <InputJobPosition
         v-if="item.inputType === 'inputJobPosition'"
         :requireItem="item.requireItem"
         :title="item.title"
         :description="item.description"
-        @onChangeJob="onChangeJob"
+        :index="index"
+        :id="item.id"
+        :inputType="item.inputType"
+        @onChange="onChange"
       />
       <InputDescription
         v-if="item.inputType === 'inputDescription'"
@@ -48,7 +59,9 @@
         :value="item.value"
         :index="index"
         :step="step"
-        @onChangeDesc="onChangeDesc"
+        :id="item.id"
+        :inputType="item.inputType"
+        @onChange="onChange"
       />
       <InputImage
         v-if="item.inputType === 'inputImage'"
@@ -56,7 +69,10 @@
         :title="item.title"
         :placeholder="item.placeholder"
         :triggerText="item.triggerText"
-        @onAddItem="onAddItem"
+        :index="index"
+        :id="item.id"
+        :inputType="item.inputType"
+        @onChange="onChange"
       />
       <InputListCompany
         v-if="item.inputType === 'inputListCompany'"
@@ -64,8 +80,10 @@
         :value="item.value"
         :index="index"
         :errorMsg="item.errorMsg"
+        :id="item.id"
+        :inputType="item.inputType"
         @handleDelete="handleDelete"
-        @onChooseCompany="onChooseCompany"
+        @onChange="onChange"
       />
       <InputWorkPeriod
         v-if="item.inputType === 'inputWorkPeriod'"
@@ -74,6 +92,7 @@
         :value="item.value"
         :index="index"
         :errorMsg="item.errorMsg"
+        :id="item.id"
         @onStartTime="onStartTime"
         @onEndTime="onEndTime"
       />
@@ -83,7 +102,10 @@
         :title="item.title"
         :value="item.value"
         :errorMsg="item.errorMsg"
-        @onChangeSalary="onChangeSalary"
+        :index="index"
+        :id="item.id"
+        :inputType="item.inputType"
+        @onChange="onChange"
       />
     </div>
   </div>
@@ -126,38 +148,17 @@ export default {
     },
   },
   methods: {
+    onChange(payload) {
+      this.$emit("onChange", payload);
+    },
     handleDelete(index) {
       this.$emit("handleDelete", index);
     },
-    onChange(keyword, step, index) {
-      this.$emit("onChange", keyword, step, index);
+    onStartTime(payload) {
+      this.$emit("onStartTime", payload);
     },
-    onChangeDate(value) {
-      this.$emit("onChangeDate", value);
-    },
-    onChangeDesc(keyword, step, index) {
-      this.$emit("onChangeDesc", keyword, step, index);
-    },
-    onChooseCity(e) {
-      this.$emit("onChooseCity", e);
-    },
-    onChangeJob() {
-      this.$emit("onChangeJob");
-    },
-    onAddItem() {
-      this.$emit("onAddItem");
-    },
-    onChooseCompany(event, index) {
-      this.$emit("onChooseCompany", event, index);
-    },
-    onStartTime(start, index) {
-      this.$emit("onStartTime", start, index);
-    },
-    onEndTime(end, index) {
-      this.$emit("onEndTime", end, index);
-    },
-    onChangeSalary(salary) {
-      this.$emit("onChangeSalary", salary);
+    onEndTime(payload) {
+      this.$emit("onEndTime", payload);
     },
   },
 };

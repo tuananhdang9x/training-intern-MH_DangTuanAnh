@@ -5,15 +5,8 @@
       :stepData="stepData"
       @handleDelete="handleDelete"
       @onChange="onChange"
-      @onChangeDate="onChangeDate"
-      @onChangeDesc="onChangeDesc"
-      @onChooseCity="onChooseCity"
-      @onChangeJob="onChangeJob"
-      @onAddItem="onAddItem"
-      @onChooseCompany="onChooseCompany"
       @onStartTime="onStartTime"
       @onEndTime="onEndTime"
-      @onChangeSalary="onChangeSalary"
     />
     <FormFooter
       :step="stepNum"
@@ -37,13 +30,14 @@ import {
   formThird,
 } from "./components/formData.js";
 import {
-  validateForm,
+  validateLastForm,
   validateInputText,
   validateDate,
   validateCompany,
   validateNextStep,
   validateDoB,
   validateDesc,
+  validateSalary,
 } from "@/utils/validateMultiForm.js";
 export default {
   components: {
@@ -68,7 +62,7 @@ export default {
   methods: {
     ...mapActions("form", ["exportData"]),
     handleNextStep() {
-      if (validateNextStep(this.stepData)) {
+      if (validateNextStep(this.stepData, this.stepNum)) {
         if (this.stepNum < 3) {
           this.stepNum++;
         }
@@ -83,7 +77,7 @@ export default {
       formSecond.push(JSON.parse(JSON.stringify(formDefault)));
     },
     handleSubmit() {
-      if (validateForm(this.stepData)) {
+      if (validateLastForm(this.stepData)) {
         var data = {};
         let formSubmit = [...formFirst, ...formThird];
         formSubmit.forEach((list) => {
@@ -105,58 +99,103 @@ export default {
     handleDelete(index) {
       formSecond.splice(index, 1);
     },
-    onChange(keyword, step, index) {
-      if (validateInputText(this.stepData, keyword, step, index)) {
-        if (step === 1) {
-          this.stepData.data[0][0].value = keyword;
-        } else {
-          this.stepData.data[index][1].value = keyword;
-        }
+    onChange(payload) {
+      switch (payload.inputType) {
+        case "inputText":
+          if (
+            validateInputText(
+              this.stepData,
+              payload.keyword,
+              payload.step,
+              payload.index,
+              payload.id
+            )
+          ) {
+            if (payload.step === 1) {
+              this.stepData.data[payload.index].filter(
+                (item) => item.id === payload.id
+              )[0].value = payload.keyword;
+            } else {
+              this.stepData.data[payload.index].filter(
+                (item) => item.id === payload.id
+              )[0].value = payload.keyword;
+            }
+          }
+          break;
+        case "inputDob":
+          validateDoB(
+            this.stepData,
+            payload.event.target.value,
+            payload.index,
+            payload.id
+          );
+          break;
+        case "inputDescription":
+          validateDesc(
+            this.stepData,
+            payload.keyword,
+            payload.step,
+            payload.index,
+            payload.id
+          );
+          break;
+        case "inputCity":
+          formFirst[payload.index].filter(
+            (item) => item.id === payload.id
+          )[0].value = payload.event.target.value;
+          break;
+        case "inputJobPosition":
+          formFirst[payload.index].filter(
+            (item) => item.id === payload.id
+          )[0].value = this.listChoseOptions;
+          break;
+        case "inputImage":
+          formFirst[payload.index].filter(
+            (item) => item.id === payload.id
+          )[0].value = this.getFiles;
+          console.log(this.getFiles);
+          console.log(
+            formFirst[payload.index].filter((item) => item.id === payload.id)[0]
+              .value
+          );
+          break;
+        case "inputListCompany":
+          validateCompany(
+            this.stepData,
+            payload.event.target.value,
+            payload.id,
+            payload.index
+          );
+          break;
+        case "inputSalary":
+          formThird[payload.index].filter(
+            (item) => item.id === payload.id
+          )[0].value = payload.salary;
+          validateSalary(
+            this.stepData,
+            payload.salary,
+            payload.index,
+            payload.id
+          );
       }
     },
-    onChangeDate(value) {
-      validateDoB(this.stepData, value);
-    },
-    onChangeDesc(keyword, step, index) {
-      validateDesc(this.stepData, keyword, step, index);
-    },
-    onChooseCity(e) {
-      formFirst[0].filter((item) => item.inputType === "inputCity")[0].value =
-        e.target.value;
-    },
-    onChangeJob() {
-      formFirst[0].filter(
-        (item) => item.inputType === "inputJobPosition"
-      )[0].value = this.listChoseOptions;
-    },
-    onAddItem() {
-      formFirst[0].filter((item) => item.inputType === "inputImage")[0].value =
-        this.getFiles;
-    },
-    onChooseCompany(event, index) {
-      formSecond[index][0].value = event.target.value;
-      validateCompany(this.stepData, index);
-    },
-    onStartTime(start, index) {
-      formSecond[index].filter(
-        (item) => item.inputType === "inputWorkPeriod"
-      )[0].value.from = start;
-      if (validateDate(this.stepData, index)) {
+
+    onStartTime(payload) {
+      formSecond[payload.index].filter(
+        (item) => item.id === payload.id
+      )[0].value.from = payload.start;
+      if (validateDate(this.stepData, payload.index, payload.id)) {
         this.$toasted.show("the date confict was found");
       }
     },
-    onEndTime(end, index) {
-      let getWorkPeriod = formSecond[index].filter(
-        (item) => item.inputType === "inputWorkPeriod"
+    onEndTime(payload) {
+      let getWorkPeriod = formSecond[payload.index].filter(
+        (item) => item.id === payload.id
       )[0];
-      getWorkPeriod.value.to = end;
-      if (validateDate(this.stepData, index)) {
+      getWorkPeriod.value.to = payload.end;
+      if (validateDate(this.stepData, payload.index, payload.id)) {
         this.$toasted.show("the date confict was found");
       }
-    },
-    onChangeSalary(salary) {
-      formThird[0][1].value = salary;
-      validateForm(this.stepData);
     },
     onChangeStep(step) {
       if (step > this.stepNum) {
@@ -170,13 +209,13 @@ export default {
             }
           }
           if (this.stepNum === 2) {
-            if (validateNextStep(this.getMultiForm[1])) {
+            if (validateNextStep(this.stepData, this.stepNum)) {
               this.stepNum = step;
             }
           }
         }
         if (step === 2) {
-          if (validateNextStep(this.getMultiForm[0])) {
+          if (validateNextStep(this.stepData, this.stepNum)) {
             this.stepNum = step;
           }
         }

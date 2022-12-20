@@ -3,7 +3,7 @@
     <li
       v-for="item in filteredOptions"
       class="dropdown-item"
-      :key="item.id"
+      :key="'A' + item.id"
       @click="handleAdd(item.id, item.name)"
     >
       {{ item.name }}

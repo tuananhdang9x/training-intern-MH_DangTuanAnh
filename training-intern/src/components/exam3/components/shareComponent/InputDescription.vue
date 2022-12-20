@@ -9,7 +9,7 @@
         type="text"
         name="name"
         v-model="keyword"
-        @change="onChangeDesc(keyword, step, index)"
+        @change="onChange(keyword, step, index, inputType, id)"
         :class="{ error: errorMsg }"
       ></textarea>
     </div>
@@ -62,10 +62,18 @@ export default {
       type: Number,
       default: () => 1,
     },
+    inputType: {
+      type: String,
+      default: () => "",
+    },
+    id: {
+      type: Number,
+      default: () => 0,
+    },
   },
   methods: {
-    onChangeDesc(keyword, step, index) {
-      this.$emit("onChangeDesc", keyword, step, index);
+    onChange(keyword, step, index, inputType, id) {
+      this.$emit("onChange", { keyword, step, index, inputType, id });
     },
   },
 };

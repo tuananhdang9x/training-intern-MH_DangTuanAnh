@@ -4,25 +4,25 @@ export default {
     state: {
         formData: [
             {
-                id: "1",
+                id: 99,
                 step: 1,
                 title: 'Thông tin cá nhân',
                 data: formFirst,
-                completed: false
+                status: []
             },
             {
-                id: "2",
+                id: 98,
                 step: 2,
                 title: "Kinh nghiệm làm việc",
                 data: formSecond,
-                completed: false
+                status: []
             },
             {
-                id: "3",
+                id: 97,
                 step: 3,
                 title: "Xác nhận thông tin",
                 data: formThird,
-                completed: false
+                status: []
             },
         ],
         dataExport: {}

@@ -8,7 +8,7 @@
       <input
         type="text"
         :class="{ error: errorMsg }"
-        @change="onChangeSalary(salary)"
+        @change="onChange(salary, inputType, id, index)"
         v-model="salary"
       />
     </div>
@@ -46,10 +46,22 @@ export default {
       type: String,
       default: () => "",
     },
+    inputType: {
+      type: String,
+      default: () => "",
+    },
+    id: {
+      type: Number,
+      default: () => 0,
+    },
+    index: {
+      type: Number,
+      default: () => 0,
+    },
   },
   methods: {
-    onChangeSalary(salary) {
-      this.$emit("onChangeSalary", salary);
+    onChange(salary, inputType, id, index) {
+      this.$emit("onChange", { salary, inputType, id, index });
     },
   },
 };
