@@ -9,7 +9,7 @@
         type="text"
         name="name"
         v-model="keyword"
-        @change="onChange(keyword, step, index, inputType, id)"
+        @keyup="onChange(keyword, step, index, inputType, id)"
         :class="{ error: errorMsg }"
       ></textarea>
     </div>

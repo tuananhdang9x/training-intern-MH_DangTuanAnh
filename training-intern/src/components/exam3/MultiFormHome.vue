@@ -10,6 +10,7 @@
     />
     <FormFooter
       :step="stepNum"
+      :stepData="stepData"
       @handleAddItem="handleAddItem"
       @handleNextStep="handleNextStep"
       @handlePrevStep="handlePrevStep"
@@ -54,7 +55,6 @@ export default {
     ...mapGetters("list", ["listChoseOptions"]),
     ...mapGetters("file", ["getFiles"]),
     ...mapGetters("form", ["getMultiForm", "getDataExport"]),
-
     stepData() {
       return this.getMultiForm.filter((item) => item.step === this.stepNum)[0];
     },

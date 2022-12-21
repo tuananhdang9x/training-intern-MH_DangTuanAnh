@@ -8,7 +8,7 @@
       <input
         type="text"
         :class="{ error: errorMsg }"
-        @change="onChange(salary, inputType, id, index)"
+        @keyup="onChange(salary, inputType, id, index)"
         v-model="salary"
       />
     </div>

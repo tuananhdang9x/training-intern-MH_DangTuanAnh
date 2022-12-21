@@ -6,7 +6,7 @@
     </div>
     <input
       type="text"
-      @change="onChange(keyword, step, index, inputType, id)"
+      @keyup="onChange(keyword, step, index, inputType, id)"
       :class="{
         error: errorMsg,
       }"

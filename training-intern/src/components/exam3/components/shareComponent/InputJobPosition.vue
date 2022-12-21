@@ -73,6 +73,9 @@ export default {
     color: #666666;
   }
   ::v-deep .container-autocomplete {
+    .dropdown-list {
+      width: 528px;
+    }
     .input-item {
       display: flex;
       width: 528px;
@@ -88,6 +91,7 @@ export default {
         flex-wrap: wrap;
         align-items: center;
       }
+
       input {
         height: 32px;
         width: 200px;
