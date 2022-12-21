@@ -220,7 +220,6 @@ export function validateDate(stepData, index, id) {
     let isCheck = true;
     stepData.data.forEach(item => {
         let inputDate = item.filter(item => item.id === id)[0]
-
         if (inputDate.value.from === "" && inputDate.value.to === "") {
             inputDate.errorMsg = "this field is required"
             isCheck = false
@@ -249,6 +248,7 @@ export function validateDate(stepData, index, id) {
                     if (itemI.value.from <= itemJ.value.to && itemJ.value.from <= itemI.value.to) {
                         itemI.errorMsg = "the date conflict was found"
                         itemJ.errorMsg = "the date conflict was found"
+                        scrollError();
                         isCheck = false
                         isConflict = true
                     }
@@ -285,6 +285,15 @@ function addStatus(stepData, id, isCheck, index) {
     }
 }
 
+function scrollError() {
+    setTimeout(() => {
+        let el = document.getElementsByClassName("msg")[0].offsetTop;
+        window.scrollTo({
+            top: el - 300,
+            behavior: "smooth",
+        });
+    }, 1);
+}
 
 
 
