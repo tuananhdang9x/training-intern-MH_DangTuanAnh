@@ -1,8 +1,6 @@
 import { updateDate } from "@/utils/index.js";
 
 export function validateLastForm(stepData) {
-    console.log('active here')
-    console.log(stepData)
     let isValid = true
     let count = 0;
     stepData.data.forEach(list => {
@@ -12,7 +10,6 @@ export function validateLastForm(stepData) {
             }
         })
     })
-    console.log(count)
     if (stepData.status.length < count) {
         isValid = false;
     } else {
@@ -22,7 +19,6 @@ export function validateLastForm(stepData) {
             }
         })
     }
-    console.log(isValid)
     return isValid
 }
 
@@ -75,10 +71,8 @@ export function validateNextStep(stepData, step) {
 }
 
 export function validateSalary(stepData, salary, index, id) {
-    console.log(stepData, salary, index, id)
     let isCheck = true;
     let inputSalary = stepData.data[index].filter(item => item.id === id)[0];
-    console.log('inputSalary', inputSalary)
     inputSalary.value = salary
 
     if (salary === "") {

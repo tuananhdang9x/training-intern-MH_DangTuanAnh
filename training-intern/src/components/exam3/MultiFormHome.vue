@@ -83,17 +83,16 @@ export default {
         formSubmit.forEach((list) => {
           list.forEach((item) => (data[item.key] = item.value));
         });
-        data["form_second"] = [
-          formSecond.map((list) => {
-            let form = {};
-            list.forEach((item) => {
-              form[item.key] = item.value;
-            });
-            return form;
-          }),
-        ];
-        this.exportData(data);
+        (data["form_second"] = formSecond.map((list) => {
+          let form = {};
+          list.forEach((item) => {
+            form[item.key] = item.value;
+          });
+          return form;
+        })),
+          this.exportData(data);
         console.log("Data Export:", this.getDataExport);
+        this.$toasted.global.success_msg();
       }
     },
     handleDelete(index) {
@@ -153,11 +152,6 @@ export default {
           formFirst[payload.index].filter(
             (item) => item.id === payload.id
           )[0].value = this.getFiles;
-          console.log(this.getFiles);
-          console.log(
-            formFirst[payload.index].filter((item) => item.id === payload.id)[0]
-              .value
-          );
           break;
         case "inputListCompany":
           validateCompany(
@@ -185,7 +179,7 @@ export default {
         (item) => item.id === payload.id
       )[0].value.from = payload.start;
       if (validateDate(this.stepData, payload.index, payload.id)) {
-        this.$toasted.show("the date confict was found");
+        this.$toasted.global.error_msg();
       }
     },
     onEndTime(payload) {
@@ -194,7 +188,7 @@ export default {
       )[0];
       getWorkPeriod.value.to = payload.end;
       if (validateDate(this.stepData, payload.index, payload.id)) {
-        this.$toasted.show("the date confict was found");
+        this.$toasted.global.error_msg();
       }
     },
     onChangeStep(step) {

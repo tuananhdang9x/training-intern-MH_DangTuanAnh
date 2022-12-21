@@ -15,8 +15,16 @@ Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
 Vue.use(Toasted, {
-  position: 'top-center',
+  position: 'top-right',
   duration: 3000,
+  theme: "bubble",
+})
+
+Vue.toasted.register('error_msg', "The date confict was found", {
+  type: 'error',
+})
+Vue.toasted.register('success_msg', "Submit form successfully", {
+  type: 'success',
 })
 
 const router = new VueRouter({
