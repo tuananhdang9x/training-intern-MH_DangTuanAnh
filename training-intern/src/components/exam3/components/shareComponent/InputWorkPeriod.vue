@@ -101,7 +101,7 @@ export default {
       border: 1px solid red;
     }
     input {
-      width: 125px;
+      width: 135px;
       height: 40px;
       padding: 8px;
       border: 1px solid #dcdcdc;

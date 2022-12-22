@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-    <div class="add-item" @click="handleAddItem" v-if="step === 2">
+    <div class="add-item" @click="handleAddItem" v-if="stepData.step === 2">
       <div class="add-icon">
         <IconPlus />
       </div>
@@ -10,38 +10,31 @@
       <div
         class="footer-next-item"
         @click="handleNextStep"
-        v-if="step !== 3"
-        :class="{ active: checkActive }"
+        v-if="stepData.step !== 3"
       >
         <p>Tiếp</p>
       </div>
-      <div class="footer-prev-item" @click="handlePrevStep" v-if="step === 2">
+      <div
+        class="footer-prev-item"
+        @click="handlePrevStep"
+        v-if="stepData.step === 2"
+      >
         <p>Quay lại</p>
       </div>
     </div>
-    <div
-      class="finish-btn"
-      @click="handleSubmit"
-      v-if="step === 3"
-      :class="{ active: checkActive }"
-    >
+    <div class="finish-btn" @click="handleNextStep" v-if="stepData.step === 3">
       <p>Hoàn Thành</p>
     </div>
   </div>
 </template>
 
 <script>
-import { validateNextStep } from "@/utils/validateMultiForm";
 import IconPlus from "@/assets/icon/IconPlus.vue";
 export default {
   components: {
     IconPlus,
   },
   props: {
-    step: {
-      type: Number,
-      default: () => 1,
-    },
     stepData: {
       type: Object,
       default: () => ({}),
@@ -57,14 +50,6 @@ export default {
     handlePrevStep() {
       this.$emit("handlePrevStep");
     },
-    handleSubmit() {
-      this.$emit("handleSubmit");
-    },
-  },
-  computed: {
-    checkActive() {
-      return validateNextStep(this.stepData, this.step);
-    },
   },
 };
 </script>
@@ -72,14 +57,11 @@ export default {
 <style lang="scss" scoped>
 .footer {
   margin-left: 20px;
-  .active {
-    background-color: #627d98 !important;
-  }
   .finish-btn {
     cursor: pointer;
     width: 142px;
     height: 40px;
-    background: #dcdcdc;
+    background: #627d98;
     border-radius: 3px;
     display: flex;
     align-items: center;
@@ -93,9 +75,6 @@ export default {
   }
   .footer-nav {
     display: flex;
-    .active {
-      background-color: #627d98 !important;
-    }
     .footer-next-item {
       cursor: pointer;
       display: flex;
@@ -103,7 +82,7 @@ export default {
       justify-content: center;
       width: 102px;
       height: 40px;
-      background: #dcdcdc;
+      background: #627d98;
       border-radius: 3px;
       margin-right: 26px;
       p {

@@ -5,14 +5,9 @@
       :stepData="stepData"
       @handleDelete="handleDelete"
       @onCheckConflict="onCheckConflict"
-    />
-    <FormFooter
-      :step="stepNum"
-      :stepData="stepData"
-      @handleAddItem="handleAddItem"
-      @handleNextStep="handleNextStep"
-      @handlePrevStep="handlePrevStep"
-      @handleSubmit="handleSubmit"
+      @onNextStep="onNextStep"
+      @onPrevStep="onPrevStep"
+      @onAddItem="onAddItem"
     />
   </div>
 </template>
@@ -20,7 +15,6 @@
   <script>
 import MultiStepForm from "./components/MultiStepForm.vue";
 import NavBar from "./components/shareComponent/NavBar.vue";
-import FormFooter from "./components/shareComponent/FormFooter.vue";
 import { mapActions, mapGetters } from "vuex";
 import {
   formFirst,
@@ -36,7 +30,6 @@ export default {
   components: {
     MultiStepForm,
     NavBar,
-    FormFooter,
   },
   data() {
     return {
@@ -51,41 +44,6 @@ export default {
   },
   methods: {
     ...mapActions("form", ["exportData"]),
-
-    handleNextStep() {
-      if (validateNextStep(this.stepData)) {
-        if (this.stepNum < 3) {
-          this.stepNum++;
-        }
-      }
-    },
-    handlePrevStep() {
-      if (this.stepNum > 1) {
-        this.stepNum--;
-      }
-    },
-    handleAddItem() {
-      formSecond.push(JSON.parse(JSON.stringify(formDefault)));
-    },
-    handleSubmit() {
-      if (validateNextStep(this.stepData)) {
-        var data = {};
-        let formSubmit = [...formFirst, ...formThird];
-        formSubmit.forEach((list) => {
-          list.forEach((item) => (data[item.key] = item.value));
-        });
-        (data["form_second"] = formSecond.map((list) => {
-          let form = {};
-          list.forEach((item) => {
-            form[item.key] = item.value;
-          });
-          return form;
-        })),
-          this.exportData(data);
-        console.log("Data Export:", this.getDataExport);
-        this.$toasted.global.success_msg();
-      }
-    },
     handleDelete(index) {
       formSecond.splice(index, 1);
     },
@@ -93,6 +51,37 @@ export default {
       if (validateDateConflict(this.stepData, id)) {
         this.$toasted.global.error_msg();
       }
+    },
+    onNextStep() {
+      if (validateNextStep(this.stepData)) {
+        if (this.stepNum < 3) {
+          this.stepNum++;
+        } else {
+          var data = {};
+          let formSubmit = [...formFirst, ...formThird];
+          formSubmit.forEach((list) => {
+            list.forEach((item) => (data[item.key] = item.value));
+          });
+          (data["form_second"] = formSecond.map((list) => {
+            let form = {};
+            list.forEach((item) => {
+              form[item.key] = item.value;
+            });
+            return form;
+          })),
+            this.exportData(data);
+          console.log("Data Export:", this.getDataExport);
+          this.$toasted.global.success_msg();
+        }
+      }
+    },
+    onPrevStep() {
+      if (this.stepNum > 1) {
+        this.stepNum--;
+      }
+    },
+    onAddItem() {
+      formSecond.push(JSON.parse(JSON.stringify(formDefault)));
     },
     onChangeStep(step) {
       if (step > this.stepNum) {
@@ -128,5 +117,6 @@ export default {
 #container-multiform {
   display: flex;
   flex-direction: column;
+  padding-bottom: 20px;
 }
 </style>  

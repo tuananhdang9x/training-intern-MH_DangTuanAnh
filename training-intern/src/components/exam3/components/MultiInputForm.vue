@@ -1,19 +1,20 @@
 <template>
-  <div
-    :class="{
-      'step-one': step === 1,
-      'step-two': step === 2,
-      'step-three': step === 3,
-    }"
-  >
-    <div v-for="item in data" :key="item.id">
-      <InputItem
-        :item="item"
-        :step="step"
-        :index="index"
-        @handleDelete="handleDelete"
-        @onCheckConflict="onCheckConflict"
-      />
+  <div>
+    <div
+      :class="{
+        'step-one': step === 1,
+        'step-two': step === 2,
+        'step-three': step === 3,
+      }"
+    >
+      <div v-for="item in data" :key="item.id">
+        <InputItem
+          :item="item"
+          :step="step"
+          :index="index"
+          @handleDelete="handleDelete"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -37,13 +38,14 @@ export default {
       type: Number,
       default: () => 0,
     },
+    stepData: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   methods: {
     handleDelete(index) {
       this.$emit("handleDelete", index);
-    },
-    onCheckConflict(id) {
-      this.$emit("onCheckConflict", id);
     },
   },
 };
