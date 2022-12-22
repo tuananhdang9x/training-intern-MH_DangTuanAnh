@@ -85,22 +85,7 @@ export default {
     },
     onChangeStep(step) {
       if (step > this.stepNum) {
-        if (step === 3) {
-          if (this.stepNum === 1) {
-            if (
-              this.getMultiForm[0].completed &&
-              this.getMultiForm[1].completed
-            ) {
-              this.stepNum = step;
-            }
-          }
-          if (this.stepNum === 2) {
-            if (validateNextStep(this.stepData, this.stepNum)) {
-              this.stepNum = step;
-            }
-          }
-        }
-        if (step === 2) {
+        if (step - this.stepNum <= 1) {
           if (validateNextStep(this.stepData, this.stepNum)) {
             this.stepNum = step;
           }
