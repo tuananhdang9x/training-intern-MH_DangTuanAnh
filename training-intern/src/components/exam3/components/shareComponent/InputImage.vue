@@ -7,7 +7,7 @@
     <DropZone
       :placeholder="placeholder"
       :triggerText="triggerText"
-      @onAddItem="onChange(inputType, id, index)"
+      @onAddItem="onChange"
     />
   </div>
 </template>
@@ -35,22 +35,10 @@ export default {
       type: String,
       default: () => "",
     },
-    inputType: {
-      type: String,
-      default: () => "",
-    },
-    id: {
-      type: Number,
-      default: () => 0,
-    },
-    index: {
-      type: Number,
-      default: () => 0,
-    },
   },
   methods: {
-    onChange(inputType, id, index) {
-      this.$emit("onChange", { inputType, id, index });
+    onChange() {
+      this.$emit("onChange");
     },
   },
 };

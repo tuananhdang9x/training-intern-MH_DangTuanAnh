@@ -31,7 +31,7 @@
 </template>
 
 <script>
-import { validateNextStep, validateLastForm } from "@/utils/validateMultiForm";
+import { validateNextStep } from "@/utils/validateMultiForm";
 import IconPlus from "@/assets/icon/IconPlus.vue";
 export default {
   components: {
@@ -63,11 +63,7 @@ export default {
   },
   computed: {
     checkActive() {
-      if (this.stepData === 1 || this.stepData === 2) {
-        return validateNextStep(this.stepData, this.step);
-      } else {
-        return validateLastForm(this.stepData);
-      }
+      return validateNextStep(this.stepData, this.step);
     },
   },
 };

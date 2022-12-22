@@ -4,7 +4,7 @@
       <div class="company-item">
         <select
           id="company-list"
-          @change="onChange($event, index, inputType, id)"
+          @change="onChange"
           v-model="company"
           :class="{ error: errorMsg }"
         >
@@ -52,21 +52,13 @@ export default {
       type: String,
       default: () => "",
     },
-    inputType: {
-      type: String,
-      default: () => "",
-    },
-    id: {
-      type: Number,
-      default: () => 0,
-    },
   },
   methods: {
     handleDelete(index) {
       this.$emit("handleDelete", index);
     },
-    onChange(event, index, inputType, id) {
-      this.$emit("onChange", { event, index, inputType, id });
+    onChange(event) {
+      this.$emit("onChange", event);
     },
   },
 };

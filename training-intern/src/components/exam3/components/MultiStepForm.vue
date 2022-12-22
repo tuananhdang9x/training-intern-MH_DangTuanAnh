@@ -8,13 +8,7 @@
       :id="item.id"
       :index="index"
       @handleDelete="handleDelete"
-      @onChange="onChange"
-      @onStartTime="onStartTime"
-      @onEndTime="onEndTime"
-      @handleAddItem="handleAddItem"
-      @handleNextStep="handleNextStep"
-      @handlePrevStep="handlePrevStep"
-      @handleSubmit="handleSubmit"
+      @onCheckConflict="onCheckConflict"
     />
   </div>
 </template>
@@ -35,26 +29,8 @@ export default {
     handleDelete(index) {
       this.$emit("handleDelete", index);
     },
-    onChange(payload) {
-      this.$emit("onChange", payload);
-    },
-    onStartTime(payload) {
-      this.$emit("onStartTime", payload);
-    },
-    onEndTime(payload) {
-      this.$emit("onEndTime", payload);
-    },
-    handleAddItem() {
-      this.$emit("handleAddItem");
-    },
-    handleNextStep(payload) {
-      this.$emit("handleNextStep", payload);
-    },
-    handlePrevStep() {
-      this.$emit("handlePrevStep");
-    },
-    handleSubmit(payload) {
-      this.$emit("handleSubmit", payload);
+    onCheckConflict(id) {
+      this.$emit("onCheckConflict", id);
     },
   },
 };

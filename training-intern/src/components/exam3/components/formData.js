@@ -9,6 +9,7 @@ export const formFirst = [
             key: "your_name",
             value: "",
             errorMsg: "",
+            wordLimit: 100,
             requireItem: true
         },
         {
@@ -78,6 +79,7 @@ export const formDefault = [
         inputType: "inputText",
         title: "Vị trí từng làm",
         key: "prev_job_position",
+        wordLimit: 100,
         value: "",
         errorMsg: "",
         requireItem: true

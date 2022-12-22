@@ -7,7 +7,7 @@
     <div class="input-desc">
       {{ description }}
     </div>
-    <AutoComplete @onChangeJob="onChange(inputType, id, index)" />
+    <AutoComplete @onChangeJob="onChange" />
   </div>
 </template>
 
@@ -32,22 +32,10 @@ export default {
       type: String,
       default: () => "",
     },
-    inputType: {
-      type: String,
-      default: () => "",
-    },
-    id: {
-      type: Number,
-      default: () => 0,
-    },
-    index: {
-      type: Number,
-      default: () => 0,
-    },
   },
   methods: {
-    onChange(inputType, id, index) {
-      this.$emit("onChange", { inputType, id, index });
+    onChange() {
+      this.$emit("onChange");
     },
   },
 };

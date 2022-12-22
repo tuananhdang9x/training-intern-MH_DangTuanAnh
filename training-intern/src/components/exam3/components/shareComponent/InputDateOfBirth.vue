@@ -7,7 +7,7 @@
     <div class="input-date">
       <input
         type="date"
-        @change="onChange($event, inputType, id, index)"
+        @change="onChange"
         :class="{ error: errorMsg }"
         v-model="date"
       />
@@ -46,22 +46,10 @@ export default {
       type: String,
       default: () => "",
     },
-    inputType: {
-      type: String,
-      default: () => "",
-    },
-    id: {
-      type: Number,
-      default: () => 0,
-    },
-    index: {
-      type: Number,
-      default: () => 0,
-    },
   },
   methods: {
-    onChange(event, inputType, id, index) {
-      this.$emit("onChange", { event, inputType, id, index });
+    onChange(event) {
+      this.$emit("onChange", event);
     },
   },
 };
