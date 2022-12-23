@@ -8,7 +8,7 @@
         :errorMsg="item.errorMsg"
         :value="item.value"
         :step="step"
-        @onChange="(e) => onChange(item, e)"
+        @onChange="onChange"
       />
       <InputDateOfBirth
         v-if="item.inputType === 'inputDob'"
@@ -16,21 +16,21 @@
         :title="item.title"
         :errorMsg="item.errorMsg"
         :value="item.value"
-        @onChange="(e) => onChange(item, e)"
+        @onChange="onChange"
       />
       <InputCity
         v-if="item.inputType === 'inputCity'"
         :requireItem="item.requireItem"
         :title="item.title"
         :value="item.value"
-        @onChange="(e) => onChange(item, e)"
+        @onChange="onChange"
       />
       <InputJobPosition
         v-if="item.inputType === 'inputJobPosition'"
         :requireItem="item.requireItem"
         :title="item.title"
         :description="item.description"
-        @onChange="onChange(item)"
+        @onChange="onChange"
       />
       <InputDescription
         v-if="item.inputType === 'inputDescription'"
@@ -40,7 +40,7 @@
         :errorMsg="item.errorMsg"
         :value="item.value"
         :step="step"
-        @onChange="(e) => onChange(item, e)"
+        @onChange="onChange"
       />
       <InputImage
         v-if="item.inputType === 'inputImage'"
@@ -48,7 +48,7 @@
         :title="item.title"
         :placeholder="item.placeholder"
         :triggerText="item.triggerText"
-        @onChange="onChange(item)"
+        @onChange="onChange"
       />
       <InputListCompany
         v-if="item.inputType === 'inputListCompany'"
@@ -56,7 +56,7 @@
         :value="item.value"
         :errorMsg="item.errorMsg"
         @handleDelete="handleDelete"
-        @onChange="(e) => onChange(item, e)"
+        @onChange="onChange"
       />
       <InputWorkPeriod
         v-if="item.inputType === 'inputWorkPeriod'"
@@ -64,8 +64,8 @@
         :title="item.title"
         :value="item.value"
         :errorMsg="item.errorMsg"
-        @onChangeStartDate="(e) => onChangeStartDate(item, e)"
-        @onChangeEndDate="(e) => onChangeEndDate(item, e)"
+        @onChangeStartDate="onChangeStartDate"
+        @onChangeEndDate="onChangeEndDate"
       />
       <InputSalary
         v-if="item.inputType === 'inputSalary'"
@@ -73,7 +73,7 @@
         :title="item.title"
         :value="item.value"
         :errorMsg="item.errorMsg"
-        @onChange="(e) => onChange(item, e)"
+        @onChange="onChange"
       />
     </div>
   </div>
@@ -89,7 +89,6 @@ import InputImage from "./shareComponent/InputImage.vue";
 import InputListCompany from "./shareComponent/InputListCompany.vue";
 import InputWorkPeriod from "./shareComponent/InputWorkPeriod.vue";
 import InputSalary from "./shareComponent/InputSalary.vue";
-import { mapGetters } from "vuex";
 export default {
   components: {
     InputText,
@@ -117,45 +116,18 @@ export default {
     },
   },
   methods: {
-    onChange(item, e) {
-      item.value = e;
-      item.errorMsg = "";
-
-      if (item.inputType === "inputDob") {
-        item.value = e.target.value;
-      }
-
-      if (item.inputType === "inputCity") {
-        item.value = e.target.value;
-      }
-
-      if (item.inputType === "inputJobPosition") {
-        item.value = this.listChoseOptions;
-      }
-
-      if (item.inputType === "inputImage") {
-        item.value = this.getFiles;
-      }
-
-      if (item.inputType === "inputListCompany") {
-        item.value = e.target.value;
-      }
+    onChange(e) {
+      this.$emit("onChange", e);
     },
-    onChangeStartDate(item, e) {
-      item.value.from = e.target.value;
-      item.errorMsg = "";
+    onChangeStartDate(e) {
+      this.$emit("onChangeStartDate", e);
     },
-    onChangeEndDate(item, e) {
-      item.value.to = e.target.value;
-      item.errorMsg = "";
+    onChangeEndDate(e) {
+      this.$emit("onChangeEndDate", e);
     },
     handleDelete(index) {
       this.$emit("handleDelete", index);
     },
-  },
-  computed: {
-    ...mapGetters("list", ["listChoseOptions"]),
-    ...mapGetters("file", ["getFiles"]),
   },
 };
 </script>

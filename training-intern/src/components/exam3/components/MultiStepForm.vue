@@ -10,12 +10,15 @@
         :id="item.id"
         :index="index"
         @handleDelete="handleDelete"
+        @onChange="(payload) => onChange(payload, index)"
+        @onChangeStartDate="(payload) => onChangeStartDate(payload, index)"
+        @onChangeEndDate="(payload) => onChangeEndDate(payload, index)"
       />
     </div>
     <FormFooter
       :stepData="stepData"
       @handleAddItem="handleAddItem"
-      @handleNextStep="handleNextStep(stepData.data)"
+      @handleNextStep="handleNextStep"
       @handlePrevStep="handlePrevStep"
     />
   </div>
@@ -24,13 +27,6 @@
 <script>
 import MultiInputForm from "./MultiInputForm.vue";
 import FormFooter from "./shareComponent/FormFooter.vue";
-import {
-  validateRequireItem,
-  validateMaxLength,
-  validateDoB,
-  validateSalary,
-  validateDate,
-} from "@/utils/validateMultiForm";
 export default {
   components: {
     MultiInputForm,
@@ -46,47 +42,23 @@ export default {
     handleDelete(index) {
       this.$emit("handleDelete", index);
     },
-    handleNextStep(data) {
-      let isCheck = true;
-      data.forEach((list) => {
-        list.forEach((item) => {
-          if (item.requireItem === true) {
-            validateRequireItem(item);
-          }
-          if (item.wordLimit) {
-            validateMaxLength(item);
-          }
-          if (item.inputType === "inputDob") {
-            validateDoB(item);
-          }
-          if (item.inputType === "inputSalary") {
-            validateSalary(item);
-          }
-          if (item.inputType === "inputWorkPeriod") {
-            if (!validateDate(item)) {
-              isCheck = false;
-            }
-          }
-        });
-      });
-      if (isCheck) {
-        let inx;
-        this.stepData.data.forEach((list) => {
-          list.forEach((item) => {
-            if (item.inputType === "inputWorkPeriod") {
-              inx = item.id;
-            }
-          });
-        });
-        this.$emit("onCheckConflict", inx);
-      }
-      this.$emit("onNextStep");
+    handleNextStep() {
+      this.$emit("handleNextStep");
     },
     handlePrevStep() {
       this.$emit("onPrevStep");
     },
     handleAddItem() {
       this.$emit("onAddItem");
+    },
+    onChange(payload, index) {
+      this.$emit("onChange", payload, index);
+    },
+    onChangeStartDate(payload, index) {
+      this.$emit("onChangeStartDate", payload, index);
+    },
+    onChangeEndDate(payload, index) {
+      this.$emit("onChangeEndDate", payload, index);
     },
   },
 };

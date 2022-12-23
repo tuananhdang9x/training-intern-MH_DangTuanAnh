@@ -1,20 +1,21 @@
 <template>
-  <div>
-    <div
-      :class="{
-        'step-one': step === 1,
-        'step-two': step === 2,
-        'step-three': step === 3,
-      }"
-    >
-      <div v-for="item in data" :key="item.id">
-        <InputItem
-          :item="item"
-          :step="step"
-          :index="index"
-          @handleDelete="handleDelete"
-        />
-      </div>
+  <div
+    :class="{
+      'step-one': step === 1,
+      'step-second': step === 2,
+      'step-third': step === 3,
+    }"
+  >
+    <div v-for="(item, index) in data" :key="item.id">
+      <InputItem
+        :item="item"
+        :step="step"
+        :index="index"
+        @handleDelete="handleDelete"
+        @onChange="(e) => onChange(e, index)"
+        @onChangeStartDate="(e) => onChangeStartDate(e, index)"
+        @onChangeEndDate="(e) => onChangeEndDate(e, index)"
+      />
     </div>
   </div>
 </template>
@@ -38,14 +39,19 @@ export default {
       type: Number,
       default: () => 0,
     },
-    stepData: {
-      type: Object,
-      default: () => ({}),
-    },
   },
   methods: {
     handleDelete(index) {
       this.$emit("handleDelete", index);
+    },
+    onChange(e, index) {
+      this.$emit("onChange", { e, index });
+    },
+    onChangeStartDate(e, index) {
+      this.$emit("onChangeStartDate", { e, index });
+    },
+    onChangeEndDate(e, index) {
+      this.$emit("onChangeEndDate", { e, index });
     },
   },
 };
@@ -64,7 +70,7 @@ export default {
   margin: 20px 0 24px 20px;
 }
 
-.step-two {
+.step-second {
   display: flex;
   flex-direction: column;
   width: 1026px;
@@ -74,7 +80,7 @@ export default {
   border-radius: 4px;
 }
 
-.step-three {
+.step-third {
   display: flex;
   flex-direction: column;
   margin: 20px 0 24px 20px;

@@ -41,8 +41,8 @@ export default {
     },
   },
   methods: {
-    onChangeStep(step) {
-      this.$emit("onChangeStep", step);
+    onChangeStep(choseStep) {
+      this.$emit("onChangeStep", choseStep);
     },
   },
 };
