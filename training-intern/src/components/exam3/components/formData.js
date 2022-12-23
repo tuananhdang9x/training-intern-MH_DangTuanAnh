@@ -61,7 +61,7 @@ export const formFirst = [
             value: [],
             requireItem: false
         },
-    ]
+    ],
 ]
 
 export const formDefault = [

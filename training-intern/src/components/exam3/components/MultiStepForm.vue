@@ -6,8 +6,6 @@
         :key="index"
         :data="item"
         :step="stepData.step"
-        :stepData="stepData"
-        :id="item.id"
         :index="index"
         @handleDelete="handleDelete"
         @onChange="(payload) => onChange(payload, index)"
