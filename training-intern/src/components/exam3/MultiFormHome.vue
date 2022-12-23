@@ -36,6 +36,9 @@ export default {
       stepNum: 1,
     };
   },
+  created() {
+    this.getOptions();
+  },
   computed: {
     ...mapGetters("form", ["getMultiForm", "getDataExport"]),
     stepData() {
@@ -44,6 +47,7 @@ export default {
   },
   methods: {
     ...mapActions("form", ["exportData"]),
+    ...mapActions("list", ["getOptions"]),
     handleDelete(index) {
       formSecond.splice(index, 1);
     },
@@ -54,7 +58,7 @@ export default {
     },
     onNextStep() {
       if (validateNextStep(this.stepData)) {
-        if (this.stepNum < 3) {
+        if (this.stepNum < this.getMultiForm.length) {
           this.stepNum++;
         } else {
           var data = {};

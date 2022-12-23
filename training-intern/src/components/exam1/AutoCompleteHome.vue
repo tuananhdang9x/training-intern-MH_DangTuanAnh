@@ -8,19 +8,15 @@
   
   <script>
 import AutoCompleteItem from "./components/AutoCompleteItem.vue";
-import { mapActions, mapGetters } from "vuex";
+import { mapGetters } from "vuex";
 export default {
   components: {
     AutoCompleteItem,
-  },
-  created() {
-    this.getOptions();
   },
   computed: {
     ...mapGetters("list", ["listOptions"]),
   },
   methods: {
-    ...mapActions("list", ["getOptions"]),
     onChangeJob() {
       this.$emit("onChangeJob");
     },
