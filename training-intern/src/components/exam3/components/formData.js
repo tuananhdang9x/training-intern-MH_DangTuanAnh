@@ -13,16 +13,6 @@ export const formFirst = [
             requireItem: true
         },
         {
-            id: 90,
-            inputType: "inputText",
-            title: "Họ và tên bố mẹ",
-            key: "your_parent_name",
-            value: "",
-            errorMsg: "",
-            wordLimit: 200,
-            requireItem: true
-        },
-        {
             id: 2,
             inputType: "inputDob",
             title: "Ngày sinh",
