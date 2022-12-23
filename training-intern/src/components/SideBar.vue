@@ -49,18 +49,6 @@ export default {
           path: "/exam3",
           name: "MultiForm",
         },
-        {
-          id: 6,
-          lable: "Exam 4",
-          path: "/exam4",
-          name: "Recursive",
-        },
-        {
-          id: 7,
-          lable: "Exam 5",
-          path: "/exam5",
-          name: "DragDrop",
-        },
       ],
     };
   },
@@ -71,7 +59,9 @@ export default {
   },
   methods: {
     postClick(link) {
-      this.$router.push(link.path);
+      if (this.$route.path !== link.path) {
+        this.$router.push(link.path);
+      }
     },
   },
 };

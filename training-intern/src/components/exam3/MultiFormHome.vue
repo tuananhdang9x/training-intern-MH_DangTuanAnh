@@ -76,6 +76,7 @@ export default {
             this.exportData(data);
           console.log("Data Export:", this.getDataExport);
           this.$toasted.global.success_msg();
+          this.$router.push("/");
         }
       }
     },
