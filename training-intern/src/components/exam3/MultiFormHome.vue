@@ -32,6 +32,7 @@ import {
   validateDoB,
   validateSalary,
   validateDate,
+  resetErrorDate,
 } from "@/utils/validateMultiForm.js";
 export default {
   components: {
@@ -99,10 +100,9 @@ export default {
     },
     onChangeStep(choseStep) {
       if (choseStep > this.stepNum) {
-        if (choseStep - this.stepNum <= 1) {
-          if (validateNextStep(this.stepData, this.stepNum)) {
-            this.stepNum = choseStep;
-          }
+        this.handleNextStep();
+        if (validateNextStep(this.stepData, this.stepNum)) {
+          this.stepNum = choseStep;
         }
       } else {
         this.stepNum = choseStep;
@@ -136,12 +136,12 @@ export default {
     onChangeStartDate(payload, index) {
       let item = this.stepData.data[index][payload.index];
       item.value.from = payload.e.target.value;
-      item.errorMsg = "";
+      resetErrorDate(this.stepData, item.id);
     },
     onChangeEndDate(payload, index) {
       let item = this.stepData.data[index][payload.index];
       item.value.to = payload.e.target.value;
-      item.errorMsg = "";
+      resetErrorDate(this.stepData, item.id);
     },
     handleNextStep() {
       let isCheck = true;

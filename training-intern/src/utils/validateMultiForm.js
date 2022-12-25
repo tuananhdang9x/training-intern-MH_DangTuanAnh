@@ -37,11 +37,8 @@ export function validateNextStep(stepData) {
     stepData.data.forEach(list => {
         list.forEach(item => {
             if (item.requireItem === true) {
-                if (item.value === "" || item.value.from === "" || item.value.to === "") {
+                if (item.value === "" || item.value.from === "" || item.value.to === "" || item.errorMsg) {
                     isCheck = false;
-                }
-                if (item.errorMsg) {
-                    isCheck = false
                 }
             } else {
                 if (item.errorMsg) {
@@ -76,22 +73,25 @@ export function validateDate(item) {
     return isCheck;
 }
 
+export function resetErrorDate(stepData, id) {
+    for (let i = 0; i < stepData.data.length; i++) {
+        let item = stepData.data[i].find(item => item.id === id)
+        item.errorMsg = ""
+    }
+}
 export function validateDateConflict(stepData, id) {
     if (stepData.data.length > 1) {
         let isConflict = false;
         for (let i = 0; i < stepData.data.length; i++) {
             for (let j = 1; j < stepData.data.length; j++) {
-                let itemI = stepData.data[i].filter(item => item.id === id)[0]
-                let itemJ = stepData.data[j].filter(item => item.id === id)[0]
+                let itemI = stepData.data[i].find(item => item.id === id)
+                let itemJ = stepData.data[j].find(item => item.id === id)
                 if (itemI.value.from && itemJ.value.from !== "" && i < j) {
                     if (itemI.value.from <= itemJ.value.to && itemJ.value.from <= itemI.value.to) {
                         itemI.errorMsg = "the date conflict was found"
                         itemJ.errorMsg = "the date conflict was found"
                         isConflict = true;
                         scrollError();
-                    } else {
-                        itemI.errorMsg = ""
-                        itemJ.errorMsg = ""
                     }
                 }
             }

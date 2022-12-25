@@ -29,7 +29,6 @@ export const formFirst = [
             value: "",
             errorMsg: "",
             requireItem: false
-
         },
         {
             id: 4,
