@@ -7,7 +7,7 @@
         :data="item"
         :step="stepData.step"
         :index="index"
-        @handleDelete="handleDelete"
+        @handleDelete="handleDelete(index)"
         @onChange="(payload) => onChange(payload, index)"
         @onChangeStartDate="(payload) => onChangeStartDate(payload, index)"
         @onChangeEndDate="(payload) => onChangeEndDate(payload, index)"

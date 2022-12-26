@@ -35,6 +35,7 @@ export default {
     },
     mutations: {
         GET_OPTIONS(state, data) {
+            state.options = []
             data.map(item => state.options.push({ id: item.id, name: item.name }));
         },
         ADD_CHOSE_LIST(state, payload) {

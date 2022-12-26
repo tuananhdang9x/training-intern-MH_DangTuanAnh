@@ -41,8 +41,8 @@ export default {
     },
   },
   methods: {
-    handleDelete(index) {
-      this.$emit("handleDelete", index);
+    handleDelete() {
+      this.$emit("handleDelete");
     },
     onChange(e, index) {
       this.$emit("onChange", { e, index });

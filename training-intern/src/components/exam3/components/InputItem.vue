@@ -125,8 +125,8 @@ export default {
     onChangeEndDate(e) {
       this.$emit("onChangeEndDate", e);
     },
-    handleDelete(index) {
-      this.$emit("handleDelete", index);
+    handleDelete() {
+      this.$emit("handleDelete");
     },
   },
 };

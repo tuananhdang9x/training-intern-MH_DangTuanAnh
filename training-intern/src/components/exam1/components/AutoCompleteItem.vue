@@ -91,9 +91,12 @@ export default {
         this.isShow = true;
         this.msg = "";
       }
-      this.filteredOptions = this.listOptions.filter((item) =>
-        item.name.toLowerCase().match(this.keyword.toLowerCase())
-      );
+      this.filteredOptions = this.listOptions.filter((item) => {
+        return (
+          item.name.toLowerCase().match(this.keyword.toLowerCase()) &&
+          !this.listChoseOptions.map((ele) => ele.id).includes(item.id)
+        );
+      });
       if (!this.filteredOptions.length) {
         this.msg = "Item not found";
       }

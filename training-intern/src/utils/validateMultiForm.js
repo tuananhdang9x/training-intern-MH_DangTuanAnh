@@ -33,12 +33,15 @@ export function validateSalary(item) {
 }
 
 export function validateNextStep(stepData) {
-    let isCheck = true;
+    let isCheck = true
+    if (stepData.data.length === 0) {
+        isCheck = false
+    }
     stepData.data.forEach(list => {
         list.forEach(item => {
             if (item.requireItem === true) {
                 if (item.value === "" || item.value.from === "" || item.value.to === "" || item.errorMsg) {
-                    isCheck = false;
+                    isCheck = false
                 }
             } else {
                 if (item.errorMsg) {

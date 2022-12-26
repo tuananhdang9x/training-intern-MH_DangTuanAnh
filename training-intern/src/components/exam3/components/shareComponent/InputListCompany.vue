@@ -14,7 +14,7 @@
           </option>
         </select>
       </div>
-      <div class="input-icon" @click="handleDelete(index)">
+      <div class="input-icon" @click="handleDelete">
         <IconTrash />
       </div>
     </div>
@@ -40,10 +40,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    index: {
-      type: Number,
-      default: () => 0,
-    },
     value: {
       type: String,
       default: () => "",
@@ -54,8 +50,8 @@ export default {
     },
   },
   methods: {
-    handleDelete(index) {
-      this.$emit("handleDelete", index);
+    handleDelete() {
+      this.$emit("handleDelete");
     },
     onChange(event) {
       this.$emit("onChange", event);

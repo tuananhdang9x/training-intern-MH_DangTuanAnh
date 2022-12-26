@@ -4,7 +4,7 @@
       v-for="item in filteredOptions"
       class="dropdown-item"
       :key="item.id"
-      @click="handleAdd(item.name)"
+      @click="handleAdd(item.id, item.name)"
     >
       {{ item.name }}
     </li>
@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import { v4 } from "uuid";
 export default {
   props: {
     isShow: {
@@ -25,8 +24,7 @@ export default {
     },
   },
   methods: {
-    handleAdd(name) {
-      let id = v4();
+    handleAdd(id, name) {
       this.$emit("handleAdd", { id, name });
     },
   },
