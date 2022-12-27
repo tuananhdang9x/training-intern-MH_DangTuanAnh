@@ -3,18 +3,15 @@
     <div>
       <MultiInputForm
         v-for="(item, index) in stepData.data"
-        :key="index"
+        :key="'A' + index"
         :data="item"
-        :step="stepData.step"
-        :index="index"
         @handleDelete="handleDelete(index)"
         @onChange="(payload) => onChange(payload, index)"
-        @onChangeStartDate="(payload) => onChangeStartDate(payload, index)"
-        @onChangeEndDate="(payload) => onChangeEndDate(payload, index)"
       />
     </div>
     <FormFooter
       :stepData="stepData"
+      :formData="formData"
       @handleAddItem="handleAddItem"
       @handleNextStep="handleNextStep"
       @handlePrevStep="handlePrevStep"
@@ -35,6 +32,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    formData: {
+      type: Array,
+      default: () => [],
+    },
   },
   methods: {
     handleDelete(index) {
@@ -51,12 +52,6 @@ export default {
     },
     onChange(payload, index) {
       this.$emit("onChange", payload, index);
-    },
-    onChangeStartDate(payload, index) {
-      this.$emit("onChangeStartDate", payload, index);
-    },
-    onChangeEndDate(payload, index) {
-      this.$emit("onChangeEndDate", payload, index);
     },
   },
 };

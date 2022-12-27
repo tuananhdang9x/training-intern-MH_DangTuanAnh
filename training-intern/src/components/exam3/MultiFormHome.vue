@@ -3,12 +3,11 @@
     <NavBar :data="getMultiForm" :step="stepNum" @onChangeStep="onChangeStep" />
     <MultiStepForm
       :stepData="stepData"
+      :formData="getMultiForm"
       @handleDelete="handleDelete"
       @onPrevStep="onPrevStep"
       @onAddItem="onAddItem"
       @onChange="onChange"
-      @onChangeStartDate="onChangeStartDate"
-      @onChangeEndDate="onChangeEndDate"
       @handleNextStep="handleNextStep"
     />
   </div>
@@ -110,6 +109,7 @@ export default {
     },
     onChange(payload, index) {
       let item = this.stepData.data[index][payload.index];
+      resetErrorDate(this.stepData, item.id);
       item.value = payload.e;
       item.errorMsg = "";
 
@@ -132,16 +132,10 @@ export default {
       if (item.inputType === "inputListCompany") {
         item.value = payload.e.target.value;
       }
-    },
-    onChangeStartDate(payload, index) {
-      let item = this.stepData.data[index][payload.index];
-      item.value.from = payload.e.target.value;
-      resetErrorDate(this.stepData, item.id);
-    },
-    onChangeEndDate(payload, index) {
-      let item = this.stepData.data[index][payload.index];
-      item.value.to = payload.e.target.value;
-      resetErrorDate(this.stepData, item.id);
+
+      if (item.inputType === "inputWorkPeriod") {
+        item.value = payload.e;
+      }
     },
     handleNextStep() {
       let isCheck = true;

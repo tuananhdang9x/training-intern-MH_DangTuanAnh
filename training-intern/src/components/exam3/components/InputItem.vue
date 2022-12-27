@@ -7,7 +7,6 @@
         :title="item.title"
         :errorMsg="item.errorMsg"
         :value="item.value"
-        :step="step"
         @onChange="onChange"
       />
       <InputDateOfBirth
@@ -39,7 +38,6 @@
         :wordLimit="item.wordLimit"
         :errorMsg="item.errorMsg"
         :value="item.value"
-        :step="step"
         @onChange="onChange"
       />
       <InputImage
@@ -64,8 +62,7 @@
         :title="item.title"
         :value="item.value"
         :errorMsg="item.errorMsg"
-        @onChangeStartDate="onChangeStartDate"
-        @onChangeEndDate="onChangeEndDate"
+        @onChange="onChange"
       />
       <InputSalary
         v-if="item.inputType === 'inputSalary'"
@@ -106,24 +103,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    step: {
-      type: Number,
-      default: () => 1,
-    },
-    index: {
-      type: Number,
-      default: () => 0,
-    },
   },
   methods: {
     onChange(e) {
       this.$emit("onChange", e);
-    },
-    onChangeStartDate(e) {
-      this.$emit("onChangeStartDate", e);
-    },
-    onChangeEndDate(e) {
-      this.$emit("onChangeEndDate", e);
     },
     handleDelete() {
       this.$emit("handleDelete");

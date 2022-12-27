@@ -8,7 +8,7 @@
           v-model="company"
           :class="{ error: errorMsg }"
         >
-          <option disabled selected value>Lựa chọn công ty...</option>
+          <option disabled selected value>{{ placeholder }}</option>
           <option v-for="(company, index) in listOption" :key="index">
             {{ company }}
           </option>
@@ -48,6 +48,10 @@ export default {
       type: String,
       default: () => "",
     },
+    placeholder: {
+      type: String,
+      default: () => "Lựa chọn công ty...",
+    },
   },
   methods: {
     handleDelete() {
@@ -71,7 +75,7 @@ export default {
     margin-top: 6px;
   }
   .input-company {
-    width: 978px;
+    width: 860px;
     height: 60px;
     background: #f8f8f8;
     border-radius: 4px;
@@ -92,7 +96,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: 898px;
+        width: 804px;
         height: 40px;
         background: #ffffff;
         border: 1px solid #dbdbdb;

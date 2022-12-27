@@ -8,7 +8,7 @@
       <input
         type="date"
         name="name"
-        placeholder="Chọn các vị trí mà bạn muốn"
+        :placeholder="placeholder"
         v-model="start"
         @change="onChangeStartDate"
         :class="{ error: errorMsg }"
@@ -19,7 +19,7 @@
       <input
         type="date"
         name="name"
-        placeholder="Chọn các vị trí mà bạn muốn"
+        :placeholder="placeholder"
         v-model="end"
         @change="onChangeEndDate"
         :class="{ error: errorMsg }"
@@ -62,13 +62,23 @@ export default {
       type: String,
       default: () => "",
     },
+    placeholder: {
+      type: String,
+      default: () => "Chọn các vị trí mà bạn muốn",
+    },
   },
   methods: {
     onChangeStartDate(event) {
-      this.$emit("onChangeStartDate", event);
+      this.$emit("onChange", {
+        from: event.target.value,
+        to: this.value.to,
+      });
     },
     onChangeEndDate(event) {
-      this.$emit("onChangeEndDate", event);
+      this.$emit("onChange", {
+        from: this.value.from,
+        to: event.target.value,
+      });
     },
   },
 };

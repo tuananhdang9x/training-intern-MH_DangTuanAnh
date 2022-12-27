@@ -1,5 +1,5 @@
 <template>
-  <div class="input-item" :class="{ 'form-2': step === 2 }">
+  <div class="input-item">
     <div class="input-title">
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
@@ -47,10 +47,6 @@ export default {
       type: String,
       default: () => "",
     },
-    step: {
-      type: Number,
-      default: () => 0,
-    },
   },
   methods: {
     onChange(keyword) {
@@ -94,8 +90,5 @@ export default {
       outline: none;
     }
   }
-}
-.input-item .form-2 {
-  margin-bottom: 14px;
 }
 </style>

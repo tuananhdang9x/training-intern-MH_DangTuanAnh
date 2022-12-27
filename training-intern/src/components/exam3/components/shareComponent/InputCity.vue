@@ -5,7 +5,7 @@
       <div class="input-name">{{ title }}</div>
     </div>
     <select id="place-list" @change="onChange" v-model="city">
-      <option disabled selected value>Lựa chọn thành phố...</option>
+      <option disabled selected value>{{ placeholder }}</option>
       <option v-for="item in listOptions" :key="item.code">
         {{ item.name }}
       </option>
@@ -40,6 +40,10 @@ export default {
     value: {
       type: String,
       default: () => "",
+    },
+    placeholder: {
+      type: String,
+      default: () => "Lựa chọn thành phố...",
     },
   },
   computed: {

@@ -8,21 +8,24 @@ export default {
                 step: 1,
                 title: 'Thông tin cá nhân',
                 data: formFirst,
-                status: []
+                useAddForm: false,
+                labelAddForm: ""
             },
             {
                 id: 98,
                 step: 2,
                 title: "Kinh nghiệm làm việc",
                 data: formSecond,
-                status: []
+                useAddForm: true,
+                labelAddForm: "Thêm công ty"
             },
             {
                 id: 97,
                 step: 3,
                 title: "Xác nhận thông tin",
                 data: formThird,
-                status: []
+                useAddForm: false,
+                labelAddForm: ""
             },
         ],
         dataExport: {}

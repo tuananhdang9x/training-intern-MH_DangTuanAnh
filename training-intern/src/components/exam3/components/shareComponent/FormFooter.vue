@@ -1,28 +1,32 @@
 <template>
   <div class="footer">
-    <div class="add-item" @click="handleAddItem" v-if="stepData.step === 2">
+    <div class="add-item" @click="handleAddItem" v-if="stepData.useAddForm">
       <div class="add-icon">
         <IconPlus />
       </div>
-      <p>Thêm công ty</p>
+      <p>{{ stepData.labelAddForm }}</p>
     </div>
     <div class="footer-nav">
       <div
         class="footer-next-item"
         @click="handleNextStep"
-        v-if="stepData.step !== 3"
+        v-if="stepData.step !== formData.length"
       >
         <p>Tiếp</p>
       </div>
       <div
         class="footer-prev-item"
         @click="handlePrevStep"
-        v-if="stepData.step === 2"
+        v-if="stepData.step !== formData.length && stepData.step !== 1"
       >
         <p>Quay lại</p>
       </div>
     </div>
-    <div class="finish-btn" @click="handleNextStep" v-if="stepData.step === 3">
+    <div
+      class="finish-btn"
+      @click="handleNextStep"
+      v-if="stepData.step === formData.length"
+    >
       <p>Hoàn Thành</p>
     </div>
   </div>
@@ -38,6 +42,10 @@ export default {
     stepData: {
       type: Object,
       default: () => ({}),
+    },
+    formData: {
+      type: Array,
+      default: () => [],
     },
   },
   methods: {

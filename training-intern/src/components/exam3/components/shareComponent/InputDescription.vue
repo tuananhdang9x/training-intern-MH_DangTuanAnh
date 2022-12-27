@@ -13,7 +13,7 @@
         :class="{ error: errorMsg }"
       ></textarea>
     </div>
-    <div class="input-limit" v-if="step !== 2">
+    <div class="input-limit" v-if="wordLimit <= 1000">
       {{ keyword.length }}/{{ wordLimit }}
     </div>
     <div class="msg" v-if="errorMsg">
@@ -53,10 +53,6 @@ export default {
     value: {
       type: String,
       default: () => "",
-    },
-    step: {
-      type: Number,
-      default: () => 0,
     },
   },
   methods: {
