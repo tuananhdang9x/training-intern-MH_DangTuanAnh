@@ -12,8 +12,7 @@
           class="item-number"
           :class="{
             active: item.step === step,
-            activeFirst: item.step === 1,
-            activeAll: step === 3,
+            activePrevItem: item.step <= step,
           }"
         >
           <p>{{ item.step }}</p>
@@ -91,7 +90,7 @@ export default {
       line-height: 20px;
       color: #fff;
     }
-    .activeAll {
+    .activePrevItem {
       width: 32px;
       height: 32px;
       border-radius: 90px;
@@ -105,7 +104,7 @@ export default {
       line-height: 20px;
       color: #fff;
     }
-    .activeFirst {
+    .activeFirstItem {
       width: 32px;
       height: 32px;
       border-radius: 90px;
