@@ -138,7 +138,7 @@ export default {
       }
     },
     handleNextStep() {
-      let isCheck = true;
+      let count = 0;
       this.stepData.data.forEach((list) => {
         list.forEach((item) => {
           if (item.requireItem === true) {
@@ -154,23 +154,15 @@ export default {
             validateSalary(item);
           }
           if (item.inputType === "inputWorkPeriod") {
-            if (!validateDate(item)) {
-              isCheck = false;
+            if (validateDate(item)) {
+              if (count < 1) {
+                this.onCheckConflict(item.id);
+                count++;
+              }
             }
           }
         });
       });
-      if (isCheck) {
-        let inx;
-        this.stepData.data.forEach((list) => {
-          list.forEach((item) => {
-            if (item.inputType === "inputWorkPeriod") {
-              inx = item.id;
-            }
-          });
-        });
-        this.onCheckConflict(inx);
-      }
       this.onNextStep();
     },
   },
