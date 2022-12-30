@@ -4,18 +4,28 @@ import VueRouter from 'vue-router'
 import { routes } from './router'
 import store from './store/store.js'
 import { BootstrapVue, } from 'bootstrap-vue'
-<<<<<<< HEAD
 import { firebaseConfig } from './firebase-config.js'
 import { getStorage, ref } from 'firebase/storage'
 import { initializeApp } from 'firebase/app'
-=======
 import axios from 'axios'
 import VueAxios from 'vue-axios'
->>>>>>> main
+import Toasted from 'vue-toasted'
 Vue.config.productionTip = false
 Vue.use(VueRouter)
 Vue.use(BootstrapVue)
 Vue.use(VueAxios, axios)
+Vue.use(Toasted, {
+  position: 'top-right',
+  duration: 3000,
+  theme: "bubble",
+})
+
+Vue.toasted.register('error_msg', "The date confict was found", {
+  type: 'error',
+})
+Vue.toasted.register('success_msg', "Submit form successfully", {
+  type: 'success',
+})
 
 const router = new VueRouter({
   mode: 'history',

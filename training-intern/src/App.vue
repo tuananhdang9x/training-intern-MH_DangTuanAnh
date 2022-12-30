@@ -2,7 +2,9 @@
   <div id="app">
     <div class="container">
       <SideBar />
-      <router-view />
+      <div class="item">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
@@ -17,9 +19,9 @@ export default {
 };
 </script>
 
-<style>
+<style >
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Noto Sans JP";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -31,5 +33,8 @@ export default {
 }
 .container {
   display: flex;
+}
+.item {
+  margin-left: 200px;
 }
 </style>

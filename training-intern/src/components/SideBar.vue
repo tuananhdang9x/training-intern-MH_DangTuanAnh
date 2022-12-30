@@ -49,18 +49,6 @@ export default {
           path: "/exam3",
           name: "MultiForm",
         },
-        {
-          id: 6,
-          lable: "Exam 4",
-          path: "/exam4",
-          name: "Recursive",
-        },
-        {
-          id: 7,
-          lable: "Exam 5",
-          path: "/exam5",
-          name: "DragDrop",
-        },
       ],
     };
   },
@@ -71,7 +59,9 @@ export default {
   },
   methods: {
     postClick(link) {
-      this.$router.push(link.path);
+      if (this.$route.path !== link.path) {
+        this.$router.push(link.path);
+      }
     },
   },
 };
@@ -80,7 +70,8 @@ export default {
 <style scoped>
 .side-bar {
   background-color: #f0f0f0;
-  height: 1200px;
+  height: 100vh;
+  position: fixed;
 }
 .list-link {
   list-style: none;
