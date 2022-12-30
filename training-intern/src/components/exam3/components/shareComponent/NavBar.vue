@@ -57,28 +57,31 @@ export default {
 }
 .nav-bar {
   display: flex;
+  flex-wrap: wrap;
   margin-left: 20px;
   position: relative;
-  &::before {
-    content: "";
-    width: 430px;
-    height: 3px;
-    background-color: #dbdbdb;
-    position: absolute;
-    top: 19px;
-    left: 74px;
-    z-index: -1;
-  }
+  justify-content: flex-start;
+  max-width: 700px !important;
+  transform: translateX(-2%);
   .nav-item {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    margin-right: 100px;
+    flex: 1;
+    &:not(:last-child):after {
+      content: "";
+      height: 3px;
+      background-color: #dbdbdb;
+      position: relative;
+      width: 100%;
+      top: -50px;
+      left: 50%;
+      z-index: -1;
+    }
     cursor: pointer;
     .active {
-      width: 40px !important;
-      height: 40px !important;
+      width: 32px;
+      height: 32px;
       border-radius: 90px;
       background-color: #617d98 !important;
       display: flex;
@@ -89,6 +92,7 @@ export default {
       font-size: 14px;
       line-height: 20px;
       color: #fff;
+      transform: scale(1.25);
     }
     .activePrevItem {
       width: 32px;
