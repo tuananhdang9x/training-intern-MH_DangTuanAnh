@@ -3,7 +3,7 @@
     <div>
       <MultiInputForm
         v-for="(item, index) in stepData.data"
-        :key="'A' + index"
+        :key="index"
         :data="item"
         @handleDelete="handleDelete(index)"
         @onChange="(payload) => onChange(payload, index)"

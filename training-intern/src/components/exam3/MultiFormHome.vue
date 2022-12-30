@@ -109,8 +109,8 @@ export default {
     },
     onChange(payload, index) {
       let item = this.stepData.data[index][payload.index];
-      resetErrorDate(this.stepData, item.id);
       item.value = payload.e;
+      resetErrorDate(this.stepData, item.id);
       item.errorMsg = "";
 
       if (item.inputType === "inputDob") {
