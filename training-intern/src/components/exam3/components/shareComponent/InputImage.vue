@@ -4,7 +4,7 @@
       <InputRequire v-if="requireItem" />
       <div class="input-name">{{ title }}</div>
     </div>
-    <DropZone
+    <DropZoneHome
       :placeholder="placeholder"
       :triggerText="triggerText"
       @onAddItem="onChange"
@@ -13,10 +13,10 @@
 </template>
 
 <script>
-import DropZone from "./DropZone.vue";
+import DropZoneHome from "@/components/exam2/DropZoneHome.vue";
 export default {
   components: {
-    DropZone,
+    DropZoneHome,
   },
   props: {
     requireItem: {

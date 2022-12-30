@@ -62,6 +62,7 @@ export default {
   position: relative;
   justify-content: flex-start;
   max-width: 700px !important;
+  min-width: 600px;
   transform: translateX(-2%);
   .nav-item {
     display: flex;

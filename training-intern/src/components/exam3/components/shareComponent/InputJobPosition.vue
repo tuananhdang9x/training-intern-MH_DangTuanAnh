@@ -7,17 +7,17 @@
     <div class="input-desc">
       {{ description }}
     </div>
-    <AutoComplete @onChangeJob="onChange" />
+    <AutoCompleteHome @onChangeJob="onChange" />
   </div>
 </template>
 
 <script>
-import AutoComplete from "./AutoComplete.vue";
+import AutoCompleteHome from "@/components/exam1/AutoCompleteHome.vue";
 import InputRequire from "./InputRequire.vue";
 export default {
   components: {
     InputRequire,
-    AutoComplete,
+    AutoCompleteHome,
   },
   props: {
     requireItem: {
